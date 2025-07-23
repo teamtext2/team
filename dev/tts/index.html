@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Text2 - TTS | Chuyển văn bản thành giọng nói</title>
+  <link rel="icon" type="image/png" href="https://i.pinimg.com/736x/da/7d/ca/da7dca01092dce2a700f8e08785e47e8.jpg">
+  <!-- Google tag (gtag.js) - GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ABCDEFG123"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6J85STMJ14');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Light theme */
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-light: #dbeafe;
+      --background: #ffffff;
+      --surface: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --border-light: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      /* Dark theme */
+      --primary: #60a5fa;
+      --primary-hover: #3b82f6;
+      --primary-light: #1e3a8a;
+      --background: #0f172a;
+      --surface: #1e293b;
+      --card: #1e293b;
+      --border: #334155;
+      --border-light: #475569;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #64748b;
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--background);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: var(--transition);
+    }
+
+    /* Header */
+    .header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+    }
+
+    .nav-link.active {
+      color: var(--primary);
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--primary);
+      border-radius: 1px;
+    }
+
+    .theme-toggle {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: var(--transition);
+    }
+
+    .theme-toggle:hover {
+      background: var(--border-light);
+      color: var(--primary);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Main Content */
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 24px;
+      min-height: calc(100vh - 70px);
+    }
+
+    .hero-section {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .hero-title {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+
+    .main-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      padding: 48px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 32px;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      font-size: 1rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--text-primary);
+      font-size: 1rem;
+      font-family: inherit;
+      transition: var(--transition);
+      resize: vertical;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: var(--background);
+    }
+
+    .form-textarea {
+      min-height: 120px;
+    }
+
+    .form-select {
+      cursor: pointer;
+    }
+
+    .controls-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--border-light);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .speed-slider {
+      flex: 1;
+      min-width: 120px;
+      max-width: 200px;
+    }
+
+    .speed-value {
+      font-weight: 600;
+      color: var(--primary);
+      min-width: 40px;
+    }
+
+    /* Sound waves animation */
+    .sound-waves {
+      display: flex;
+      height: 32px;
+      align-items: flex-end;
+      gap: 4px;
+      justify-content: center;
+      margin-top: 16px;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .sound-waves.visible {
+      opacity: 1;
+    }
+
+    .sound-waves span {
+      width: 4px;
+      border-radius: 2px;
+      background: var(--primary);
+      animation: waveBounce 1.2s infinite;
+    }
+
+    .sound-waves span:nth-child(1) { animation-delay: 0s; }
+    .sound-waves span:nth-child(2) { animation-delay: 0.1s; }
+    .sound-waves span:nth-child(3) { animation-delay: 0.2s; }
+    .sound-waves span:nth-child(4) { animation-delay: 0.3s; }
+    .sound-waves span:nth-child(5) { animation-delay: 0.4s; }
+
+    @keyframes waveBounce {
+      0%, 100% { height: 8px; }
+      50% { height: 24px; }
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 48px 24px 24px;
+      margin-top: 64px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 48px;
+    }
+
+    .footer-section h3 {
+      color: var(--text-primary);
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .footer-section p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 8px;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 24px;
+      margin-top: 32px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .main-card {
+        padding: 32px 24px;
+        margin: 0 16px;
+      }
+
+      .controls-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .speed-control {
+        justify-content: center;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-container {
+        padding: 0 16px;
+      }
+
+      .main-container {
+        padding: 32px 16px;
+      }
+
+      .main-card {
+        padding: 24px 16px;
+        margin: 0 8px;
+      }
+    }
+
+    /* Utility classes */
+    .text-center { text-align: center; }
+    .mb-4 { margin-bottom: 16px; }
+    .mb-8 { margin-bottom: 32px; }
+    .hidden { display: none; }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="nav-container">
+      <a href="https://text2.click" class="logo">
+        Text2 - TTS
+      </a>
+      
+      <ul class="nav-menu">
+        <li><a href="https://text2.click" class="nav-link active">Trang chủ</a></li>
+        <li><a href="https://text2.click" class="nav-link">Tính năng</a></li>
+        <li><a href="https://text2.click" class="nav-link">Giới thiệu</a></li>
+        <li><a href="https://mail.text2.click" class="nav-link">Liên hệ</a></li>
+      </ul>
+
+      <div class="nav-controls">
+        <button class="theme-toggle" id="themeToggle" title="Chuyển đổi giao diện">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <h1 class="hero-title">Chuyển văn bản thành giọng nói</h1>
+      <p class="hero-subtitle">
+        Sự kết hợp giữa text2 và TTS của Google 
+      </p>
+    </section>
+
+    <!-- Main Card -->
+    <div class="main-card">
+      <form id="ttsForm" autocomplete="off">
+        <div class="form-group">
+          <label for="textInput" class="form-label">
+            <i class="fa-solid fa-keyboard"></i>
+            Nội dung muốn đọc
+          </label>
+          <textarea 
+            id="textInput" 
+            class="form-input form-textarea" 
+            placeholder="Nhập văn bản bạn muốn chuyển thành giọng nói..."
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="voiceSelect" class="form-label">
+            <i class="fa-solid fa-microchip"></i>
+            Chọn giọng đọc
+          </label>
+          <select id="voiceSelect" class="form-input form-select">
+            <option value="vi-VN-Wavenet-A">🇻🇳 Wavenet-A (Nữ - Tự nhiên)</option>
+            <option value="vi-VN-Wavenet-B">🇻🇳 Wavenet-B (Nam - Tự nhiên)</option>
+            <option value="vi-VN-Standard-A">🇻🇳 Standard-A (Nữ - Chuẩn)</option>
+            <option value="vi-VN-Standard-B">🇻🇳 Standard-B (Nam - Chuẩn)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fa-solid fa-tachometer-alt"></i>
+            Tốc độ đọc
+          </label>
+          <div class="speed-control">
+            <input 
+              type="range" 
+              id="speedSlider" 
+              class="speed-slider" 
+              min="0.25" 
+              max="4.0" 
+              step="0.25" 
+              value="1.0"
+            >
+            <span class="speed-value" id="speedValue">1.0x</span>
+          </div>
+        </div>
+
+        <div class="controls-row">
+          <button type="button" class="btn btn-primary" id="speakBtn">
+            <i class="fa-solid fa-play"></i>
+            Nghe giọng đọc
+          </button>
+          <button type="button" class="btn btn-secondary" id="downloadBtn">
+            <i class="fa-solid fa-download"></i>
+            Tải MP3
+          </button>
+        </div>
+
+        <div class="sound-waves" id="soundWaves">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Text2 - TTS</h3>
+        <p>
+          Nền tảng chuyển văn bản thành giọng nói tiếng Việt hiện đại, 
+          sử dụng kết hợp công nghệ AI tiên tiến với google để tạo ra giọng đọc tự nhiên và chất lượng cao.
+        </p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Tính năng</h3>
+        <ul class="footer-links">
+          <li><a href="#">Giọng đọc tự nhiên</a></li>
+          <li><a href="#">Tùy chỉnh tốc độ</a></li>
+          <li><a href="#">Nhiều giọng đọc</a></li>
+          <li><a href="#">Xuất file MP3</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Liên hệ</h3>
+        <ul class="footer-links">
+          <li><a href="https://mail.text2.click">mail.text2.click</a></li>
+          <li><a href="#">truytimkienthuctv@gmail.com</a></li>
+          <li><a href="https://www.instagram.com/hoanhatanh123/">Liên hệ </a></li>
+          <li><a href="https://www.instagram.com/hoanhatanh123/">Đóng góp ý kiến</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>© 2025 <strong>Text2 - TTS</strong> | Phát triển bởi đội ngũ Việt Nam</p>
+    </div>
+  </footer>
+
+  <script>
+    // Theme management
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+    
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcon(newTheme);
+    });
+    
+    function updateThemeIcon(theme) {
+      const icon = themeToggle.querySelector('i');
+      icon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    }
+
+    // Speed control
+    const speedSlider = document.getElementById('speedSlider');
+    const speedValue = document.getElementById('speedValue');
+    
+    speedSlider.addEventListener('input', (e) => {
+      const speed = parseFloat(e.target.value);
+      speedValue.textContent = speed.toFixed(2) + 'x';
+    });
+
+    // TTS functionality
+    let lastAudioBase64 = "";
+    let audioObj = null;
+    const speakBtn = document.getElementById("speakBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const soundWaves = document.getElementById("soundWaves");
+    const textInput = document.getElementById("textInput");
+
+    async function callTTS(text, voiceName, speed) {
+      const apiKey = "AIzaSyDdAvMyZ_ppUNtnsL-eXNH5qU1oKWi2w7s";
+      const response = await fetch(`https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          input: { text },
+          voice: { languageCode: "vi-VN", name: voiceName },
+          audioConfig: { 
+            audioEncoding: "MP3",
+            speakingRate: speed
+          }
+        })
+      });
+      
+      const data = await response.json();
+      if (data.audioContent) {
+        lastAudioBase64 = data.audioContent;
+        return data.audioContent;
+      } else {
+        throw new Error(data.error?.message || "Không thể tạo giọng đọc");
+      }
+    }
+
+    function playSoundWave(playing) {
+      if (playing) {
+        soundWaves.classList.add('visible');
+      } else {
+        soundWaves.classList.remove('visible');
+      }
+    }
+
+    speakBtn.addEventListener("click", async () => {
+      const text = textInput.value.trim();
+      const voice = document.getElementById("voiceSelect").value;
+      const speed = parseFloat(speedSlider.value);
+      
+      if (!text) {
+        textInput.focus();
+        textInput.style.borderColor = "#ef4444";
+        setTimeout(() => {
+          textInput.style.borderColor = "";
+        }, 1000);
+        return;
+      }
+      
+      speakBtn.disabled = true;
+      speakBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang tạo...';
+      playSoundWave(true);
+
+      try {
+        const audioBase64 = await callTTS(text, voice, speed);
+        if (audioObj) { 
+          audioObj.pause(); 
+          audioObj = null; 
+        }
+        audioObj = new Audio("data:audio/mp3;base64," + audioBase64);
+        audioObj.onended = () => playSoundWave(false);
+        audioObj.onerror = () => playSoundWave(false);
+        await audioObj.play();
+      } catch (err) {
+        alert("Lỗi: " + err.message);
+        playSoundWave(false);
+      } finally {
+        speakBtn.innerHTML = '<i class="fa-solid fa-play"></i>Nghe giọng đọc';
+        speakBtn.disabled = false;
+      }
+    });
+
+    downloadBtn.addEventListener("click", () => {
+      if (!lastAudioBase64) {
+        alert("Bạn cần tạo giọng đọc trước khi tải!");
+        return;
+      }
+      const link = document.createElement("a");
+      link.href = "data:audio/mp3;base64," + lastAudioBase64;
+      link.download = "tts-giọng-đọc.mp3";
+      link.click();
+    });
+
+    // Keyboard shortcuts
+    textInput.addEventListener("keydown", e => {
+      if (e.ctrlKey && e.key === "Enter") {
+        e.preventDefault();
+        speakBtn.click();
+      }
+    });
+
+    // Auto focus on desktop
+    if (window.innerWidth > 768) {
+      setTimeout(() => textInput.focus(), 500);
+    }
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+      navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        if (href.startsWith('#')) {
+          const target = document.querySelector(href);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

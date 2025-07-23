@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text2 - Read file</title>
+  <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/p/AF1QipMAH2F9BWWLSU14YABENNfSIUDTinGdHOO3wC-S=s1360-w1360-h1020-rw">
+<!-- Google tag (gtag.js) - GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ABCDEFG123"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6J85STMJ14');
+</script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #34495e;
+      --accent-color: #3498db;
+      --background-color: #f8f9fa;
+      --card-background: #ffffff;
+      --text-color: #2c3e50;
+      --text-light: #666666;
+      --border-radius: 12px;
+      --transition: all 0.3s ease;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-top: 70px;
+    }
+
+    /* Header Styles */
+    .header {
+      background: var(--primary-color);
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      padding: 0 1.5rem;
+      box-shadow: var(--shadow);
+      z-index: 1000;
+      margin-bottom: 2rem;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo i {
+      font-size: 1.6rem;
+      color: var(--accent-color);
+    }
+
+    .upload-section {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--border-radius);
+      backdrop-filter: blur(5px);
+    }
+
+    .file-input-container {
+      position: relative;
+      width: 100%;
+      max-width: 200px;
+      margin: 0 auto;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 2;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .upload-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    .upload-btn:hover {
+      background: var(--secondary-color);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .upload-btn i {
+      font-size: 1.2rem;
+    }
+
+    .supported-formats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding: 0.5rem;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .format-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: var(--accent-color);
+      border-radius: 4px;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .format-icon:hover {
+      background: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    .format-icon i {
+      color: white;
+      font-size: 0.8rem;
+    }
+
+    .format-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      flex-shrink: 0;
+    }
+
+    .format-label {
+      font-size: 0.75rem;
+      color: var(--text-color);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 2rem 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 70px;
+    }
+
+    .upload-container {
+      background: var(--card-background);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      text-align: center;
+      flex: 0 0 auto;
+    }
+
+    .upload-zone {
+      border: 2px dashed rgba(52, 152, 219, 0.3);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      margin: 1rem 0;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: var(--accent-color);
+      background: rgba(52, 152, 219, 0.05);
+    }
+
+    .upload-icon {
+      font-size: 3rem;
+      color: var(--accent-color);
+      margin-bottom: 1rem;
+    }
+
+    .upload-text {
+      color: var(--text-light);
+      margin-bottom: 1rem;
+    }
+
+    .output-container {
+      background: var(--card-background);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      flex: 1;
+      min-height: 300px;
+    }
+
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .output-title {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+
+    .view-fullscreen {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .view-fullscreen:hover {
+      background: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    #output {
+      max-height: calc(100vh - 200px);
+      overflow: auto;
+      padding: 1rem;
+      background: var(--background-color);
+      border-radius: var(--border-radius);
+    }
+
+    #output:empty::before {
+      content: "📌 Kéo và thả file vào đây hoặc nhấp vào nút bên trên để chọn file";
+      color: var(--text-light);
+      font-style: italic;
+      display: block;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    /* Popup styles */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .popup-content {
+      background: var(--card-background);
+      width: 90%;
+      height: 90%;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .popup-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .popup-title {
+      font-size: 1.2rem;
+      color: var(--text-color);
+      font-weight: 500;
+    }
+
+    .close-popup {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-light);
+      cursor: pointer;
+      padding: 0.5rem;
+      transition: var(--transition);
+    }
+
+    .close-popup:hover {
+      color: var(--accent-color);
+      transform: rotate(90deg);
+    }
+
+    .popup-body {
+      flex: 1;
+      overflow: auto;
+      padding: 1.5rem;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e0;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a0aec0;
+    }
+
+    /* Loading animation */
+    .loading {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(52, 152, 219, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--accent-color);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Error message */
+    .error-message {
+      color: #e74c3c;
+      text-align: center;
+      padding: 1rem;
+      background: #fde8e8;
+      border-radius: var(--border-radius);
+      margin: 1rem 0;
+    }
+
+    /* Desktop-specific optimizations */
+    @media (min-width: 769px) {
+      .header {
+        height: 70px;
+        padding: 0 2rem;
+      }
+
+      .main-content {
+        padding: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        align-items: start;
+        margin-top: 90px;
+      }
+
+      .upload-container {
+        position: sticky;
+        top: 90px;
+        max-width: none;
+        margin: 0;
+      }
+
+      .upload-zone {
+        padding: 3rem;
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .upload-icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .upload-text {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .supported-formats {
+        margin-top: 1.5rem;
+        gap: 1.5rem;
+      }
+
+      .format-icon {
+        width: 28px;
+        height: 28px;
+      }
+
+      .format-icon i {
+        font-size: 0.9rem;
+      }
+
+      .format-label {
+        font-size: 0.8rem;
+      }
+
+      .output-container {
+        max-width: none;
+        margin: 0;
+        min-height: 600px;
+        margin-top: 20px;
+      }
+
+      .output-header {
+        padding: 1rem 0;
+      }
+
+      .output-title {
+        font-size: 1.4rem;
+      }
+
+      .view-fullscreen {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+      }
+
+      /* Footer desktop optimizations */
+      .footer-content {
+        max-width: 1400px;
+        padding: 0 2rem;
+      }
+
+      .footer-section h3 {
+        font-size: 1.4rem;
+      }
+
+      .footer-section p {
+        font-size: 1.1rem;
+      }
+
+      .footer-links a {
+        font-size: 1.1rem;
+        padding: 0.5rem 0;
+      }
+
+      .social-links a {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+      }
+    }
+
+    /* Mobile-specific optimizations */
+    @media (max-width: 768px) {
+      body {
+        padding-top: 60px;
+      }
+
+      .header {
+        height: 60px;
+        padding: 0 1rem;
+      }
+
+      .main-content {
+        padding: 1rem;
+        margin-top: 60px;
+        gap: 1rem;
+      }
+
+      .upload-container {
+        padding: 1rem;
+      }
+
+      .upload-zone {
+        padding: 1.5rem 1rem;
+        min-height: 250px;
+      }
+
+      .upload-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .upload-text {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+      }
+
+      .file-input-container {
+        width: 100%;
+        max-width: 200px;
+        height: 44px;
+      }
+
+      .upload-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+        height: 44px;
+      }
+
+      input[type="file"] {
+        height: 44px;
+      }
+
+      .supported-formats {
+        gap: 0.75rem;
+        margin-top: 0.75rem;
+        padding: 0.25rem;
+      }
+
+      .format-icon {
+        width: 22px;
+        height: 22px;
+      }
+
+      .format-icon i {
+        font-size: 0.7rem;
+      }
+
+      .format-label {
+        font-size: 0.7rem;
+      }
+
+      .output-container {
+        padding: 1rem;
+        min-height: 300px;
+      }
+
+      .output-header {
+        padding: 0.75rem 0;
+        margin-bottom: 0.75rem;
+      }
+
+      .output-title {
+        font-size: 1.1rem;
+      }
+
+      .view-fullscreen {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+      }
+
+      #output {
+        max-height: calc(100vh - 200px);
+        padding: 0.75rem;
+      }
+
+      /* Mobile footer optimizations */
+      .footer {
+        padding: 1.5rem 0;
+      }
+
+      .footer-content {
+        padding: 0 1rem;
+        gap: 1.5rem;
+      }
+
+      .footer-section {
+        text-align: center;
+      }
+
+      .footer-section h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .footer-section p {
+        font-size: 0.9rem;
+      }
+
+      .footer-links {
+        align-items: center;
+      }
+
+      .footer-links a {
+        font-size: 0.9rem;
+        padding: 0.5rem 0;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .social-links {
+        justify-content: center;
+        margin-top: 1rem;
+      }
+
+      .social-links a {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+      }
+
+      .copyright {
+        padding-top: 1.5rem;
+        margin-top: 1.5rem;
+        font-size: 0.85rem;
+      }
+    }
+
+    /* Touch-friendly styles for mobile */
+    @media (max-width: 768px) {
+      .upload-btn,
+      .view-fullscreen,
+      .format-icon,
+      .footer-links a,
+      .social-links a {
+        min-height: 44px; /* Minimum touch target size */
+        min-width: 44px;
+      }
+
+      .upload-zone {
+        min-height: 200px; /* Larger drop zone for mobile */
+      }
+
+      /* Improve touch feedback */
+      .upload-btn:active,
+      .view-fullscreen:active,
+      .format-icon:active {
+        transform: scale(0.98);
+      }
+
+      /* Prevent text selection */
+      .upload-zone,
+      .upload-btn,
+      .view-fullscreen {
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+      }
+    }
+
+    /* Footer Styles */
+    .footer {
+      background: var(--primary-color);
+      color: white;
+      padding: 2rem 0;
+      margin-top: 2rem;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .footer-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .footer-section h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-section p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-color);
+      transform: translateX(5px);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .social-links a {
+      color: white;
+      font-size: 1.2rem;
+      transition: var(--transition);
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+    }
+
+    .social-links a:hover {
+      background: var(--accent-color);
+      transform: translateY(-3px);
+    }
+
+    .copyright {
+      text-align: center;
+      padding-top: 2rem;
+      margin-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .footer {
+        padding: 1.5rem 0;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 1.5rem;
+      }
+
+      .footer-links {
+        align-items: center;
+      }
+
+      .social-links {
+        justify-content: center;
+      }
+
+      .copyright {
+        padding-top: 1.5rem;
+        margin-top: 1.5rem;
+      }
+    }
+
+    /* Add styles for initial popup */
+    .initial-popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .initial-popup-content {
+      background: var(--card-background);
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+  <!-- Add initial popup overlay -->
+  <div class="initial-popup-overlay" id="initialPopupOverlay">
+    <div class="initial-popup-content">
+      <!-- Move all existing content here -->
+      <!-- Fixed Header -->
+      <header class="header">
+        <div class="header-content">
+          <div class="logo">
+            <i class="fas fa-file-alt"></i>
+            <span>File Reader</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="upload-container">
+          <div class="upload-zone" id="dropZone">
+            <div class="upload-icon">
+              <i class="fas fa-cloud-upload-alt"></i>
+            </div>
+            <p class="upload-text">Kéo và thả file vào đây hoặc</p>
+            <div class="file-input-container">
+              <input type="file" id="file" accept="*/*" />
+              <div class="upload-btn">
+                <i class="fas fa-folder-open"></i>
+                Chọn file
+              </div>
+            </div>
+          </div>
+          <div class="supported-formats">
+            <div class="format-group">
+              <span class="format-icon" title="PDF"><i class="fas fa-file-pdf"></i></span>
+              <span class="format-label">PDF</span>
+            </div>
+            <div class="format-group">
+              <span class="format-icon" title="Word"><i class="fas fa-file-word"></i></span>
+              <span class="format-label">Word</span>
+            </div>
+            <div class="format-group">
+              <span class="format-icon" title="Excel"><i class="fas fa-file-excel"></i></span>
+              <span class="format-label">Excel</span>
+            </div>
+            <div class="format-group">
+              <span class="format-icon" title="PowerPoint"><i class="fas fa-file-powerpoint"></i></span>
+              <span class="format-label">PowerPoint</span>
+            </div>
+            <div class="format-group">
+              <span class="format-icon" title="Hình ảnh"><i class="fas fa-image"></i></span>
+              <span class="format-label">Hình ảnh</span>
+            </div>
+            <div class="format-group">
+              <span class="format-icon" title="Video"><i class="fas fa-video"></i></span>
+              <span class="format-label">Video</span>
+            </div>
+            <div class="format-group">
+              <span class="format-icon" title="Audio"><i class="fas fa-music"></i></span>
+              <span class="format-label">Audio</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="output-container">
+          <div class="output-header">
+            <span class="output-title">Kết quả</span>
+            <button class="view-fullscreen" onclick="openPopup()">
+              <i class="fas fa-expand"></i>
+              Xem toàn màn hình
+            </button>
+          </div>
+          <div id="output"></div>
+        </div>
+      </main>
+
+      <!-- Popup Overlay -->
+      <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-content">
+          <div class="popup-header">
+            <span class="popup-title">Kết quả</span>
+            <button class="close-popup" onclick="closePopup()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="popup-body" id="popupContent">
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Về chúng tôi</h3>
+            <p>Trình đọc file đa năng giúp bạn xem và đọc nhiều loại file khác nhau một cách dễ dàng và nhanh chóng.</p>
+          </div>
+          <div class="footer-section">
+            <h3>Liên kết nhanh</h3>
+            <ul class="footer-links">
+              <li><a href="#"><i class="fas fa-home"></i>Trang chủ</a></li>
+              <li><a href="#"><i class="fas fa-info-circle"></i>Giới thiệu</a></li>
+              <li><a href="#"><i class="fas fa-question-circle"></i>Trợ giúp</a></li>
+              <li><a href="#"><i class="fas fa-envelope"></i>Liên hệ</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Liên hệ</h3>
+            <p><i class="fas fa-envelope"></i> support@filereader.com</p>
+            <p><i class="fas fa-phone"></i> (123) 456-7890</p>
+            <div class="social-links">
+              <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+              <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <p>&copy; 2024 Trình Đọc File Đa Năng. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/epubjs@0.3.88/dist/epub.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.0/dist/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/meshesha/PPTXjs/js/pptxjs.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/meshesha/PPTXjs/js/pptxjs.viewer.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/meshesha/PPTXjs/css/pptxjs.css">
+
+  <script>
+    // Khởi tạo PDF.js worker
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+    const fileInput = document.getElementById("file");
+    const output = document.getElementById("output");
+
+    function showLoading() {
+      output.innerHTML = `
+        <div style="text-align: center; padding: 20px;">
+          <div class="loading"></div>
+          <p>Đang xử lý file...</p>
+        </div>
+      `;
+    }
+
+    function showError(message) {
+      output.innerHTML = `
+        <div style="color: #d32f2f; text-align: center; padding: 20px;">
+          <p>❌ ${message}</p>
+        </div>
+      `;
+    }
+
+    fileInput.addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      const ext = file.name.split('.').pop().toLowerCase();
+      
+      showLoading();
+
+      try {
+        if (["png", "jpg", "jpeg", "gif", "svg", "webp"].includes(ext)) {
+          reader.onload = () => {
+            output.innerHTML = `
+              <div style="text-align: center;">
+                <img src="${reader.result}" alt="${file.name}" />
+                <p style="margin-top: 10px; color: #666;">${file.name}</p>
+              </div>
+            `;
+          };
+          reader.readAsDataURL(file);
+        } else if (["txt", "csv"].includes(ext)) {
+          reader.onload = () => {
+            output.innerHTML = `<pre style="white-space: pre-wrap;">${reader.result}</pre>`;
+          };
+          reader.readAsText(file);
+        } else if (["json"].includes(ext)) {
+          reader.onload = () => {
+            try {
+              const json = JSON.parse(reader.result);
+              output.innerHTML = `<pre style="white-space: pre-wrap;">${JSON.stringify(json, null, 2)}</pre>`;
+            } catch (err) {
+              showError("Không thể phân tích file JSON. Vui lòng kiểm tra lại định dạng.");
+            }
+          };
+          reader.readAsText(file);
+        } else if (["xml"].includes(ext)) {
+          reader.onload = () => {
+            try {
+              const parser = new DOMParser();
+              const xml = parser.parseFromString(reader.result, "text/xml");
+              output.innerHTML = `<pre style="white-space: pre-wrap;">${new XMLSerializer().serializeToString(xml)}</pre>`;
+            } catch (err) {
+              showError("Không thể phân tích file XML. Vui lòng kiểm tra lại định dạng.");
+            }
+          };
+          reader.readAsText(file);
+        } else if (["mp3", "wav"].includes(ext)) {
+          reader.onload = () => {
+            output.innerHTML = `
+              <div style="text-align: center;">
+                <audio controls src="${reader.result}"></audio>
+                <p style="margin-top: 10px; color: #666;">${file.name}</p>
+              </div>
+            `;
+          };
+          reader.readAsDataURL(file);
+        } else if (["mp4", "webm"].includes(ext)) {
+          reader.onload = () => {
+            output.innerHTML = `
+              <div style="text-align: center;">
+                <video controls src="${reader.result}"></video>
+                <p style="margin-top: 10px; color: #666;">${file.name}</p>
+              </div>
+            `;
+          };
+          reader.readAsDataURL(file);
+        } else if (["pdf"].includes(ext)) {
+          reader.onload = async () => {
+            try {
+              const pdfData = new Uint8Array(reader.result);
+              const pdf = await pdfjsLib.getDocument({data: pdfData}).promise;
+              let html = '';
+              for (let i = 1; i <= Math.min(pdf.numPages, 3); i++) {
+                const page = await pdf.getPage(i);
+                const viewport = page.getViewport({ scale: 1.5 });
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                await page.render({ canvasContext: context, viewport }).promise;
+                html += canvas.outerHTML;
+              }
+              output.innerHTML = html;
+            } catch (err) {
+              showError("Không thể đọc file PDF. Vui lòng kiểm tra lại file.");
+            }
+          };
+          reader.readAsArrayBuffer(file);
+        } else if (["xlsx", "xls"].includes(ext)) {
+          reader.onload = () => {
+            try {
+              const workbook = XLSX.read(reader.result, { type: "binary" });
+              const html = XLSX.utils.sheet_to_html(workbook.Sheets[workbook.SheetNames[0]]);
+              output.innerHTML = html;
+            } catch (err) {
+              showError("Không thể đọc file Excel. Vui lòng kiểm tra lại file.");
+            }
+          };
+          reader.readAsBinaryString(file);
+        } else if (["docx", "doc"].includes(ext)) {
+          if (ext === "doc") {
+            showError("Định dạng .doc không được hỗ trợ. Vui lòng chuyển đổi file sang định dạng .docx");
+            return;
+          }
+          reader.onload = () => {
+            mammoth.convertToHtml({ arrayBuffer: reader.result })
+              .then(res => output.innerHTML = res.value)
+              .catch(err => showError("Không thể đọc file Word. Vui lòng kiểm tra lại file."));
+          };
+          reader.readAsArrayBuffer(file);
+        } else if (["pptx", "ppt"].includes(ext)) {
+          if (ext === "ppt") {
+            showError("Định dạng .ppt không được hỗ trợ. Vui lòng chuyển đổi file sang định dạng .pptx");
+            return;
+          }
+          reader.onload = () => {
+            try {
+              const arrayBuffer = reader.result;
+              const blob = new Blob([arrayBuffer], { type: "application/vnd.openxmlformats-officedocument.presentationml.presentation" });
+              const url = URL.createObjectURL(blob);
+              $("#output").pptxToHtml({ pptxFileUrl: url });
+            } catch (err) {
+              showError("Không thể đọc file PowerPoint. Vui lòng kiểm tra lại file.");
+            }
+          };
+          reader.readAsArrayBuffer(file);
+        } else if (["epub"].includes(ext)) {
+          reader.onload = () => {
+            try {
+              const book = ePub(reader.result);
+              const rendition = book.renderTo("output", { width: "100%", height: 500 });
+              rendition.display();
+            } catch (err) {
+              showError("Không thể đọc file EPUB. Vui lòng kiểm tra lại file.");
+            }
+          };
+          reader.readAsArrayBuffer(file);
+        } else if (["md"].includes(ext)) {
+          reader.onload = () => {
+            try {
+              output.innerHTML = marked.parse(reader.result);
+            } catch (err) {
+              showError("Không thể đọc file Markdown. Vui lòng kiểm tra lại file.");
+            }
+          };
+          reader.readAsText(file);
+        } else {
+          showError("Định dạng file không được hỗ trợ. Vui lòng chọn file khác.");
+        }
+      } catch (err) {
+        showError("Đã xảy ra lỗi khi xử lý file. Vui lòng thử lại.");
+      }
+    });
+
+    // Thêm xử lý kéo thả file
+    const dropZone = document.getElementById('dropZone');
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight(e) {
+      dropZone.classList.add('drag-over');
+    }
+
+    function unhighlight(e) {
+      dropZone.classList.remove('drag-over');
+    }
+
+    dropZone.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      if (files.length) {
+        fileInput.files = files;
+        const event = new Event('change');
+        fileInput.dispatchEvent(event);
+      }
+    }
+
+    // Add popup functionality
+    function openPopup() {
+      const popupOverlay = document.getElementById('popupOverlay');
+      const popupContent = document.getElementById('popupContent');
+      const output = document.getElementById('output');
+      
+      popupContent.innerHTML = output.innerHTML;
+      popupOverlay.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePopup() {
+      const popupOverlay = document.getElementById('popupOverlay');
+      popupOverlay.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close popup when clicking outside
+    document.getElementById('popupOverlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closePopup();
+      }
+    });
+
+    // Close popup with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closePopup();
+      }
+    });
+
+    // Add touch event handling for mobile
+    if ('ontouchstart' in window) {
+      const dropZone = document.getElementById('dropZone');
+      
+      dropZone.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        this.classList.add('drag-over');
+      }, false);
+
+      dropZone.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        this.classList.remove('drag-over');
+      }, false);
+
+      // Prevent scrolling when touching the drop zone
+      dropZone.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+      }, { passive: false });
+    }
+
+    // Remove initial popup functionality
+    function closeInitialPopup() {
+      const popupOverlay = document.getElementById('initialPopupOverlay');
+      popupOverlay.classList.add('closed');
+      document.body.style.overflow = 'auto';
+    }
+  </script>
+</body>
+</html> 
