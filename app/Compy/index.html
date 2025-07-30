@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nén Ảnh Trực Tuyến</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    h1 { color: #333; }
+    input, select, button { margin: 5px 0; padding: 5px; }
+    .preview { margin-top: 20px; }
+    .image-container { margin: 10px 0; padding: 10px; background: #fff; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>📦 Nén Ảnh Online</h1>
+  
+  <input type="file" id="inputImages" accept="image/*" multiple><br>
+  
+  <label for="quality">Chất lượng (10-100%):</label>
+  <input type="number" id="quality" min="10" max="100" value="80"><br>
+
+  <label for="format">Định dạng:</label>
+  <select id="format">
+    <option value="image/jpeg">JPEG</option>
+    <option value="image/png">PNG</option>
+    <option value="image/webp">WebP</option>
+  </select><br>
+
+  <button onclick="compressImages()">🛠️ Nén ảnh</button>
+
+  <div class="preview" id="preview"></div>
+
+  <script>
+    function compressImages() {
+      const files = document.getElementById('inputImages').files;
+      const quality = parseInt(document.getElementById('quality').value) / 100;
+      const format = document.getElementById('format').value;
+      const preview = document.getElementById('preview');
+      preview.innerHTML = "";
+
+      if (!files.length) {
+        alert("Hãy chọn ít nhất 1 ảnh.");
+        return;
+      }
+
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+
+            canvas.toBlob(blob => {
+              const url = URL.createObjectURL(blob);
+              const downloadLink = document.createElement('a');
+              downloadLink.href = url;
+              downloadLink.download = `${file.name.split('.')[0]}-compressed.${format.split('/')[1]}`;
+              downloadLink.textContent = `⬇️ Tải về: ${downloadLink.download}`;
+
+              const container = document.createElement('div');
+              container.className = "image-container";
+              container.innerHTML = `<strong>${file.name}</strong><br>`;
+              container.appendChild(downloadLink);
+
+              preview.appendChild(container);
+            }, format, quality);
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  </script>
+</body>
+</html>
