@@ -2,6 +2,10 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#8b5cf6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Magic Image Editor - Chỉnh sửa ảnh chuyên nghiệp</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -354,6 +358,83 @@
       opacity: 0.8;
     }
 
+    /* Mobile menu toggle */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-menu-toggle:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+    }
+
+    .mobile-panel {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 85%;
+      max-width: 400px;
+      height: 100%;
+      background: white;
+      z-index: 1001;
+      transition: left 0.3s ease;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    .mobile-panel.active {
+      left: 0;
+    }
+
+    .mobile-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .mobile-panel-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .mobile-close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #64748b;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-close-btn:hover {
+      background: #f1f5f9;
+      color: #1e293b;
+    }
+
     /* Responsive design */
     @media (max-width: 1200px) {
       .sidebar {
@@ -365,25 +446,239 @@
       }
     }
 
+    @media (max-width: 1024px) {
+      .sidebar {
+        width: 200px;
+      }
+      
+      .tools-panel {
+        width: 260px;
+      }
+      
+      .canvas-container {
+        padding: 20px;
+      }
+    }
+
     @media (max-width: 768px) {
       body {
         flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+        overflow-x: hidden;
       }
       
       .sidebar {
         width: 100%;
         height: auto;
         flex-direction: row;
-        padding: 16px;
+        padding: 12px 16px;
+        position: relative;
+      }
+
+      .sidebar-header {
+        padding: 12px 0;
+        border-bottom: none;
+        text-align: left;
+        flex: 1;
+      }
+
+      .logo {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+        margin: 0 12px 0 0;
+      }
+
+      .app-title {
+        font-size: 16px;
+        margin-bottom: 2px;
+      }
+
+      .app-subtitle {
+        font-size: 11px;
+      }
+
+      .sidebar-nav {
+        display: none;
+      }
+
+      .sidebar-footer {
+        padding: 0;
+        border-top: none;
+      }
+
+      .export-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+        border-radius: 8px;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
       }
       
       .main {
         flex-direction: column;
+        height: auto;
       }
       
       .tools-panel {
-        width: 100%;
-        height: auto;
+        display: none;
+      }
+
+      .canvas-container {
+        padding: 16px;
+        min-height: 60vh;
+      }
+
+      .canvas-wrapper {
+        padding: 16px;
+        border-radius: 16px;
+      }
+
+      .canvas-header {
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+      }
+
+      .canvas-title {
+        font-size: 16px;
+      }
+
+      .upload-btn {
+        padding: 8px 16px;
+        font-size: 13px;
+        border-radius: 8px;
+      }
+
+      canvas {
+        max-height: 50vh;
+      }
+
+      .placeholder {
+        padding: 40px 16px;
+        font-size: 14px;
+      }
+
+      .placeholder i {
+        font-size: 36px;
+        margin-bottom: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar {
+        padding: 8px 12px;
+      }
+
+      .logo {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+        margin: 0 8px 0 0;
+      }
+
+      .app-title {
+        font-size: 14px;
+      }
+
+      .app-subtitle {
+        font-size: 10px;
+      }
+
+      .export-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+
+      .canvas-container {
+        padding: 12px;
+      }
+
+      .canvas-wrapper {
+        padding: 12px;
+      }
+
+      .canvas-title {
+        font-size: 14px;
+      }
+
+      .upload-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+
+      .placeholder {
+        padding: 30px 12px;
+        font-size: 13px;
+      }
+
+      .placeholder i {
+        font-size: 32px;
+      }
+    }
+
+    /* Tablet specific styles */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .sidebar {
+        width: 220px;
+      }
+      
+      .tools-panel {
+        width: 280px;
+      }
+      
+      .canvas-container {
+        padding: 24px;
+      }
+    }
+
+    /* Landscape orientation for mobile */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .sidebar {
+        padding: 8px 16px;
+      }
+
+      .canvas-container {
+        min-height: 50vh;
+      }
+
+      canvas {
+        max-height: 40vh;
+      }
+    }
+
+    /* High DPI displays */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      .logo {
+        border: 1px solid rgba(255,255,255,0.2);
+      }
+    }
+
+    /* Touch device optimizations */
+    @media (hover: none) and (pointer: coarse) {
+      .nav-item {
+        padding: 16px;
+        margin-bottom: 12px;
+      }
+
+      .export-btn {
+        padding: 16px;
+      }
+
+      input[type="range"] {
+        height: 8px;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        width: 24px;
+        height: 24px;
+      }
+
+      select {
+        padding: 16px;
+        font-size: 16px;
       }
     }
   </style>
@@ -399,6 +694,9 @@
       <div class="app-title">Magic Image</div>
       <div class="app-subtitle">Photo Editor Pro</div>
     </div>
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+      <i class="fas fa-bars"></i>
+    </button>
 
     <div class="sidebar-nav">
       <div class="nav-section">
@@ -672,6 +970,20 @@
     </div>
   </div>
 
+  <!-- Mobile Panel -->
+  <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
+  <div class="mobile-panel" id="mobilePanel">
+    <div class="mobile-panel-header">
+      <div class="mobile-panel-title">Công cụ chỉnh sửa</div>
+      <button class="mobile-close-btn" onclick="closeMobileMenu()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div id="mobileToolsContent">
+      <!-- Mobile tools content will be populated by JavaScript -->
+    </div>
+  </div>
+
   <script src="https://unpkg.com/caman@4.1.2/dist/caman.full.min.js"></script>
   <script>
     function showMenu(id) {
@@ -693,6 +1005,12 @@
       
       // Add active class to clicked nav item
       event.currentTarget.classList.add('active');
+      
+      // Update mobile panel content if open
+      const mobileContent = document.getElementById('mobileToolsContent');
+      if (mobileContent && selectedGroup) {
+        mobileContent.innerHTML = selectedGroup.outerHTML;
+      }
     }
 
     function loadImage(input) {
@@ -1162,6 +1480,43 @@
       }
     }
 
+    // Mobile menu functions
+    function toggleMobileMenu() {
+      const overlay = document.getElementById('mobileOverlay');
+      const panel = document.getElementById('mobilePanel');
+      const content = document.getElementById('mobileToolsContent');
+      
+      if (panel.classList.contains('active')) {
+        closeMobileMenu();
+      } else {
+        // Copy current tools content to mobile panel
+        const currentTools = document.querySelector('.control-group:not(.hidden)');
+        if (currentTools) {
+          content.innerHTML = currentTools.outerHTML;
+        }
+        
+        overlay.style.display = 'block';
+        panel.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeMobileMenu() {
+      const overlay = document.getElementById('mobileOverlay');
+      const panel = document.getElementById('mobilePanel');
+      
+      panel.classList.remove('active');
+      overlay.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    // Handle window resize
+    function handleResize() {
+      if (window.innerWidth > 768) {
+        closeMobileMenu();
+      }
+    }
+
     // Initialize with filters menu
     document.addEventListener('DOMContentLoaded', function() {
       showMenu('filters');
@@ -1169,6 +1524,14 @@
       // Check if Caman is loaded
       if (typeof Caman === 'undefined') {
         console.warn('Caman library chưa được load. Vui lòng kiểm tra kết nối internet.');
+      }
+      
+      // Add resize listener
+      window.addEventListener('resize', handleResize);
+      
+      // Add touch event listeners for better mobile experience
+      if ('ontouchstart' in window) {
+        document.addEventListener('touchstart', function() {}, {passive: true});
       }
     });
     
