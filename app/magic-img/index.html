@@ -390,14 +390,13 @@
       position: fixed;
       top: 0;
       left: -100%;
-      width: 85%;
-      max-width: 400px;
+      width: 100%;
       height: 100%;
       background: white;
       z-index: 1001;
       transition: left 0.3s ease;
       overflow-y: auto;
-      padding: 20px;
+      padding: 0;
     }
 
     .mobile-panel.active {
@@ -408,31 +407,124 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #e2e8f0;
+      padding: 20px;
+      background: linear-gradient(135deg, #8b5cf6, #6366f1);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     .mobile-panel-title {
       font-size: 18px;
       font-weight: 600;
-      color: #1e293b;
+      color: white;
     }
 
     .mobile-close-btn {
-      background: none;
+      background: rgba(255,255,255,0.2);
       border: none;
-      font-size: 24px;
-      color: #64748b;
+      font-size: 20px;
+      color: white;
       cursor: pointer;
-      padding: 8px;
-      border-radius: 8px;
+      padding: 10px;
+      border-radius: 50%;
       transition: all 0.2s ease;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .mobile-close-btn:hover {
-      background: #f1f5f9;
-      color: #1e293b;
+      background: rgba(255,255,255,0.3);
+    }
+
+    .mobile-tools-content {
+      padding: 20px;
+    }
+
+    .mobile-filter-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .mobile-filter-card {
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .mobile-filter-card:hover {
+      border-color: #8b5cf6;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
+    }
+
+    .mobile-filter-card.active {
+      border-color: #8b5cf6;
+      background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    }
+
+    .mobile-filter-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+      color: #8b5cf6;
+    }
+
+    .mobile-filter-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .mobile-action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .mobile-action-btn {
+      flex: 1;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .mobile-upload-btn {
+      background: linear-gradient(135deg, #8b5cf6, #6366f1);
+      color: white;
+    }
+
+    .mobile-upload-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+    }
+
+    .mobile-export-btn {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+    }
+
+    .mobile-export-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
     }
 
     /* Responsive design */
@@ -474,6 +566,7 @@
         flex-direction: row;
         padding: 12px 16px;
         position: relative;
+        background: linear-gradient(135deg, #1e293b, #334155);
       }
 
       .sidebar-header {
@@ -481,22 +574,27 @@
         border-bottom: none;
         text-align: left;
         flex: 1;
+        display: flex;
+        align-items: center;
       }
 
       .logo {
-        width: 36px;
-        height: 36px;
-        font-size: 16px;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
         margin: 0 12px 0 0;
+        border-radius: 10px;
       }
 
       .app-title {
-        font-size: 16px;
+        font-size: 18px;
         margin-bottom: 2px;
+        color: white;
       }
 
       .app-subtitle {
-        font-size: 11px;
+        font-size: 12px;
+        color: rgba(255,255,255,0.8);
       }
 
       .sidebar-nav {
@@ -509,18 +607,24 @@
       }
 
       .export-btn {
-        padding: 10px 16px;
-        font-size: 13px;
-        border-radius: 8px;
+        padding: 12px 20px;
+        font-size: 14px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #10b981, #059669);
       }
 
       .mobile-menu-toggle {
         display: block;
+        background: rgba(255,255,255,0.1);
+        border-radius: 10px;
+        padding: 10px;
+        margin-left: 12px;
       }
       
       .main {
         flex-direction: column;
         height: auto;
+        background: #f8fafc;
       }
       
       .tools-panel {
@@ -528,8 +632,87 @@
       }
 
       .canvas-container {
+        padding: 20px;
+        min-height: 70vh;
+        background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+      }
+
+      .canvas-wrapper {
+        padding: 20px;
+        border-radius: 20px;
+        background: white;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+      }
+
+      .canvas-header {
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .canvas-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .upload-btn {
+        padding: 12px 20px;
+        font-size: 14px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #8b5cf6, #6366f1);
+        color: white;
+        font-weight: 600;
+      }
+
+      canvas {
+        max-height: 60vh;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      }
+
+      .placeholder {
+        padding: 60px 20px;
+        font-size: 16px;
+        color: #64748b;
+      }
+
+      .placeholder i {
+        font-size: 48px;
+        margin-bottom: 16px;
+        color: #8b5cf6;
+        opacity: 0.7;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar {
+        padding: 10px 16px;
+      }
+
+      .logo {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+        margin: 0 10px 0 0;
+      }
+
+      .app-title {
+        font-size: 16px;
+      }
+
+      .app-subtitle {
+        font-size: 11px;
+      }
+
+      .export-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+      }
+
+      .canvas-container {
         padding: 16px;
-        min-height: 60vh;
+        min-height: 65vh;
       }
 
       .canvas-wrapper {
@@ -537,23 +720,13 @@
         border-radius: 16px;
       }
 
-      .canvas-header {
-        margin-bottom: 16px;
-        padding-bottom: 12px;
-      }
-
       .canvas-title {
         font-size: 16px;
       }
 
       .upload-btn {
-        padding: 8px 16px;
+        padding: 10px 16px;
         font-size: 13px;
-        border-radius: 8px;
-      }
-
-      canvas {
-        max-height: 50vh;
       }
 
       .placeholder {
@@ -562,60 +735,34 @@
       }
 
       .placeholder i {
-        font-size: 36px;
-        margin-bottom: 12px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .sidebar {
-        padding: 8px 12px;
+        font-size: 40px;
       }
 
-      .logo {
-        width: 32px;
-        height: 32px;
-        font-size: 14px;
-        margin: 0 8px 0 0;
+      .mobile-filter-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
       }
 
-      .app-title {
-        font-size: 14px;
+      .mobile-filter-card {
+        padding: 16px;
       }
 
-      .app-subtitle {
-        font-size: 10px;
+      .mobile-filter-icon {
+        font-size: 28px;
+        margin-bottom: 10px;
       }
 
-      .export-btn {
-        padding: 8px 12px;
-        font-size: 12px;
-      }
-
-      .canvas-container {
-        padding: 12px;
-      }
-
-      .canvas-wrapper {
-        padding: 12px;
-      }
-
-      .canvas-title {
-        font-size: 14px;
-      }
-
-      .upload-btn {
-        padding: 6px 12px;
-        font-size: 12px;
-      }
-
-      .placeholder {
-        padding: 30px 12px;
+      .mobile-filter-name {
         font-size: 13px;
       }
 
-      .placeholder i {
-        font-size: 32px;
+      .mobile-action-buttons {
+        gap: 10px;
+      }
+
+      .mobile-action-btn {
+        padding: 14px;
+        font-size: 13px;
       }
     }
 
@@ -705,14 +852,6 @@
           <i class="fas fa-filter"></i>
           Hiệu ứng
         </div>
-        <div class="nav-item" onclick="showMenu('light')">
-          <i class="fas fa-sun"></i>
-          Ánh sáng
-        </div>
-        <div class="nav-item" onclick="showMenu('color')">
-          <i class="fas fa-palette"></i>
-          Màu sắc
-        </div>
       </div>
 
       <div class="nav-section">
@@ -760,174 +899,9 @@
         </select>
       </div>
 
-      <div id="light" class="control-group hidden">
-        <div class="panel-header">
-          <div class="panel-title">Ánh sáng</div>
-          <div class="panel-subtitle">Điều chỉnh ánh sáng và tương phản</div>
-        </div>
-        
-        <label class="control-label">Độ sáng (Brightness)</label>
-        <input type="range" min="-100" max="100" value="0" oninput="adjustLighting('brightness', this.value)">
-        <div class="control-value" id="brightness-value">0</div>
 
-        <label class="control-label">Độ tương phản (Contrast)</label>
-        <input type="range" min="-100" max="100" value="0" oninput="adjustLighting('contrast', this.value)">
-        <div class="control-value" id="contrast-value">0</div>
 
-        <label class="control-label">Độ phơi sáng (Exposure)</label>
-        <input type="range" min="-100" max="100" value="0" oninput="adjustLighting('exposure', this.value)">
-        <div class="control-value" id="exposure-value">0</div>
 
-        <label class="control-label">Vùng sáng (Highlights)</label>
-        <input type="range" min="-100" max="100" value="0" oninput="adjustLighting('highlights', this.value)">
-        <div class="control-value" id="highlights-value">0</div>
-
-        <label class="control-label">Vùng tối (Shadows)</label>
-        <input type="range" min="-100" max="100" value="0" oninput="adjustLighting('shadows', this.value)">
-        <div class="control-value" id="shadows-value">0</div>
-
-        <label class="control-label">Nhiệt độ màu (Temperature)</label>
-        <input type="range" min="-100" max="100" value="0" oninput="adjustLighting('temperature', this.value)">
-        <div class="control-value" id="temperature-value">0</div>
-
-        <label class="control-label">Gamma</label>
-        <input type="range" min="0.1" max="3.0" step="0.1" value="1.0" oninput="adjustLighting('gamma', this.value)">
-        <div class="control-value" id="gamma-value">1.0</div>
-
-        <div style="margin-top: 20px;">
-          <label class="control-label">Hiệu ứng ánh sáng</label>
-          <select onchange="applyLightingPreset(this.value)" style="margin-bottom: 12px;">
-            <option value="">-- Chọn hiệu ứng --</option>
-            <option value="warm">Ấm áp (Warm)</option>
-            <option value="cool">Mát mẻ (Cool)</option>
-            <option value="dramatic">Kịch tính (Dramatic)</option>
-            <option value="soft">Nhẹ nhàng (Soft)</option>
-            <option value="vintage">Cổ điển (Vintage)</option>
-            <option value="high-contrast">Tương phản cao</option>
-            <option value="low-key">Tối (Low Key)</option>
-            <option value="high-key">Sáng (High Key)</option>
-          </select>
-          
-          <button onclick="resetLighting()" style="
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
-            padding: 10px 16px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: 100%;
-          ">Đặt lại ánh sáng</button>
-        </div>
-      </div>
-
-      <div id="color" class="control-group hidden">
-        <div class="panel-header">
-          <div class="panel-title">Màu sắc</div>
-          <div class="panel-subtitle">Điều chỉnh màu sắc và độ bão hòa</div>
-        </div>
-        
-        <label class="control-label">Màu sắc (Hue)</label>
-        <input type="range" min="0" max="360" value="0" oninput="adjustColor('hue', this.value)">
-        <div class="control-value" id="hue-value">0°</div>
-
-        <label class="control-label">Độ bão hòa (Saturation)</label>
-        <input type="range" min="-100" max="100" value="0" oninput="adjustColor('saturation', this.value)">
-        <div class="control-value" id="saturation-value">0</div>
-
-        <label class="control-label">Độ sáng (Lightness)</label>
-        <input type="range" min="-100" max="100" value="0" oninput="adjustColor('lightness', this.value)">
-        <div class="control-value" id="lightness-value">0</div>
-
-        <label class="control-label">Độ tương phản màu (Color Contrast)</label>
-        <input type="range" min="-100" max="100" value="0" oninput="adjustColor('colorContrast', this.value)">
-        <div class="control-value" id="colorContrast-value">0</div>
-
-        <label class="control-label">Độ sắc nét màu (Color Sharpness)</label>
-        <input type="range" min="0" max="100" value="0" oninput="adjustColor('colorSharpness', this.value)">
-        <div class="control-value" id="colorSharpness-value">0</div>
-
-        <label class="control-label">Độ mờ màu (Color Blur)</label>
-        <input type="range" min="0" max="20" value="0" oninput="adjustColor('colorBlur', this.value)">
-        <div class="control-value" id="colorBlur-value">0</div>
-
-        <label class="control-label">Độ nhiễu màu (Color Noise)</label>
-        <input type="range" min="0" max="50" value="0" oninput="adjustColor('colorNoise', this.value)">
-        <div class="control-value" id="colorNoise-value">0</div>
-
-        <label class="control-label">Độ phân tách màu (Color Separation)</label>
-        <input type="range" min="0" max="10" value="0" oninput="adjustColor('colorSeparation', this.value)">
-        <div class="control-value" id="colorSeparation-value">0</div>
-
-        <label class="control-label">Độ chuyển màu (Color Transition)</label>
-        <input type="range" min="0" max="100" value="0" oninput="adjustColor('colorTransition', this.value)">
-        <div class="control-value" id="colorTransition-value">0</div>
-
-        <label class="control-label">Độ ấm lạnh (Warmth)</label>
-        <input type="range" min="-100" max="100" value="0" oninput="adjustColor('warmth', this.value)">
-        <div class="control-value" id="warmth-value">0</div>
-
-        <label class="control-label">Độ tươi mới (Vibrance)</label>
-        <input type="range" min="-100" max="100" value="0" oninput="adjustColor('vibrance', this.value)">
-        <div class="control-value" id="vibrance-value">0</div>
-
-        <label class="control-label">Độ trong suốt (Opacity)</label>
-        <input type="range" min="0" max="100" value="100" oninput="adjustColor('opacity', this.value)">
-        <div class="control-value" id="opacity-value">100</div>
-
-        <label class="control-label">Độ rõ nét (Clarity)</label>
-        <input type="range" min="-100" max="100" value="0" oninput="adjustColor('clarity', this.value)">
-        <div class="control-value" id="clarity-value">0</div>
-
-        <div style="margin-top: 20px;">
-          <label class="control-label">Hiệu ứng màu sắc</label>
-          <select onchange="applyColorPreset(this.value)" style="margin-bottom: 12px;">
-            <option value="">-- Chọn hiệu ứng --</option>
-            <option value="vibrant">Rực rỡ (Vibrant)</option>
-            <option value="muted">Nhẹ nhàng (Muted)</option>
-            <option value="sepia">Cổ điển (Sepia)</option>
-            <option value="blackwhite">Đen trắng (B&W)</option>
-            <option value="crossProcess">Cross Process</option>
-            <option value="chrome">Chrome</option>
-            <option value="fade">Fade</option>
-            <option value="instant">Instant</option>
-            <option value="juno">Juno</option>
-            <option value="lark">Lark</option>
-            <option value="mayfair">Mayfair</option>
-            <option value="moon">Moon</option>
-            <option value="nashville">Nashville</option>
-            <option value="reyes">Reyes</option>
-            <option value="slumber">Slumber</option>
-            <option value="stinson">Stinson</option>
-            <option value="toaster">Toaster</option>
-            <option value="valencia">Valencia</option>
-            <option value="walden">Walden</option>
-            <option value="willow">Willow</option>
-            <option value="xpro2">X-Pro II</option>
-            <option value="warm">Ấm áp (Warm)</option>
-            <option value="cool">Mát mẻ (Cool)</option>
-            <option value="dramatic">Kịch tính (Dramatic)</option>
-            <option value="soft">Nhẹ nhàng (Soft)</option>
-            <option value="vintage">Cổ điển (Vintage)</option>
-            <option value="high-contrast">Tương phản cao</option>
-            <option value="low-key">Tối (Low Key)</option>
-            <option value="high-key">Sáng (High Key)</option>
-          </select>
-          
-          <button onclick="resetColor()" style="
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
-            padding: 10px 16px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: 100%;
-          ">Đặt lại màu sắc</button>
-        </div>
-      </div>
 
       <div id="text" class="control-group hidden">
         <div class="coming-soon">
@@ -979,8 +953,68 @@
         <i class="fas fa-times"></i>
       </button>
     </div>
-    <div id="mobileToolsContent">
-      <!-- Mobile tools content will be populated by JavaScript -->
+    <div class="mobile-tools-content">
+      <div class="mobile-filter-grid">
+        <div class="mobile-filter-card" onclick="applyMobileFilter('vintage')">
+          <div class="mobile-filter-icon">
+            <i class="fas fa-camera-retro"></i>
+          </div>
+          <div class="mobile-filter-name">Vintage</div>
+        </div>
+        <div class="mobile-filter-card" onclick="applyMobileFilter('lomo')">
+          <div class="mobile-filter-icon">
+            <i class="fas fa-circle"></i>
+          </div>
+          <div class="mobile-filter-name">Lomo</div>
+        </div>
+        <div class="mobile-filter-card" onclick="applyMobileFilter('clarity')">
+          <div class="mobile-filter-icon">
+            <i class="fas fa-eye"></i>
+          </div>
+          <div class="mobile-filter-name">Clarity</div>
+        </div>
+        <div class="mobile-filter-card" onclick="applyMobileFilter('sunrise')">
+          <div class="mobile-filter-icon">
+            <i class="fas fa-sun"></i>
+          </div>
+          <div class="mobile-filter-name">Sunrise</div>
+        </div>
+        <div class="mobile-filter-card" onclick="applyMobileFilter('pinhole')">
+          <div class="mobile-filter-icon">
+            <i class="fas fa-circle-notch"></i>
+          </div>
+          <div class="mobile-filter-name">Pinhole</div>
+        </div>
+        <div class="mobile-filter-card" onclick="applyMobileFilter('love')">
+          <div class="mobile-filter-icon">
+            <i class="fas fa-heart"></i>
+          </div>
+          <div class="mobile-filter-name">Love</div>
+        </div>
+        <div class="mobile-filter-card" onclick="applyMobileFilter('grungy')">
+          <div class="mobile-filter-icon">
+            <i class="fas fa-paint-brush"></i>
+          </div>
+          <div class="mobile-filter-name">Grungy</div>
+        </div>
+        <div class="mobile-filter-card" onclick="applyMobileFilter('oldBoot')">
+          <div class="mobile-filter-icon">
+            <i class="fas fa-boot"></i>
+          </div>
+          <div class="mobile-filter-name">Old Boot</div>
+        </div>
+      </div>
+      
+      <div class="mobile-action-buttons">
+        <button class="mobile-action-btn mobile-upload-btn" onclick="triggerFileUpload()">
+          <i class="fas fa-upload"></i>
+          Chọn ảnh
+        </button>
+        <button class="mobile-action-btn mobile-export-btn" onclick="exportImage()">
+          <i class="fas fa-download"></i>
+          Xuất ảnh
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1075,8 +1109,7 @@
         this.revert(false);
         this[name]().render();
         
-        // After applying filter, reset lighting controls to avoid conflicts
-        resetLightingControls();
+
       });
       
       if (!success) {
@@ -1084,25 +1117,7 @@
       }
     }
     
-    function resetLightingControls() {
-      // Reset lighting sliders without applying changes
-      document.querySelector('input[oninput*="brightness"]').value = 0;
-      document.querySelector('input[oninput*="contrast"]').value = 0;
-      document.querySelector('input[oninput*="exposure"]').value = 0;
-      document.querySelector('input[oninput*="highlights"]').value = 0;
-      document.querySelector('input[oninput*="shadows"]').value = 0;
-      document.querySelector('input[oninput*="temperature"]').value = 0;
-      document.querySelector('input[oninput*="gamma"]').value = 1.0;
-      
-      // Update display values
-      document.getElementById('brightness-value').textContent = '0';
-      document.getElementById('contrast-value').textContent = '0';
-      document.getElementById('exposure-value').textContent = '0';
-      document.getElementById('highlights-value').textContent = '0';
-      document.getElementById('shadows-value').textContent = '0';
-      document.getElementById('temperature-value').textContent = '0';
-      document.getElementById('gamma-value').textContent = '1.0';
-    }
+
 
     function adjust(type, value) {
       Caman("#canvas", function () {
@@ -1121,346 +1136,19 @@
       }
     }
 
-    function adjustColor(type, value) {
-      if (!isCanvasReady()) {
-        return;
-      }
-      
-      safeCaman(function () {
-        this.revert(false);
-        
-        // Apply all current color adjustments
-        const hue = document.querySelector('input[oninput*="hue"]').value;
-        const saturation = document.querySelector('input[oninput*="saturation"]').value;
-        const lightness = document.querySelector('input[oninput*="lightness"]').value;
-        const colorContrast = document.querySelector('input[oninput*="colorContrast"]').value;
-        const colorSharpness = document.querySelector('input[oninput*="colorSharpness"]').value;
-        const colorBlur = document.querySelector('input[oninput*="colorBlur"]').value;
-        const colorNoise = document.querySelector('input[oninput*="colorNoise"]').value;
-        const colorSeparation = document.querySelector('input[oninput*="colorSeparation"]').value;
-        const colorTransition = document.querySelector('input[oninput*="colorTransition"]').value;
-        const warmth = document.querySelector('input[oninput*="warmth"]').value;
-        const vibrance = document.querySelector('input[oninput*="vibrance"]').value;
-        const opacity = document.querySelector('input[oninput*="opacity"]').value;
-        const clarity = document.querySelector('input[oninput*="clarity"]').value;
-        
-        // Apply basic color adjustments
-        if (parseFloat(hue) !== 0) this.hue(parseFloat(hue));
-        if (parseFloat(saturation) !== 0) this.saturation(parseFloat(saturation));
-        if (parseFloat(lightness) !== 0) this.lightness(parseFloat(lightness));
-        
-        // Apply advanced color effects
-        if (parseFloat(colorContrast) !== 0) this.contrast(parseFloat(colorContrast));
-        if (parseFloat(colorSharpness) !== 0) this.sharpen(parseFloat(colorSharpness));
-        if (parseFloat(colorBlur) !== 0) this.blur(parseFloat(colorBlur));
-        if (parseFloat(colorNoise) !== 0) this.noise(parseFloat(colorNoise));
-        if (parseFloat(colorSeparation) !== 0) this.channelSeparation(parseFloat(colorSeparation));
-        if (parseFloat(colorTransition) !== 0) this.colorTransition(parseFloat(colorTransition));
-        
-        // Apply warmth (temperature adjustment)
-        if (parseFloat(warmth) !== 0) this.temperature(parseFloat(warmth));
-        
-        // Apply vibrance (enhanced saturation for muted colors)
-        if (parseFloat(vibrance) !== 0) this.vibrance(parseFloat(vibrance));
-        
-        // Apply opacity
-        if (parseFloat(opacity) !== 100) this.opacity(parseFloat(opacity) / 100);
-        
-        // Apply clarity
-        if (parseFloat(clarity) !== 0) this.clarity(parseFloat(clarity));
-        
-        this.render();
-      });
-      
-      // Update display value
-      const valueElement = document.getElementById(type + '-value');
-      if (valueElement) {
-        if (type === 'hue') {
-          valueElement.textContent = value + '°';
-        } else if (type === 'colorSharpness' || type === 'colorBlur' || type === 'colorNoise' || type === 'colorSeparation' || type === 'colorTransition') {
-          valueElement.textContent = parseFloat(value).toFixed(1);
-        } else if (type === 'opacity') {
-          valueElement.textContent = parseFloat(value).toFixed(0) + '%';
-        } else {
-          valueElement.textContent = parseFloat(value).toFixed(0);
-        }
-      }
-    }
 
-    function resetColor() {
-      const canvas = document.getElementById('canvas');
-      if (!canvas || canvas.classList.contains('hidden')) {
-        return;
-      }
-      
-      // Reset all color sliders to default values
-      document.querySelector('input[oninput*="hue"]').value = 0;
-      document.querySelector('input[oninput*="saturation"]').value = 0;
-      document.querySelector('input[oninput*="lightness"]').value = 0;
-      document.querySelector('input[oninput*="colorContrast"]').value = 0;
-      document.querySelector('input[oninput*="colorSharpness"]').value = 0;
-      document.querySelector('input[oninput*="colorBlur"]').value = 0;
-      document.querySelector('input[oninput*="colorNoise"]').value = 0;
-      document.querySelector('input[oninput*="colorSeparation"]').value = 0;
-      document.querySelector('input[oninput*="colorTransition"]').value = 0;
-      document.querySelector('input[oninput*="warmth"]').value = 0;
-      document.querySelector('input[oninput*="vibrance"]').value = 0;
-      document.querySelector('input[oninput*="opacity"]').value = 100;
-      document.querySelector('input[oninput*="clarity"]').value = 0;
-      
-      // Reset the image
-      try {
-        Caman("#canvas", function () {
-          this.revert(false).render();
-        });
-      } catch (error) {
-        console.error('Lỗi khi đặt lại màu sắc:', error);
-      }
-      
-      // Update all display values
-      document.getElementById('hue-value').textContent = '0°';
-      document.getElementById('saturation-value').textContent = '0';
-      document.getElementById('lightness-value').textContent = '0';
-      document.getElementById('colorContrast-value').textContent = '0';
-      document.getElementById('colorSharpness-value').textContent = '0';
-      document.getElementById('colorBlur-value').textContent = '0';
-      document.getElementById('colorNoise-value').textContent = '0';
-      document.getElementById('colorSeparation-value').textContent = '0';
-      document.getElementById('colorTransition-value').textContent = '0';
-      document.getElementById('warmth-value').textContent = '0';
-      document.getElementById('vibrance-value').textContent = '0';
-      document.getElementById('opacity-value').textContent = '100%';
-      document.getElementById('clarity-value').textContent = '0';
-    }
 
-    function applyColorPreset(preset) {
-      if (!preset) return;
-      
-      const presets = {
-        'vibrant': { saturation: 30, lightness: 10, colorContrast: 20, vibrance: 25 },
-        'muted': { saturation: -30, lightness: -10, colorContrast: -10, vibrance: -20 },
-        'sepia': { hue: 30, saturation: -20, lightness: -10, warmth: 25 },
-        'blackwhite': { saturation: -100, colorContrast: 15 },
-        'crossProcess': { hue: 15, saturation: 25, colorContrast: 15, warmth: 10 },
-        'chrome': { saturation: 40, colorContrast: 25, colorSharpness: 20, vibrance: 30 },
-        'fade': { saturation: -40, lightness: 20, colorBlur: 2, opacity: 80 },
-        'instant': { saturation: 20, colorContrast: 15, colorNoise: 10, vibrance: 15 },
-        'juno': { hue: 10, saturation: 15, lightness: 5, warmth: 15 },
-        'lark': { saturation: -20, lightness: 10, colorContrast: 10, vibrance: -10 },
-        'mayfair': { saturation: 25, colorContrast: 20, colorSharpness: 15, vibrance: 20 },
-        'moon': { saturation: -80, lightness: 15, colorContrast: 25, colorBlur: 1 },
-        'nashville': { hue: 5, saturation: 15, lightness: -5, warmth: 10 },
-        'reyes': { saturation: -10, lightness: 15, colorContrast: 10, vibrance: -5 },
-        'slumber': { saturation: -30, lightness: 10, colorBlur: 3, opacity: 90 },
-        'stinson': { saturation: -20, lightness: 5, colorContrast: 5, vibrance: -15 },
-        'toaster': { hue: 20, saturation: 30, lightness: -10, warmth: 20 },
-        'valencia': { saturation: 15, lightness: 10, colorContrast: 15, vibrance: 10 },
-        'walden': { hue: 15, saturation: 20, lightness: 5, warmth: 15 },
-        'willow': { saturation: -25, lightness: 15, colorContrast: 10, vibrance: -10 },
-        'xpro2': { hue: 10, saturation: 25, colorContrast: 20, vibrance: 25 },
-        'warm': { warmth: 30, vibrance: 15, saturation: 10 },
-        'cool': { warmth: -20, vibrance: -10, saturation: -5 },
-        'dramatic': { colorContrast: 40, vibrance: 30, colorSharpness: 25, clarity: 20 },
-        'soft': { colorBlur: 2, vibrance: -20, saturation: -15, clarity: -10 },
-        'vintage': { hue: 15, saturation: -10, warmth: 25, colorBlur: 1, clarity: 5 },
-        'high-contrast': { colorContrast: 50, vibrance: 40, colorSharpness: 30, clarity: 25 },
-        'low-key': { lightness: -20, colorContrast: 25, vibrance: -30, clarity: 15 },
-        'high-key': { lightness: 25, vibrance: 20, colorBlur: 1, clarity: 10 }
-      };
-      
-      const presetValues = presets[preset];
-      if (!presetValues) return;
-      
-      // Update sliders
-      document.querySelector('input[oninput*="hue"]').value = presetValues.hue || 0;
-      document.querySelector('input[oninput*="saturation"]').value = presetValues.saturation || 0;
-      document.querySelector('input[oninput*="lightness"]').value = presetValues.lightness || 0;
-      document.querySelector('input[oninput*="colorContrast"]').value = presetValues.colorContrast || 0;
-      document.querySelector('input[oninput*="colorSharpness"]').value = presetValues.colorSharpness || 0;
-      document.querySelector('input[oninput*="colorBlur"]').value = presetValues.colorBlur || 0;
-      document.querySelector('input[oninput*="colorNoise"]').value = presetValues.colorNoise || 0;
-      document.querySelector('input[oninput*="colorSeparation"]').value = presetValues.colorSeparation || 0;
-      document.querySelector('input[oninput*="colorTransition"]').value = presetValues.colorTransition || 0;
-      document.querySelector('input[oninput*="warmth"]').value = presetValues.warmth || 0;
-      document.querySelector('input[oninput*="vibrance"]').value = presetValues.vibrance || 0;
-      document.querySelector('input[oninput*="opacity"]').value = presetValues.opacity || 100;
-      document.querySelector('input[oninput*="clarity"]').value = presetValues.clarity || 0;
-      
-              // Apply the preset
-        try {
-          Caman("#canvas", function () {
-            this.revert(false);
-            
-            if (presetValues.hue) this.hue(presetValues.hue);
-            if (presetValues.saturation) this.saturation(presetValues.saturation);
-            if (presetValues.lightness) this.lightness(presetValues.lightness);
-            if (presetValues.colorContrast) this.contrast(presetValues.colorContrast);
-            if (presetValues.colorSharpness) this.sharpen(presetValues.colorSharpness);
-            if (presetValues.colorBlur) this.blur(presetValues.colorBlur);
-            if (presetValues.colorNoise) this.noise(presetValues.colorNoise);
-            if (presetValues.colorSeparation) this.channelSeparation(presetValues.colorSeparation);
-            if (presetValues.colorTransition) this.colorTransition(presetValues.colorTransition);
-            if (presetValues.warmth) this.temperature(presetValues.warmth);
-            if (presetValues.vibrance) this.vibrance(presetValues.vibrance);
-            if (presetValues.opacity) this.opacity(presetValues.opacity / 100);
-            if (presetValues.clarity) this.clarity(presetValues.clarity);
-            
-            this.render();
-          });
-        } catch (error) {
-          console.error('Lỗi khi áp dụng preset màu sắc:', error);
-        }
-        
-        // Update display values
-        document.getElementById('hue-value').textContent = (presetValues.hue || 0) + '°';
-        document.getElementById('saturation-value').textContent = (presetValues.saturation || 0).toString();
-        document.getElementById('lightness-value').textContent = (presetValues.lightness || 0).toString();
-        document.getElementById('colorContrast-value').textContent = (presetValues.colorContrast || 0).toString();
-        document.getElementById('colorSharpness-value').textContent = (presetValues.colorSharpness || 0).toString();
-        document.getElementById('colorBlur-value').textContent = (presetValues.colorBlur || 0).toString();
-        document.getElementById('colorNoise-value').textContent = (presetValues.colorNoise || 0).toString();
-        document.getElementById('colorSeparation-value').textContent = (presetValues.colorSeparation || 0).toString();
-        document.getElementById('colorTransition-value').textContent = (presetValues.colorTransition || 0).toString();
-        document.getElementById('warmth-value').textContent = (presetValues.warmth || 0).toString();
-        document.getElementById('vibrance-value').textContent = (presetValues.vibrance || 0).toString();
-        document.getElementById('opacity-value').textContent = (presetValues.opacity || 100).toString() + '%';
-        document.getElementById('clarity-value').textContent = (presetValues.clarity || 0).toString();
-    }
 
-    function adjustLighting(type, value) {
-      const canvas = document.getElementById('canvas');
-      if (!canvas || canvas.classList.contains('hidden')) {
-        return;
-      }
-      
-      try {
-        Caman("#canvas", function () {
-          this.revert(false);
-          
-          // Apply all current lighting adjustments
-          const brightness = document.querySelector('input[oninput*="brightness"]').value;
-          const contrast = document.querySelector('input[oninput*="contrast"]').value;
-          const exposure = document.querySelector('input[oninput*="exposure"]').value;
-          const highlights = document.querySelector('input[oninput*="highlights"]').value;
-          const shadows = document.querySelector('input[oninput*="shadows"]').value;
-          const temperature = document.querySelector('input[oninput*="temperature"]').value;
-          const gamma = document.querySelector('input[oninput*="gamma"]').value;
-          
-          this.brightness(parseFloat(brightness))
-              .contrast(parseFloat(contrast))
-              .exposure(parseFloat(exposure))
-              .highlights(parseFloat(highlights))
-              .shadows(parseFloat(shadows))
-              .temperature(parseFloat(temperature))
-              .gamma(parseFloat(gamma))
-              .render();
-        });
-      } catch (error) {
-        console.error('Lỗi khi điều chỉnh ánh sáng:', error);
-      }
-      
-      // Update display value
-      const valueElement = document.getElementById(type + '-value');
-      if (valueElement) {
-        if (type === 'gamma') {
-          valueElement.textContent = parseFloat(value).toFixed(1);
-        } else {
-          valueElement.textContent = parseFloat(value).toFixed(0);
-        }
-      }
-    }
 
-    function resetLighting() {
-      const canvas = document.getElementById('canvas');
-      if (!canvas || canvas.classList.contains('hidden')) {
-        return;
-      }
-      
-      // Reset all sliders to default values
-      document.querySelector('input[oninput*="brightness"]').value = 0;
-      document.querySelector('input[oninput*="contrast"]').value = 0;
-      document.querySelector('input[oninput*="exposure"]').value = 0;
-      document.querySelector('input[oninput*="highlights"]').value = 0;
-      document.querySelector('input[oninput*="shadows"]').value = 0;
-      document.querySelector('input[oninput*="temperature"]').value = 0;
-      document.querySelector('input[oninput*="gamma"]').value = 1.0;
-      
-      // Reset the image
-      try {
-        Caman("#canvas", function () {
-          this.revert(false).render();
-        });
-      } catch (error) {
-        console.error('Lỗi khi đặt lại ánh sáng:', error);
-      }
-      
-      // Update all display values
-      document.getElementById('brightness-value').textContent = '0';
-      document.getElementById('contrast-value').textContent = '0';
-      document.getElementById('exposure-value').textContent = '0';
-      document.getElementById('highlights-value').textContent = '0';
-      document.getElementById('shadows-value').textContent = '0';
-      document.getElementById('temperature-value').textContent = '0';
-      document.getElementById('gamma-value').textContent = '1.0';
-    }
 
-    function applyLightingPreset(preset) {
-      if (!preset) return;
-      
-      const presets = {
-        'warm': { brightness: 10, contrast: 15, temperature: 20, gamma: 1.1 },
-        'cool': { brightness: 5, contrast: 10, temperature: -15, gamma: 0.9 },
-        'dramatic': { brightness: -10, contrast: 30, shadows: -20, highlights: 15, gamma: 1.2 },
-        'soft': { brightness: 15, contrast: -10, highlights: 20, shadows: 10, gamma: 0.8 },
-        'vintage': { brightness: 5, contrast: 20, temperature: 25, gamma: 1.3 },
-        'high-contrast': { brightness: 0, contrast: 40, highlights: 30, shadows: -30, gamma: 1.4 },
-        'low-key': { brightness: -20, contrast: 25, shadows: -30, highlights: -10, gamma: 1.1 },
-        'high-key': { brightness: 25, contrast: -5, highlights: 30, shadows: 15, gamma: 0.9 }
-      };
-      
-      const presetValues = presets[preset];
-      if (!presetValues) return;
-      
-      // Update sliders
-      document.querySelector('input[oninput*="brightness"]').value = presetValues.brightness || 0;
-      document.querySelector('input[oninput*="contrast"]').value = presetValues.contrast || 0;
-      document.querySelector('input[oninput*="exposure"]').value = presetValues.exposure || 0;
-      document.querySelector('input[oninput*="highlights"]').value = presetValues.highlights || 0;
-      document.querySelector('input[oninput*="shadows"]').value = presetValues.shadows || 0;
-      document.querySelector('input[oninput*="temperature"]').value = presetValues.temperature || 0;
-      document.querySelector('input[oninput*="gamma"]').value = presetValues.gamma || 1.0;
-      
-      // Apply the preset
-      try {
-        Caman("#canvas", function () {
-          this.revert(false);
-          this.brightness(presetValues.brightness || 0)
-              .contrast(presetValues.contrast || 0)
-              .exposure(presetValues.exposure || 0)
-              .highlights(presetValues.highlights || 0)
-              .shadows(presetValues.shadows || 0)
-              .temperature(presetValues.temperature || 0)
-              .gamma(presetValues.gamma || 1.0)
-              .render();
-        });
-      } catch (error) {
-        console.error('Lỗi khi áp dụng preset ánh sáng:', error);
-      }
-      
-      // Update display values
-      document.getElementById('brightness-value').textContent = (presetValues.brightness || 0).toString();
-      document.getElementById('contrast-value').textContent = (presetValues.contrast || 0).toString();
-      document.getElementById('exposure-value').textContent = (presetValues.exposure || 0).toString();
-      document.getElementById('highlights-value').textContent = (presetValues.highlights || 0).toString();
-      document.getElementById('shadows-value').textContent = (presetValues.shadows || 0).toString();
-      document.getElementById('temperature-value').textContent = (presetValues.temperature || 0).toString();
-      document.getElementById('gamma-value').textContent = (presetValues.gamma || 1.0).toFixed(1);
-    }
 
-    function updateLightingValues() {
-      // This function is kept for compatibility but not used in the current implementation
-      // The values are updated directly in adjustLighting function
-    }
+
+
+
+
+
+
+
 
     function exportImage() {
       const canvas = document.getElementById('canvas');
@@ -1484,17 +1172,10 @@
     function toggleMobileMenu() {
       const overlay = document.getElementById('mobileOverlay');
       const panel = document.getElementById('mobilePanel');
-      const content = document.getElementById('mobileToolsContent');
       
       if (panel.classList.contains('active')) {
         closeMobileMenu();
       } else {
-        // Copy current tools content to mobile panel
-        const currentTools = document.querySelector('.control-group:not(.hidden)');
-        if (currentTools) {
-          content.innerHTML = currentTools.outerHTML;
-        }
-        
         overlay.style.display = 'block';
         panel.classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -1508,6 +1189,34 @@
       panel.classList.remove('active');
       overlay.style.display = 'none';
       document.body.style.overflow = '';
+    }
+
+    function applyMobileFilter(filterName) {
+      if (!isCanvasReady()) {
+        alert('Vui lòng chọn một ảnh trước khi áp dụng hiệu ứng');
+        return;
+      }
+      
+      // Remove active class from all filter cards
+      document.querySelectorAll('.mobile-filter-card').forEach(card => {
+        card.classList.remove('active');
+      });
+      
+      // Add active class to clicked card
+      event.currentTarget.classList.add('active');
+      
+      const success = safeCaman(function () {
+        this.revert(false);
+        this[filterName]().render();
+      });
+      
+      if (!success) {
+        alert('Có lỗi xảy ra khi áp dụng hiệu ứng. Vui lòng thử lại.');
+      }
+    }
+
+    function triggerFileUpload() {
+      document.getElementById('fileInput').click();
     }
 
     // Handle window resize
