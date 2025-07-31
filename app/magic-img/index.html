@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Text2 - Chỉnh sửa ảnh</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      display: flex;
+      height: 100vh;
+      font-family: 'Roboto', sans-serif;
+      background: white;
+    }
+
+    .sidebar {
+      width: 130px;
+      padding: 20px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #fff;
+      border-right: 1px solid #eee;
+    }
+
+    .logo {
+      width: 60px;
+      margin-bottom: 30px;
+    }
+
+    .sidebar button {
+      margin-bottom: 10px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 20px;
+      background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .sidebar button:hover {
+      background: #ccc;
+    }
+
+    .export-btn {
+      margin-top: auto;
+      background: linear-gradient(to right, #8a61ff, #6542d4);
+      color: white;
+    }
+
+    .plus-btn {
+      margin-top: 10px;
+      background: pink;
+      width: 40px;
+      height: 40px;
+      font-size: 26px;
+      border-radius: 50%;
+      border: none;
+    }
+
+    .main {
+      display: flex;
+      flex: 1;
+      padding: 40px;
+      gap: 40px;
+    }
+
+    .panel {
+      flex: 1;
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 28px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .left-panel {
+      background-color: #4d7b9c;
+      color: black;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .right-panel {
+      background-color: #24221b;
+      color: white;
+      flex-direction: column;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .text-shadow {
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    canvas {
+      max-width: 100%;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+
+    select, input[type=range] {
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <img src="https://i.imgur.com/dS3IlpR.png" class="logo" alt="Text2 Logo">
+    <button onclick="showMenu('filters')">Hiệu ứng</button>
+    <button onclick="showMenu('light')">Ánh Sáng</button>
+    <button onclick="showMenu('color')">Màu Sắc</button>
+    <button onclick="showMenu('text')">Văn Bản</button>
+    <button onclick="showMenu('draw')">Vẽ</button>
+    <button class="export-btn" onclick="exportImage()">Export</button>
+    <button class="plus-btn">+</button>
+  </div>
+
+  <!-- Main Panels -->
+  <div class="main">
+    <!-- Left Panel -->
+    <div class="panel left-panel text-shadow">
+      <div id="filters" class="menu hidden">
+        <label>Chọn Filter:</label>
+        <select onchange="applyFilter(this.value)">
+          <option value="">-- Filter --</option>
+          <option value="vintage">Vintage</option>
+          <option value="lomo">Lomo</option>
+          <option value="clarity">Clarity</option>
+          <option value="sunrise">Sunrise</option>
+          <option value="pinhole">Pinhole</option>
+          <option value="love">Love</option>
+          <option value="grungy">Grungy</option>
+          <option value="oldBoot">Old Boot</option>
+        </select>
+      </div>
+
+      <div id="light" class="menu hidden">
+        <label>Brightness</label>
+        <input type="range" min="-50" max="50" value="0" oninput="adjust('brightness', this.value)">
+      </div>
+
+      <div id="color" class="menu hidden">
+        <label>Hue</label>
+        <input type="range" min="0" max="360" value="0" oninput="adjust('hue', this.value)">
+      </div>
+
+      <div id="text" class="menu hidden">
+        <p>⚠️ Tính năng văn bản đang phát triển</p>
+      </div>
+
+      <div id="draw" class="menu hidden">
+        <p>🖌️ Tính năng vẽ đang phát triển</p>
+      </div>
+
+      <div id="placeholder">
+        Hiện các chỗ chỉnh sửa chi tiết
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="panel right-panel">
+      <div>Hiện hình ảnh đang chỉnh sửa</div>
+      <input type="file" accept="image/*" onchange="loadImage(this)">
+      <canvas id="canvas"></canvas>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/caman@4.1.2/dist/caman.full.min.js"></script>
+  <script>
+    function showMenu(id) {
+      document.querySelectorAll('.menu').forEach(m => m.classList.add('hidden'));
+      document.getElementById('placeholder').style.display = 'none';
+      const menu = document.getElementById(id);
+      if (menu) menu.classList.remove('hidden');
+    }
+
+    function loadImage(input) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const img = new Image();
+        img.onload = function () {
+          const canvas = document.getElementById('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function applyFilter(name) {
+      Caman("#canvas", function () {
+        this.revert(false);
+        this[name]().render();
+      });
+    }
+
+    function adjust(type, value) {
+      Caman("#canvas", function () {
+        this.revert(false);
+        this[type](parseInt(value)).render();
+      });
+    }
+
+    function exportImage() {
+      const canvas = document.getElementById('canvas');
+      const link = document.createElement('a');
+      link.download = 'edited-image.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+  </script>
+</body>
+</html>
