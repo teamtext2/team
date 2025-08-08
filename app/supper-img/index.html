@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mini Photo Editor — TaoAnhDep style</title>
+  <link rel="stylesheet" href="https://uicdn.toast.com/tui-image-editor/latest/tui-image-editor.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Tạo ảnh đẹp — Mini Editor</div>
+    <div class="actions">
+      <input id="file-input" type="file" accept="image/*" />
+      <button id="btn-open-sample">Mở mẫu</button>
+      <button id="btn-download" disabled>Tải ảnh</button>
+    </div>
+  </header>
+
+  <main class="main">
+    <aside class="left-panel">
+      <button data-tool="crop">Cắt</button>
+      <button data-tool="flip">Lật</button>
+      <button data-tool="rotate">Xoay</button>
+      <button data-tool="draw">Vẽ</button>
+      <button data-tool="text">Thêm chữ</button>
+      <button data-tool="filter">Bộ lọc</button>
+      <button data-tool="watermark">Watermark</button>
+    </aside>
+
+    <section class="editor-wrap">
+      <div id="tui-image-editor-container"></div>
+    </section>
+
+    <aside class="right-panel">
+      <h4>Hướng dẫn</h4>
+      <ol>
+        <li>Up ảnh hoặc mở mẫu.</li>
+        <li>Chọn công cụ bên trái.</li>
+        <li>Click "Tải ảnh" để lưu.</li>
+      </ol>
+    </aside>
+  </main>
+
+  <footer class="footer">Mini editor — client-side, chạy trong trình duyệt. Dựa trên Toast UI Image Editor (MIT)</footer>
+
+  <script src="https://uicdn.toast.com/tui-code-snippet/latest/tui-code-snippet.min.js"></script>
+  <script src="https://uicdn.toast.com/tui-image-editor/latest/tui-image-editor.min.js"></script>
+  <script src="editor.js"></script>
+</body>
+</html>
