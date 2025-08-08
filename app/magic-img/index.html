@@ -218,6 +218,7 @@
       background: #e5e7eb;
       outline: none;
       -webkit-appearance: none;
+      appearance: none;
       margin: 16px 0;
     }
 
@@ -314,6 +315,92 @@
       max-height: 70vh;
       border-radius: 12px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    /* Multi-layer canvas stage */
+    .canvas-stage {
+      position: relative;
+      display: inline-block;
+      line-height: 0;
+    }
+
+    .canvas-layer {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .icon-btn {
+      background: transparent;
+      border: 1px solid #e2e8f0;
+      color: #374151;
+      border-radius: 10px;
+      padding: 8px 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .icon-btn:hover {
+      background: #f3f4f6;
+      transform: translateY(-1px);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .inline-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .mini-label {
+      font-size: 12px;
+      color: #6b7280;
+      width: 100px;
+    }
+
+    .color-input {
+      width: 42px;
+      height: 34px;
+      padding: 0;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+    }
+
+    .ghost-btn {
+      background: white;
+      border: 1px dashed #cbd5e1;
+      color: #475569;
+      border-radius: 10px;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .ghost-btn:hover {
+      background: #f8fafc;
+    }
+
+    /* Crop rectangle */
+    .crop-tip {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 6px;
     }
 
     .placeholder {
@@ -443,6 +530,34 @@
 
     .mobile-tools-content {
       padding: 20px;
+    }
+
+    .mobile-tabs {
+      display: flex;
+      gap: 8px;
+      position: sticky;
+      top: 64px;
+      background: white;
+      padding-bottom: 8px;
+      z-index: 5;
+      flex-wrap: wrap;
+    }
+
+    .mobile-tab {
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      font-weight: 600;
+      font-size: 13px;
+      color: #475569;
+      cursor: pointer;
+    }
+
+    .mobile-tab.active {
+      background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+      color: #1f2937;
+      border-color: #cbd5e1;
     }
 
     .mobile-filter-grid {
@@ -635,6 +750,7 @@
         padding: 20px;
         min-height: 70vh;
         background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+        padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
       }
 
       .canvas-wrapper {
@@ -667,6 +783,7 @@
 
       canvas {
         max-height: 60vh;
+        max-height: 62dvh;
         border-radius: 16px;
         box-shadow: 0 8px 32px rgba(0,0,0,0.1);
       }
@@ -792,7 +909,7 @@
       }
 
       canvas {
-        max-height: 40vh;
+        max-height: 42dvh;
       }
     }
 
@@ -828,6 +945,48 @@
         font-size: 16px;
       }
     }
+
+    /* Mobile bottom bar */
+    .mobile-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: none;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: saturate(1.2) blur(8px);
+      border-top: 1px solid #e2e8f0;
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+      z-index: 1100;
+    }
+
+    .mobile-bottom-actions {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .mobile-bottom-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 8px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      color: #374151;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .mobile-bottom-btn i { color: #8b5cf6; }
+
+    @media (max-width: 768px) {
+      .mobile-bottom-bar { display: block; }
+    }
   </style>
 </head>
 <body>
@@ -848,19 +1007,31 @@
     <div class="sidebar-nav">
       <div class="nav-section">
         <div class="nav-section-title">Chỉnh sửa</div>
-        <div class="nav-item active" onclick="showMenu('filters')">
+        <div class="nav-item active" onclick="showMenu('filters', this)">
           <i class="fas fa-filter"></i>
           Hiệu ứng
+        </div>
+        <div class="nav-item" onclick="showMenu('adjust', this)">
+          <i class="fas fa-sliders-h"></i>
+          Điều chỉnh
+        </div>
+        <div class="nav-item" onclick="showMenu('transform', this)">
+          <i class="fas fa-sync-alt"></i>
+          Xoay / Lật
+        </div>
+        <div class="nav-item" onclick="showMenu('crop', this)">
+          <i class="fas fa-crop-alt"></i>
+          Cắt / Kích thước
         </div>
       </div>
 
       <div class="nav-section">
         <div class="nav-section-title">Công cụ</div>
-        <div class="nav-item" onclick="showMenu('text')">
+        <div class="nav-item" onclick="showMenu('text', this)">
           <i class="fas fa-font"></i>
           Văn bản
         </div>
-        <div class="nav-item" onclick="showMenu('draw')">
+        <div class="nav-item" onclick="showMenu('draw', this)">
           <i class="fas fa-paint-brush"></i>
           Vẽ
         </div>
@@ -899,23 +1070,127 @@
         </select>
       </div>
 
+      <div id="adjust" class="control-group hidden">
+        <div class="panel-header">
+          <div class="panel-title">Điều chỉnh cơ bản</div>
+          <div class="panel-subtitle">Tinh chỉnh nhanh ảnh của bạn</div>
+        </div>
+        <div class="row">
+          <span class="mini-label">Độ sáng</span>
+          <input type="range" min="-100" max="100" value="0" id="brightnessRange" oninput="previewAdjust()">
+        </div>
+        <div class="row">
+          <span class="mini-label">Tương phản</span>
+          <input type="range" min="-100" max="100" value="0" id="contrastRange" oninput="previewAdjust()">
+        </div>
+        <div class="row">
+          <span class="mini-label">Bão hòa</span>
+          <input type="range" min="-100" max="100" value="0" id="saturationRange" oninput="previewAdjust()">
+        </div>
+        <div class="row">
+          <span class="mini-label">Phơi sáng</span>
+          <input type="range" min="-100" max="100" value="0" id="exposureRange" oninput="previewAdjust()">
+        </div>
+        <div class="row">
+          <span class="mini-label">Độ sắc nét</span>
+          <input type="range" min="0" max="100" value="0" id="sharpenRange" oninput="previewAdjust()">
+        </div>
+        <div class="row">
+          <span class="mini-label">Làm mờ</span>
+          <input type="range" min="0" max="20" value="0" id="blurRange" oninput="previewAdjust()">
+        </div>
+        <div class="row">
+          <span class="mini-label">Hue</span>
+          <input type="range" min="0" max="360" value="0" id="hueRange" oninput="previewAdjust()">
+        </div>
+        <div class="btn-group" style="margin-top: 12px;">
+          <button class="ghost-btn" onclick="applyAdjustments()"><i class="fas fa-check"></i> Áp dụng</button>
+          <button class="ghost-btn" onclick="resetAdjustments()"><i class="fas fa-undo"></i> Đặt lại</button>
+        </div>
+      </div>
 
+      <div id="transform" class="control-group hidden">
+        <div class="panel-header">
+          <div class="panel-title">Xoay & Lật</div>
+          <div class="panel-subtitle">Căn chỉnh bố cục ảnh</div>
+        </div>
+        <div class="btn-group">
+          <button class="ghost-btn" onclick="rotateLeft()"><i class="fas fa-rotate-left"></i> Xoay trái</button>
+          <button class="ghost-btn" onclick="rotateRight()"><i class="fas fa-rotate-right"></i> Xoay phải</button>
+        </div>
+        <div class="btn-group" style="margin-top: 10px;">
+          <button class="ghost-btn" onclick="flipHorizontal()"><i class="fas fa-arrows-left-right"></i> Lật ngang</button>
+          <button class="ghost-btn" onclick="flipVertical()"><i class="fas fa-arrows-up-down"></i> Lật dọc</button>
+        </div>
+      </div>
 
-
-
+      <div id="crop" class="control-group hidden">
+        <div class="panel-header">
+          <div class="panel-title">Cắt ảnh</div>
+          <div class="panel-subtitle">Giữ và kéo để tạo khung cắt</div>
+        </div>
+        <div class="btn-group">
+          <button class="ghost-btn" onclick="startCrop()"><i class="fas fa-crop"></i> Bắt đầu cắt</button>
+          <button class="ghost-btn" onclick="applyCrop()"><i class="fas fa-check"></i> Áp dụng</button>
+          <button class="ghost-btn" onclick="cancelCrop()"><i class="fas fa-times"></i> Hủy</button>
+        </div>
+        <div class="crop-tip">Mẹo: Sau khi nhấn Bắt đầu cắt, kéo trên ảnh để chọn vùng cần giữ.</div>
+      </div>
       <div id="text" class="control-group hidden">
-        <div class="coming-soon">
-          <i class="fas fa-tools"></i>
-          <h4>Đang phát triển</h4>
-          <p>Tính năng thêm văn bản sẽ sớm có mặt</p>
+        <div class="panel-header">
+          <div class="panel-title">Văn bản</div>
+          <div class="panel-subtitle">Thêm chú thích đẹp mắt</div>
+        </div>
+        <div class="row">
+          <span class="mini-label">Nội dung</span>
+          <input id="textContent" placeholder="Nhập văn bản" style="flex:1; padding:10px 12px; border:2px solid #e5e7eb; border-radius:12px; font-size:14px;">
+        </div>
+        <div class="row">
+          <span class="mini-label">Cỡ chữ</span>
+          <input type="range" min="10" max="120" value="32" id="textSizeRange">
+        </div>
+        <div class="row">
+          <span class="mini-label">Màu</span>
+          <input type="color" id="textColor" class="color-input" value="#111827">
+        </div>
+        <div class="row">
+          <span class="mini-label">Phông chữ</span>
+          <select id="textFont" style="flex:1; padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 14px;">
+            <option value="Inter" selected>Inter</option>
+            <option value="Arial">Arial</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Tahoma">Tahoma</option>
+          </select>
+        </div>
+        <div class="btn-group" style="margin-top: 12px;">
+          <button class="ghost-btn" onclick="enterAddTextMode()"><i class="fas fa-plus"></i> Thêm văn bản</button>
+          <button class="ghost-btn" onclick="clearTextObjects()"><i class="fas fa-trash"></i> Xóa văn bản</button>
         </div>
       </div>
 
       <div id="draw" class="control-group hidden">
-        <div class="coming-soon">
-          <i class="fas fa-paint-brush"></i>
-          <h4>Đang phát triển</h4>
-          <p>Tính năng vẽ tự do sẽ sớm có mặt</p>
+        <div class="panel-header">
+          <div class="panel-title">Vẽ tự do</div>
+          <div class="panel-subtitle">Tô điểm nhanh với bút vẽ</div>
+        </div>
+        <div class="row">
+          <span class="mini-label">Độ dày</span>
+          <input type="range" min="1" max="60" value="8" id="brushSizeRange" oninput="setBrushSize(this.value)">
+        </div>
+        <div class="row">
+          <span class="mini-label">Màu bút</span>
+          <input type="color" id="brushColor" class="color-input" value="#ff0000" onchange="setBrushColor(this.value)">
+        </div>
+        <div class="btn-group" style="margin-top: 10px;">
+          <button class="ghost-btn" onclick="setDrawMode('draw')"><i class="fas fa-pen"></i> Vẽ</button>
+          <button class="ghost-btn" onclick="setDrawMode('erase')"><i class="fas fa-eraser"></i> Tẩy</button>
+          <button class="ghost-btn" onclick="clearOverlay()"><i class="fas fa-trash"></i> Xóa vẽ</button>
+        </div>
+        <div class="btn-group" style="margin-top: 12px;">
+          <button class="ghost-btn" onclick="toggleDrawing(true)"><i class="fas fa-play"></i> Bắt đầu vẽ</button>
+          <button class="ghost-btn" onclick="toggleDrawing(false)"><i class="fas fa-stop"></i> Dừng vẽ</button>
+          <button class="ghost-btn" onclick="bakeOverlayIntoBase()"><i class="fas fa-layer-group"></i> Gộp vào ảnh</button>
         </div>
       </div>
     </div>
@@ -925,12 +1200,19 @@
       <div class="canvas-wrapper">
         <div class="canvas-header">
           <div class="canvas-title">Chỉnh sửa ảnh</div>
-          <div class="file-input-wrapper">
-            <input type="file" accept="image/*" onchange="loadImage(this)" class="file-input" id="fileInput">
-            <label for="fileInput" class="upload-btn">
-              <i class="fas fa-upload"></i>
-              Chọn ảnh
-            </label>
+          <div class="inline-controls">
+            <div class="btn-group">
+              <button class="icon-btn" title="Hoàn tác" onclick="undo()"><i class="fas fa-rotate-left"></i></button>
+              <button class="icon-btn" title="Làm lại" onclick="redo()"><i class="fas fa-rotate-right"></i></button>
+              <button class="icon-btn" title="Đặt lại ảnh" onclick="resetImage()"><i class="fas fa-broom"></i></button>
+            </div>
+            <div class="file-input-wrapper">
+              <input type="file" accept="image/*" onchange="loadImage(this)" class="file-input" id="fileInput">
+              <label for="fileInput" class="upload-btn">
+                <i class="fas fa-upload"></i>
+                Chọn ảnh
+              </label>
+            </div>
           </div>
         </div>
         
@@ -938,8 +1220,10 @@
           <i class="fas fa-image"></i>
           <div>Chọn một ảnh để bắt đầu chỉnh sửa</div>
         </div>
-        
-        <canvas id="canvas" class="hidden"></canvas>
+        <div class="canvas-stage">
+          <canvas id="canvas" class="hidden"></canvas>
+          <canvas id="overlay" class="canvas-layer hidden"></canvas>
+        </div>
       </div>
     </div>
   </div>
@@ -954,50 +1238,58 @@
       </button>
     </div>
     <div class="mobile-tools-content">
-      <div class="mobile-filter-grid">
-        <div class="mobile-filter-card" onclick="applyMobileFilter('vintage')">
+      <div class="mobile-tabs">
+        <button class="mobile-tab active" onclick="switchMobileTab('filters', this)">Hiệu ứng</button>
+        <button class="mobile-tab" onclick="switchMobileTab('adjust', this)">Điều chỉnh</button>
+        <button class="mobile-tab" onclick="switchMobileTab('transform', this)">Xoay/Lật</button>
+        <button class="mobile-tab" onclick="switchMobileTab('crop', this)">Cắt</button>
+        <button class="mobile-tab" onclick="switchMobileTab('draw', this)">Vẽ</button>
+        <button class="mobile-tab" onclick="switchMobileTab('text', this)">Văn bản</button>
+      </div>
+      <div class="mobile-filter-grid" id="mobileToolsContent">
+        <div class="mobile-filter-card" onclick="applyMobileFilter('vintage', this)">
           <div class="mobile-filter-icon">
             <i class="fas fa-camera-retro"></i>
           </div>
           <div class="mobile-filter-name">Vintage</div>
         </div>
-        <div class="mobile-filter-card" onclick="applyMobileFilter('lomo')">
+        <div class="mobile-filter-card" onclick="applyMobileFilter('lomo', this)">
           <div class="mobile-filter-icon">
             <i class="fas fa-circle"></i>
           </div>
           <div class="mobile-filter-name">Lomo</div>
         </div>
-        <div class="mobile-filter-card" onclick="applyMobileFilter('clarity')">
+        <div class="mobile-filter-card" onclick="applyMobileFilter('clarity', this)">
           <div class="mobile-filter-icon">
             <i class="fas fa-eye"></i>
           </div>
           <div class="mobile-filter-name">Clarity</div>
         </div>
-        <div class="mobile-filter-card" onclick="applyMobileFilter('sunrise')">
+        <div class="mobile-filter-card" onclick="applyMobileFilter('sunrise', this)">
           <div class="mobile-filter-icon">
             <i class="fas fa-sun"></i>
           </div>
           <div class="mobile-filter-name">Sunrise</div>
         </div>
-        <div class="mobile-filter-card" onclick="applyMobileFilter('pinhole')">
+        <div class="mobile-filter-card" onclick="applyMobileFilter('pinhole', this)">
           <div class="mobile-filter-icon">
             <i class="fas fa-circle-notch"></i>
           </div>
           <div class="mobile-filter-name">Pinhole</div>
         </div>
-        <div class="mobile-filter-card" onclick="applyMobileFilter('love')">
+        <div class="mobile-filter-card" onclick="applyMobileFilter('love', this)">
           <div class="mobile-filter-icon">
             <i class="fas fa-heart"></i>
           </div>
           <div class="mobile-filter-name">Love</div>
         </div>
-        <div class="mobile-filter-card" onclick="applyMobileFilter('grungy')">
+        <div class="mobile-filter-card" onclick="applyMobileFilter('grungy', this)">
           <div class="mobile-filter-icon">
             <i class="fas fa-paint-brush"></i>
           </div>
           <div class="mobile-filter-name">Grungy</div>
         </div>
-        <div class="mobile-filter-card" onclick="applyMobileFilter('oldBoot')">
+        <div class="mobile-filter-card" onclick="applyMobileFilter('oldBoot', this)">
           <div class="mobile-filter-icon">
             <i class="fas fa-boot"></i>
           </div>
@@ -1018,9 +1310,49 @@
     </div>
   </div>
 
+  <!-- Mobile bottom bar for quick actions -->
+  <div class="mobile-bottom-bar">
+    <div class="mobile-bottom-actions">
+      <button class="mobile-bottom-btn" onclick="toggleMobileMenu()"><i class="fas fa-sliders-h"></i> Công cụ</button>
+      <button class="mobile-bottom-btn" onclick="undo()"><i class="fas fa-rotate-left"></i> Hoàn tác</button>
+      <button class="mobile-bottom-btn" onclick="redo()"><i class="fas fa-rotate-right"></i> Làm lại</button>
+      <button class="mobile-bottom-btn" onclick="resetImage()"><i class="fas fa-broom"></i> Đặt lại</button>
+      <button class="mobile-bottom-btn" onclick="exportImage()"><i class="fas fa-download"></i> Xuất</button>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/caman@4.1.2/dist/caman.full.min.js"></script>
   <script>
-    function showMenu(id) {
+    // --- State ---
+    let originalImageDataUrl = null;
+    const historyStack = [];
+    const redoStack = [];
+    let isDrawing = false;
+    let drawMode = 'draw';
+    let brushSize = 8;
+    let brushColor = '#ff0000';
+    let isCropping = false;
+    let cropStart = null;
+    let cropRect = null;
+    let activeTextObjects = [];
+
+    function getCanvas() { return document.getElementById('canvas'); }
+    function getOverlay() { return document.getElementById('overlay'); }
+
+    function fitOverlayToCanvas() {
+      const canvas = getCanvas();
+      const overlay = getOverlay();
+      if (!canvas || !overlay) return;
+      // Match internal pixel size
+      overlay.width = canvas.width;
+      overlay.height = canvas.height;
+      // Match displayed size
+      const rect = canvas.getBoundingClientRect();
+      overlay.style.width = rect.width + 'px';
+      overlay.style.height = rect.height + 'px';
+    }
+
+    function showMenu(id, el) {
       // Hide all control groups
       document.querySelectorAll('.control-group').forEach(group => {
         group.classList.add('hidden');
@@ -1038,7 +1370,7 @@
       }
       
       // Add active class to clicked nav item
-      event.currentTarget.classList.add('active');
+      if (el) { el.classList.add('active'); }
       
       // Update mobile panel content if open
       const mobileContent = document.getElementById('mobileToolsContent');
@@ -1079,6 +1411,17 @@
             // Show canvas, hide placeholder
             canvas.classList.remove('hidden');
             placeholder.classList.add('hidden');
+
+            // Prepare overlay layer
+            const overlay = getOverlay();
+            if (overlay) {
+              overlay.classList.remove('hidden');
+              fitOverlayToCanvas();
+            }
+
+            originalImageDataUrl = canvas.toDataURL();
+            clearHistory();
+            pushHistory();
           } catch (error) {
             console.error('Lỗi khi load ảnh:', error);
             alert('Có lỗi xảy ra khi load ảnh. Vui lòng thử lại.');
@@ -1107,9 +1450,8 @@
       
       const success = safeCaman(function () {
         this.revert(false);
-        this[name]().render();
-        
-
+        this[name]();
+        this.render(() => { pushHistory(); });
       });
       
       if (!success) {
@@ -1136,6 +1478,232 @@
       }
     }
 
+
+    // --- Adjustments (multi-slider) ---
+    function previewAdjust() {
+      if (!isCanvasReady()) return;
+      const b = parseInt(document.getElementById('brightnessRange').value || '0', 10);
+      const c = parseInt(document.getElementById('contrastRange').value || '0', 10);
+      const s = parseInt(document.getElementById('saturationRange').value || '0', 10);
+      const e = parseInt(document.getElementById('exposureRange').value || '0', 10);
+      const sh = parseInt(document.getElementById('sharpenRange').value || '0', 10);
+      const bl = parseInt(document.getElementById('blurRange').value || '0', 10);
+      const hue = parseInt(document.getElementById('hueRange').value || '0', 10);
+
+      safeCaman(function() {
+        this.revert(true);
+        if (b !== 0) this.brightness(b);
+        if (c !== 0) this.contrast(c);
+        if (s !== 0) this.saturation(s);
+        if (e !== 0) this.exposure(e);
+        if (sh !== 0) this.sharpen(sh);
+        if (bl !== 0) this.stackBlur(bl);
+        if (hue !== 0) this.hue(hue);
+        this.render();
+      });
+    }
+
+    function applyAdjustments() {
+      if (!isCanvasReady()) return;
+      // Render then store in history
+      safeCaman(function() {
+        this.render(() => { pushHistory(); });
+      });
+    }
+
+    function resetAdjustments() {
+      document.getElementById('brightnessRange').value = 0;
+      document.getElementById('contrastRange').value = 0;
+      document.getElementById('saturationRange').value = 0;
+      document.getElementById('exposureRange').value = 0;
+      document.getElementById('sharpenRange').value = 0;
+      document.getElementById('blurRange').value = 0;
+      document.getElementById('hueRange').value = 0;
+      if (isCanvasReady()) safeCaman(function(){ this.revert(true).render(() => { pushHistory(); }); });
+    }
+
+    // --- Transform ---
+    function rotateLeft() { rotateBy(-90); }
+    function rotateRight() { rotateBy(90); }
+    function rotateBy(deg) {
+      if (!isCanvasReady()) return;
+      const canvas = getCanvas();
+      const ctx = canvas.getContext('2d');
+      const temp = document.createElement('canvas');
+      const tctx = temp.getContext('2d');
+      const radians = (deg * Math.PI) / 180;
+      const sin = Math.abs(Math.sin(radians));
+      const cos = Math.abs(Math.cos(radians));
+      const newWidth = Math.round(canvas.width * cos + canvas.height * sin);
+      const newHeight = Math.round(canvas.width * sin + canvas.height * cos);
+      temp.width = canvas.width; temp.height = canvas.height;
+      tctx.drawImage(canvas, 0, 0);
+      canvas.width = newWidth; canvas.height = newHeight;
+      ctx.save();
+      ctx.translate(newWidth / 2, newHeight / 2);
+      ctx.rotate(radians);
+      ctx.drawImage(temp, -temp.width / 2, -temp.height / 2);
+      ctx.restore();
+      pushHistory();
+      fitOverlayToCanvas();
+    }
+    function flipHorizontal() {
+      if (!isCanvasReady()) return;
+      const canvas = getCanvas();
+      const ctx = canvas.getContext('2d');
+      const temp = document.createElement('canvas');
+      temp.width = canvas.width; temp.height = canvas.height;
+      temp.getContext('2d').drawImage(canvas, 0, 0);
+      ctx.save();
+      ctx.scale(-1, 1);
+      ctx.drawImage(temp, -canvas.width, 0);
+      ctx.restore();
+      pushHistory();
+    }
+    function flipVertical() {
+      if (!isCanvasReady()) return;
+      const canvas = getCanvas();
+      const ctx = canvas.getContext('2d');
+      const temp = document.createElement('canvas');
+      temp.width = canvas.width; temp.height = canvas.height;
+      temp.getContext('2d').drawImage(canvas, 0, 0);
+      ctx.save();
+      ctx.scale(1, -1);
+      ctx.drawImage(temp, 0, -canvas.height);
+      ctx.restore();
+      pushHistory();
+    }
+
+    // --- Crop ---
+    function startCrop() {
+      if (!isCanvasReady()) return;
+      isCropping = true;
+      cropStart = null;
+      cropRect = null;
+      const overlay = getOverlay();
+      const ctx = overlay.getContext('2d');
+      ctx.clearRect(0,0,overlay.width, overlay.height);
+      overlay.style.cursor = 'crosshair';
+    }
+
+    function applyCrop() {
+      if (!isCanvasReady() || !cropRect) return;
+      const { x, y, w, h } = cropRect;
+      if (w <= 0 || h <= 0) { cancelCrop(); return; }
+      const canvas = getCanvas();
+      const temp = document.createElement('canvas');
+      temp.width = w; temp.height = h;
+      const tctx = temp.getContext('2d');
+      tctx.drawImage(canvas, x, y, w, h, 0, 0, w, h);
+      const ctx = canvas.getContext('2d');
+      canvas.width = w; canvas.height = h;
+      ctx.drawImage(temp, 0, 0);
+      cancelCrop();
+      pushHistory();
+      fitOverlayToCanvas();
+    }
+
+    function cancelCrop() {
+      isCropping = false;
+      cropStart = null;
+      cropRect = null;
+      const overlay = getOverlay();
+      const ctx = overlay.getContext('2d');
+      ctx.clearRect(0,0,overlay.width, overlay.height);
+      overlay.style.cursor = 'default';
+    }
+
+    // --- Drawing ---
+    function setDrawMode(mode) { drawMode = mode; }
+    function setBrushSize(val) { brushSize = parseInt(val, 10) || 1; }
+    function setBrushColor(val) { brushColor = val; }
+    function toggleDrawing(on) { isDrawing = !!on; }
+    function clearOverlay() {
+      const overlay = getOverlay();
+      const octx = overlay.getContext('2d');
+      octx.clearRect(0,0,overlay.width, overlay.height);
+    }
+
+    // --- Text ---
+    function enterAddTextMode() {
+      if (!isCanvasReady()) { alert('Vui lòng chọn ảnh trước'); return; }
+      const content = (document.getElementById('textContent').value || '').trim();
+      if (!content) { alert('Nhập nội dung văn bản'); return; }
+      // Place text at center on overlay and then bake into base on click
+      const overlay = getOverlay();
+      const octx = overlay.getContext('2d');
+      const size = parseInt(document.getElementById('textSizeRange').value || '32', 10);
+      const color = document.getElementById('textColor').value || '#111827';
+      const font = document.getElementById('textFont').value || 'Inter';
+      const x = overlay.width / 2;
+      const y = overlay.height / 2;
+      octx.save();
+      octx.font = `${size}px ${font}`;
+      octx.fillStyle = color;
+      octx.textAlign = 'center';
+      octx.textBaseline = 'middle';
+      octx.shadowColor = 'rgba(0,0,0,0.15)';
+      octx.shadowBlur = 2;
+      octx.fillText(content, x, y);
+      octx.restore();
+      activeTextObjects.push({ content, size, color, font, x, y });
+    }
+
+    function clearTextObjects() {
+      activeTextObjects = [];
+      clearOverlay();
+    }
+
+    function bakeOverlayIntoBase() {
+      const canvas = getCanvas();
+      const overlay = getOverlay();
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(overlay, 0, 0);
+      clearOverlay();
+      activeTextObjects = [];
+      pushHistory();
+    }
+
+    // --- History ---
+    function pushHistory() {
+      const canvas = getCanvas();
+      try {
+        historyStack.push(canvas.toDataURL('image/png'));
+        if (historyStack.length > 50) historyStack.shift();
+        redoStack.length = 0;
+      } catch(e) {}
+    }
+    function clearHistory() { historyStack.length = 0; redoStack.length = 0; }
+    function undo() {
+      if (historyStack.length <= 1) return;
+      const current = historyStack.pop();
+      redoStack.push(current);
+      const prev = historyStack[historyStack.length - 1];
+      restoreFromDataUrl(prev);
+    }
+    function redo() {
+      if (!redoStack.length) return;
+      const next = redoStack.pop();
+      historyStack.push(next);
+      restoreFromDataUrl(next);
+    }
+    function resetImage() {
+      if (!originalImageDataUrl) return;
+      restoreFromDataUrl(originalImageDataUrl);
+      clearHistory();
+      pushHistory();
+    }
+    function restoreFromDataUrl(dataUrl) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = getCanvas();
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.width; canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        fitOverlayToCanvas();
+      };
+      img.src = dataUrl;
+    }
 
 
 
@@ -1179,6 +1747,8 @@
         overlay.style.display = 'block';
         panel.classList.add('active');
         document.body.style.overflow = 'hidden';
+        // Set default tab content on open
+        switchMobileTab('filters');
       }
     }
 
@@ -1191,7 +1761,7 @@
       document.body.style.overflow = '';
     }
 
-    function applyMobileFilter(filterName) {
+    function applyMobileFilter(filterName, el) {
       if (!isCanvasReady()) {
         alert('Vui lòng chọn một ảnh trước khi áp dụng hiệu ứng');
         return;
@@ -1203,11 +1773,12 @@
       });
       
       // Add active class to clicked card
-      event.currentTarget.classList.add('active');
+      if (el) { el.classList.add('active'); }
       
       const success = safeCaman(function () {
         this.revert(false);
-        this[filterName]().render();
+        this[filterName]();
+        this.render(() => { pushHistory(); });
       });
       
       if (!success) {
@@ -1224,6 +1795,7 @@
       if (window.innerWidth > 768) {
         closeMobileMenu();
       }
+      fitOverlayToCanvas();
     }
 
     // Initialize with filters menu
@@ -1241,6 +1813,19 @@
       // Add touch event listeners for better mobile experience
       if ('ontouchstart' in window) {
         document.addEventListener('touchstart', function() {}, {passive: true});
+      }
+
+      // Overlay interactions
+      const overlay = getOverlay();
+      if (overlay) {
+        // Mouse
+        overlay.addEventListener('mousedown', onPointerDown);
+        overlay.addEventListener('mousemove', onPointerMove);
+        window.addEventListener('mouseup', onPointerUp);
+        // Touch
+        overlay.addEventListener('touchstart', (e) => onPointerDown(e.touches[0]), {passive:false});
+        overlay.addEventListener('touchmove', (e) => { onPointerMove(e.touches[0]); e.preventDefault(); }, {passive:false});
+        window.addEventListener('touchend', onPointerUp, {passive:true});
       }
     });
     
@@ -1269,6 +1854,120 @@
       } catch (error) {
         console.error('Lỗi khi gọi Caman:', error);
         return false;
+      }
+    }
+
+    // --- Pointer handlers for overlay (drawing and crop) ---
+    function toLocalPoint(ev) {
+      const overlay = getOverlay();
+      const rect = overlay.getBoundingClientRect();
+      const x = (ev.clientX - rect.left) * (overlay.width / rect.width);
+      const y = (ev.clientY - rect.top) * (overlay.height / rect.height);
+      return { x, y };
+    }
+
+    function onPointerDown(e) {
+      if (!isCanvasReady()) return;
+      const overlay = getOverlay();
+      const ctx = overlay.getContext('2d');
+      const p = toLocalPoint(e);
+      if (isCropping) {
+        cropStart = p;
+        cropRect = { x: p.x, y: p.y, w: 0, h: 0 };
+      } else if (isDrawing) {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        overlay._drawing = true;
+      }
+    }
+
+    function onPointerMove(e) {
+      const overlay = getOverlay();
+      const ctx = overlay.getContext('2d');
+      const p = toLocalPoint(e);
+      if (isCropping) {
+        if (!cropStart) return;
+        const w = p.x - cropStart.x;
+        const h = p.y - cropStart.y;
+        cropRect = { x: Math.min(cropStart.x, p.x), y: Math.min(cropStart.y, p.y), w: Math.abs(w), h: Math.abs(h) };
+        // draw translucent rect
+        ctx.clearRect(0,0,overlay.width, overlay.height);
+        ctx.fillStyle = 'rgba(0,0,0,0.3)';
+        ctx.fillRect(0,0,overlay.width, overlay.height);
+        ctx.clearRect(cropRect.x, cropRect.y, cropRect.w, cropRect.h);
+        ctx.strokeStyle = '#8b5cf6';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(cropRect.x + 1, cropRect.y + 1, cropRect.w - 2, cropRect.h - 2);
+      } else if (isDrawing && overlay._drawing) {
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.lineWidth = brushSize;
+        if (drawMode === 'erase') {
+          ctx.globalCompositeOperation = 'destination-out';
+          ctx.strokeStyle = 'rgba(0,0,0,1)';
+        } else {
+          ctx.globalCompositeOperation = 'source-over';
+          ctx.strokeStyle = brushColor;
+        }
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+      }
+    }
+
+    function onPointerUp() {
+      const overlay = getOverlay();
+      if (overlay._drawing) {
+        overlay._drawing = false;
+      }
+      // When finishing drawing stroke or placing text, you can bake into base
+      // Here we keep strokes on overlay until user exports or explicitly bakes.
+    }
+
+    // Merge overlay into export
+    const originalExportImage = exportImage;
+    exportImage = function() {
+      const canvas = getCanvas();
+      if (!canvas || canvas.classList.contains('hidden')) {
+        alert('Vui lòng chọn một ảnh để xuất');
+        return;
+      }
+      // Create composed canvas including overlay
+      try {
+        const overlay = getOverlay();
+        const out = document.createElement('canvas');
+        out.width = canvas.width; out.height = canvas.height;
+        const octx = out.getContext('2d');
+        octx.drawImage(canvas, 0, 0);
+        octx.drawImage(overlay, 0, 0);
+        const link = document.createElement('a');
+        link.download = 'magic-image-edited.png';
+        link.href = out.toDataURL();
+        link.click();
+      } catch (error) {
+        console.error('Lỗi khi xuất ảnh:', error);
+        alert('Có lỗi xảy ra khi xuất ảnh. Vui lòng thử lại.');
+      }
+    }
+
+    // Mobile tabs switching
+    function switchMobileTab(id, el) {
+      const tabs = document.querySelectorAll('.mobile-tab');
+      tabs.forEach(t => t.classList.remove('active'));
+      if (el) el.classList.add('active');
+
+      const container = document.getElementById('mobileToolsContent');
+      const source = document.getElementById(id);
+      if (!container || !source) return;
+
+      // For filters we show cards; for others we embed controls cloned from desktop panel
+      if (id === 'filters') {
+        // Keep existing filter cards (already rendered)
+        // No-op, just ensure container displays grid
+        container.classList.add('mobile-filter-grid');
+        container.innerHTML = document.querySelector('#mobilePanel .mobile-filter-grid').innerHTML;
+      } else {
+        container.classList.remove('mobile-filter-grid');
+        container.innerHTML = source.outerHTML;
       }
     }
   </script>

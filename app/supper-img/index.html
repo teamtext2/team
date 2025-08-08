@@ -11,7 +11,9 @@
   <header class="topbar">
     <div class="brand">Tạo ảnh đẹp — Mini Editor</div>
     <div class="actions">
-      <input id="file-input" type="file" accept="image/*" />
+      <input id="file-input" class="visually-hidden" type="file" accept="image/*" />
+      <label for="file-input" class="btn" title="Chọn ảnh từ máy" aria-label="Chọn ảnh">Chọn file</label>
+        <button id="btn-theme" title="Chế độ tối/sáng" aria-label="Đổi giao diện">Giao diện tối</button>
       <button id="btn-open-sample">Mở mẫu</button>
       <button id="btn-download" disabled>Tải ảnh</button>
     </div>
@@ -19,17 +21,23 @@
 
   <main class="main">
     <aside class="left-panel">
-      <button data-tool="crop">Cắt</button>
-      <button data-tool="flip">Lật</button>
-      <button data-tool="rotate">Xoay</button>
-      <button data-tool="draw">Vẽ</button>
-      <button data-tool="text">Thêm chữ</button>
-      <button data-tool="filter">Bộ lọc</button>
-      <button data-tool="watermark">Watermark</button>
+      <button data-tool="crop" title="Cắt ảnh" aria-label="Cắt">Cắt</button>
+      <button data-tool="flip" title="Lật ngang/dọc" aria-label="Lật">Lật</button>
+      <button data-tool="rotate" title="Xoay ảnh" aria-label="Xoay">Xoay</button>
+      <button data-tool="draw" title="Vẽ lên ảnh" aria-label="Vẽ">Vẽ</button>
+      <button data-tool="text" title="Thêm chữ" aria-label="Thêm chữ">Thêm chữ</button>
+      <button data-tool="filter" title="Áp dụng bộ lọc" aria-label="Bộ lọc">Bộ lọc</button>
+      <button data-tool="watermark" title="Chèn watermark" aria-label="Watermark">Watermark</button>
     </aside>
 
     <section class="editor-wrap">
-      <div id="tui-image-editor-container"></div>
+      <div id="tui-image-editor-container" aria-label="Khu vực chỉnh sửa ảnh"></div>
+      <div class="drop-overlay" id="drop-overlay" aria-hidden="true">
+        <div class="drop-inner">
+          <div class="drop-title">Kéo & thả ảnh vào đây</div>
+          <div class="drop-sub">hoặc dùng nút Chọn file ở trên</div>
+        </div>
+      </div>
     </section>
 
     <aside class="right-panel">
