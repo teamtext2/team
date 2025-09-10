@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gia Lỳ Tasks — Simple iOS-style Task App</title>
+  <link rel="icon" href="favicon.ico" />
+  <style>
+    :root {
+      --bg-dark: #000000;
+      --bg-light: #ffffff;
+      --btn-glass: rgba(255, 255, 255, 0.2);
+      --btn-glass-hover: rgba(255, 255, 255, 0.3);
+      --text-dark: #ffffff;
+      --text-light: #000000;
+      --accent-dark: #6366F1;
+      --accent-light: #4F46E5;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 760px;
+      min-height: 520px;
+      border-radius: 16px;
+      padding: 24px;
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    button.btn {
+      background: var(--btn-glass);
+      color: var(--text-dark);
+      transition: background 0.3s;
+    }
+
+    button.btn:hover {
+      background: var(--btn-glass-hover);
+    }
+
+    @media (prefers-color-scheme: light) {
+      body {
+        background-color: var(--bg-light);
+        color: var(--text-light);
+      }
+
+      .app {
+        background-color: var(--bg-light);
+        color: var(--text-light);
+      }
+
+      button.btn {
+        background: var(--btn-glass);
+        color: var(--text-light);
+      }
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 16px;
+      }
+
+      .app {
+        padding: 16px;
+        border-radius: 12px;
+      }
+
+      .logo {
+        width: 48px;
+        height: 48px;
+      }
+
+      header h1 {
+        font-size: 18px;
+      }
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      display:flex;align-items:center;justify-content:center;padding:28px;
+    }
+
+    /* App shell */
+    .app{
+      width:100%;
+      max-width:760px;
+      min-height:520px;
+      border-radius:26px;
+      padding:24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(10px) saturate(120%);
+      border: 1px solid rgba(255,255,255,0.03);
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* Decorative blurred shapes */
+    .app::before, .app::after{
+      content:"";position:absolute;pointer-events:none;filter:blur(50px);opacity:0.9;
+    }
+    .app::before{width:420px;height:420px;background:linear-gradient(45deg,var(--accent),transparent);right:-120px;top:-160px}
+    .app::after{width:360px;height:360px;background:linear-gradient(45deg,#10B981,transparent);left:-140px;bottom:-160px}
+
+    header{display:flex;align-items:center;gap:14px}
+    .logo{
+      width:56px;height:56px;border-radius:12px;display:grid;place-items:center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border:1px solid var(--glass-border);
+      box-shadow: 0 6px 16px rgba(2,6,23,0.5);
+      backdrop-filter: blur(6px);
+    }
+    .logo svg{width:34px;height:34px}
+    h1{font-size:20px;margin:0}
+    p.lead{margin:0;font-size:13px;color:var(--muted)}
+
+    .controls{display:flex;gap:12px;align-items:center;margin-top:18px}
+    .input-wrap{flex:1;display:flex;gap:10px;align-items:center}
+    input.newtask{
+      width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--glass-border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      outline:none;color:inherit;font-size:15px;backdrop-filter: blur(6px);
+    }
+    button.btn{
+      padding:10px 14px;border-radius:12px;border:none;background:var(--btn-glass);color:var(--text-dark);font-weight:600;cursor:pointer;
+      box-shadow:0 6px 18px rgba(99,102,241,0.18);
+      transition: background 0.3s;
+    }
+    button.btn:hover {
+      background: var(--btn-glass-hover);
+    }
+    button.ghost{background:transparent;border:1px solid var(--glass-border);color:var(--muted);padding:8px 10px}
+
+    /* list */
+    .list{
+      margin-top:18px;display:flex;flex-direction:column;gap:10px;max-height:320px;overflow:auto;padding-right:6px;padding-bottom:6px;
+    }
+    .task{
+      display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:var(--card);border:1px solid var(--glass-border);
+      transition:transform .18s ease,opacity .18s ease;backdrop-filter: blur(6px);
+    }
+    .task.completed{opacity:0.56;text-decoration:line-through}
+    .task .handle{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;border:1px solid rgba(255,255,255,0.03);cursor:grab}
+    .task .content{flex:1;min-width:0}
+    .task .content .title{font-size:15px;margin:0;word-break:break-word}
+    .task .meta{font-size:12px;color:var(--muted);margin-top:6px}
+
+    .actions{display:flex;gap:8px;align-items:center}
+    .icon-btn{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;border:1px solid rgba(255,255,255,0.03);background:transparent;cursor:pointer}
+
+    .empty{margin-top:20px;padding:20px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);text-align:center;color:var(--muted)}
+
+    footer{display:flex;justify-content:space-between;align-items:center;margin-top:18px;color:var(--muted);font-size:13px}
+
+    /* small screens */
+    @media (max-width:520px){
+      body{padding:16px}
+      .app{padding:16px;border-radius:18px}
+      .logo{width:48px;height:48px}
+      header h1{font-size:18px}
+    }
+
+    /* subtle focus styles */
+    input:focus, button:focus{outline:2px solid rgba(99,102,241,0.15);outline-offset:2px}
+
+    /* animations */
+    .fade-in{animation:fade .28s ease both}
+    @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  </style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="Gia Lỳ Tasks">
+    <header>
+      <div class="logo" aria-hidden>
+        <!-- simple monogram -->
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="18" height="18" rx="5" fill="url(#g)"/>
+          <defs>
+            <linearGradient id="g" x1="0" x2="1">
+              <stop offset="0" stop-color="#6366F1" stop-opacity="0.95"/>
+              <stop offset="1" stop-color="#10B981" stop-opacity="0.85"/>
+            </linearGradient>
+          </defs>
+          <path d="M7 9h10v2H7zM7 13h7v2H7z" fill="white" fill-opacity="0.92"/>
+        </svg>
+      </div>
+      <div>
+        <h1>Gia Lỳ Tasks</h1>
+        <p class="lead">Danh sách việc cần làm — đồng bộ local, phong cách iOS kính mờ.</p>
+      </div>
+    </header>
+
+    <div class="controls">
+      <div class="input-wrap">
+        <input id="newTaskInput" class="newtask" placeholder="Thêm nhiệm vụ, nhấn Enter để lưu" aria-label="Thêm nhiệm vụ" />
+      </div>
+      <button id="addBtn" class="btn" title="Thêm nhiệm vụ">Thêm</button>
+      <button id="clearCompleted" class="ghost" title="Xoá hoàn thành">Xóa hoàn thành</button>
+    </div>
+
+    <div id="taskList" class="list" tabindex="0" aria-live="polite"></div>
+
+    <div id="emptyState" class="empty" hidden>
+      Không có nhiệm vụ nào — hãy thêm nhiệm vụ mới!
+    </div>
+
+    <footer>
+      <div id="count">0 nhiệm vụ</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button id="exportBtn" class="ghost" title="Xuất JSON">Xuất</button>
+        <button id="importBtn" class="ghost" title="Nhập JSON">Nhập</button>
+        <input id="fileInp" type="file" accept="application/json" style="display:none" />
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Simple iOS-style Task app — saves to localStorage
+    (function(){
+      const STORAGE_KEY = 'gia_ly_tasks_v1';
+      let tasks = []; // {id, text, done, created}
+
+      const $ = sel => document.querySelector(sel);
+      const taskList = $('#taskList');
+      const newTaskInput = $('#newTaskInput');
+      const addBtn = $('#addBtn');
+      const clearCompleted = $('#clearCompleted');
+      const emptyState = $('#emptyState');
+      const countEl = $('#count');
+      const exportBtn = $('#exportBtn');
+      const importBtn = $('#importBtn');
+      const fileInp = $('#fileInp');
+
+      function uid(){return Date.now().toString(36) + Math.random().toString(36).slice(2,8)}
+
+      function save(){
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+      }
+      function load(){
+        try{
+          const raw = localStorage.getItem(STORAGE_KEY);
+          tasks = raw ? JSON.parse(raw) : [];
+          if(!Array.isArray(tasks)) tasks = [];
+        }catch(e){tasks=[]}
+      }
+
+      function render(){
+        taskList.innerHTML = '';
+        if(tasks.length === 0){ emptyState.hidden = false; countEl.textContent = '0 nhiệm vụ'; return }
+        emptyState.hidden = true;
+
+        tasks.forEach((t, i) => {
+          const el = document.createElement('div');
+          el.className = 'task fade-in' + (t.done? ' completed':'');
+          el.dataset.id = t.id;
+
+          el.innerHTML = `
+            <div class="handle" title="Kéo để sắp xếp" aria-hidden>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 6h8M6 6h.01M6 12h.01M10 12h8M6 18h.01M10 18h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </div>
+            <div class="content">
+              <div class="title" contenteditable="true" role="textbox" aria-label="Nội dung nhiệm vụ">${escapeHtml(t.text)}</div>
+              <div class="meta">${new Date(t.created).toLocaleString()}</div>
+            </div>
+            <div class="actions">
+              <button class="icon-btn toggle" title="Hoàn thành">
+                ${t.done? checkedIcon(): circleIcon()}
+              </button>
+              <button class="icon-btn delete" title="Xóa">${trashIcon()}</button>
+            </div>
+          `;
+
+          // events
+          el.querySelector('.toggle').addEventListener('click', ()=>{
+            toggleDone(t.id);
+          });
+          el.querySelector('.delete').addEventListener('click', ()=>{
+            removeTask(t.id);
+          });
+          const title = el.querySelector('.title');
+          title.addEventListener('input', (e)=>{
+            updateText(t.id, title.innerText.trim());
+          });
+          title.addEventListener('keydown', (e)=>{
+            if(e.key === 'Enter'){ e.preventDefault(); title.blur(); }
+          });
+
+          // drag hints (not full DnD) — allow move up/down on long press / keyboard
+          const handle = el.querySelector('.handle');
+          handle.addEventListener('mousedown', ()=>{ handle.style.cursor='grabbing' });
+          handle.addEventListener('mouseup', ()=>{ handle.style.cursor='grab' });
+
+          taskList.appendChild(el);
+        });
+
+        countEl.textContent = `${tasks.length} nhiệm vụ • ${tasks.filter(t=>t.done).length} hoàn thành`;
+      }
+
+      // helpers
+      function escapeHtml(s){ return (s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+      function addTask(text){
+        if(!text || !text.trim()) return;
+        const t = {id:uid(), text:text.trim(), done:false, created: Date.now() };
+        tasks.unshift(t);
+        save(); render();
+      }
+      function removeTask(id){ tasks = tasks.filter(t=>t.id !== id); save(); render(); }
+      function toggleDone(id){ tasks = tasks.map(t=> t.id===id ? {...t, done: !t.done}:t); save(); render(); }
+      function updateText(id, newText){ tasks = tasks.map(t=> t.id===id ? {...t, text: newText}:t); save(); render(); }
+
+      // clear completed
+      clearCompleted.addEventListener('click', ()=>{
+        if(!confirm('Xóa tất cả nhiệm vụ đã hoàn thành?')) return;
+        tasks = tasks.filter(t=>!t.done); save(); render();
+      });
+
+      // add handlers
+      addBtn.addEventListener('click', ()=>{ addTask(newTaskInput.value); newTaskInput.value = ''; newTaskInput.focus(); });
+      newTaskInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ addTask(newTaskInput.value); newTaskInput.value=''; }});
+
+      // export/import
+      exportBtn.addEventListener('click', ()=>{
+        const dataStr = JSON.stringify(tasks, null, 2);
+        const blob = new Blob([dataStr], {type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href=url; a.download = 'gia_ly_tasks.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      });
+      importBtn.addEventListener('click', ()=> fileInp.click());
+      fileInp.addEventListener('change', ()=>{
+        const f = fileInp.files && fileInp.files[0]; if(!f) return;
+        const r = new FileReader(); r.onload = (ev)=>{
+          try{
+            const imported = JSON.parse(ev.target.result);
+            if(Array.isArray(imported)){
+              // merge (keep existing, but add new items)
+              const existingIds = new Set(tasks.map(t=>t.id));
+              const toAdd = imported.filter(i=>i && i.id && !existingIds.has(i.id));
+              tasks = [...toAdd, ...tasks]; save(); render();
+              alert('Nhập thành công: ' + toAdd.length + ' nhiệm vụ mới.');
+            }else alert('Tập tin không đúng định dạng');
+          }catch(e){ alert('Không thể đọc file: ' + e.message); }
+        };
+        r.readAsText(f);
+        fileInp.value = '';
+      });
+
+      // init
+      load(); render();
+
+      // small keyboard shortcuts
+      window.addEventListener('keydown', (e)=>{
+        if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'){
+          e.preventDefault(); newTaskInput.focus(); newTaskInput.select();
+        }
+        if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b'){
+          e.preventDefault(); // toggle show completed quick
+          tasks = tasks.map(t=> ({...t, _hidden: false})); render();
+        }
+      });
+
+      // simple autosave feedback
+      setInterval(()=>{ save(); }, 3000);
+
+      // icons
+      function checkedIcon(){ return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' }
+      function circleIcon(){ return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6"/></svg>' }
+      function trashIcon(){ return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18M8 6v12a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6M10 6V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>' }
+
+    })();
+  </script>
+</body>
+</html>
