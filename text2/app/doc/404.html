@@ -1,0 +1,91 @@
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8"></meta>
+  <title>404 - text2 </title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"></link>
+  <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet"></link>
+
+  <style>
+    /*======================
+      Fullscreen Popup Container
+    =======================*/
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(255, 255, 255, 1); /* màu nền trắng */
+      z-index: 999999;
+      overflow-y: auto;
+      box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    }
+
+    /*======================
+      404 page
+    =======================*/
+    .page_404 {
+      padding: 40px 0;
+      font-family: 'Arvo', serif;
+    }
+
+    .page_404 img {
+      width: 100%;
+    }
+
+    .four_zero_four_bg {
+      background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+      height: 400px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .four_zero_four_bg h1 {
+      font-size: 80px;
+    }
+
+    .four_zero_four_bg h3 {
+      font-size: 80px;
+    }
+
+    .link_404 {
+      color: #fff !important;
+      padding: 10px 20px;
+      background: #39ac31;
+      margin: 20px 0;
+      display: inline-block;
+    }
+
+    .contant_box_404 {
+      margin-top: -50px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Fullscreen Popup as Page -->
+<div class="popup-overlay">
+  <section class="page_404">
+    <div class="container">
+      <div class="row">	
+        <div class="col-sm-12">
+          <div class="col-sm-10 col-sm-offset-1 text-center">
+            <div class="four_zero_four_bg">
+              <h1 class="text-center"></h1>
+            </div>
+            <div class="contant_box_404">
+              <h3 class="h2">404 - Ôi trời trang web mất kết nối rồi</h3>
+              <p>hẹn gặp lại sau nhé </p>
+              <a class="link_404" href="/">Go to Home</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</body>
+</html>

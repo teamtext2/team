@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Text2 App Center</title>
+  <meta name="description" content="Discover the latest applications from Text2" />
+  <meta name="robots" content="index, follow" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    html, body { margin: 0; padding: 0; min-height: 100vh; font-family: 'Poppins', 'Segoe UI', sans-serif; background: linear-gradient(135deg, #0f0f0f, #1a1a1a); color: #fff; }
+    header { background: rgba(33, 37, 41, 0.95); padding: 8px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.5); border-bottom: 1px solid #444; height: 40px; position: sticky; top: 0; z-index: 1000; }
+    .start-button { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 5px 10px; border-radius: 4px; transition: background-color 0.2s; }
+    .start-button:hover { background: rgba(255,255,255,0.1); }
+    .start-button img { width: 24px; height: 24px; border-radius: 4px; }
+    .start-button span { font-weight: 600; font-size: 14px; }
+    .app-title { text-align: center; font-size: 22px; font-weight: 700; margin: 30px 0 10px 0; letter-spacing: 1px; }
+    .icon-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; width: 90%; }
+    .icon { text-align: center; text-decoration: none; background: linear-gradient(145deg, #292929, #1f1f1f); padding: 15px 10px; border-radius: 15px; transition: all 0.3s ease; color: #fff; box-shadow: 0 6px 15px rgba(0,0,0,0.7); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .icon:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 10px 25px rgba(0,0,0,0.9); background: linear-gradient(145deg, #343a40, #23272a); }
+    .icon img { width: 70px; height: 70px; border-radius: 15px; object-fit: cover; margin-bottom: 8px; border: 4px solid #343a40; box-shadow: 0 8px 20px rgba(0,0,0,0.6); }
+    .icon p { font-size: 13px; margin-top: 8px; letter-spacing: 0.5px; word-break: break-word; overflow-wrap: break-word; white-space: normal; padding: 0 5px; }
+    .icon .desc { color: #b0b0b0; font-size: 12px; margin-top: 4px; min-height: 32px; }
+    footer { background: rgba(33, 37, 41, 0.8); text-align: center; padding: 15px; font-size: 16px; border-top: 1px solid #444; box-shadow: 0 -4px 10px rgba(0,0,0,0.5); }
+    @media (max-width: 768px) { .icon-container { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; padding: 12px; } .icon { padding: 12px; } .icon img { width: 50px; height: 50px; } .icon p { font-size: 11px; margin-top: 6px; padding: 0 3px; } }
+    @media (max-width: 480px) { .icon-container { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; padding: 10px; } .icon { padding: 10px; } .icon img { width: 45px; height: 45px; } .icon p { font-size: 10px; margin-top: 4px; padding: 0 2px; } }
+
+    /* Hiệu ứng chuyển động mượt mà */
+    .icon {
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .start-button {
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .start-button:hover {
+      transform: scale(1.05);
+    }
+
+    .icon:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8);
+    }
+
+    footer a {
+      transition: color 0.3s, transform 0.3s;
+    }
+
+    footer a:hover {
+      color: #4fc3f7;
+      transform: scale(1.1);
+    }
+
+    /* Style the search bar to match the current design */
+    #searchBar {
+      margin-left: auto;
+      padding: 8px 12px;
+      border-radius: 20px;
+      border: 1px solid #4fc3f7;
+      background: rgba(33, 37, 41, 0.95);
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: box-shadow 0.3s, border-color 0.3s;
+    }
+
+    #searchBar:focus {
+      box-shadow: 0 0 8px rgba(79, 195, 247, 0.8);
+      border-color: #4fc3f7;
+    }
+
+    #searchBar::placeholder {
+      color: #b0b0b0;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="start-button" onclick="window.location.href='/'">
+      <img src="https://text2.click/favicon.ico" alt="Text2 Logo" />
+      <span>Text2</span>
+    </div>
+    <span style="font-weight:600; font-size:15px;">App Center</span>
+    <!-- Add Search Bar -->
+    <input type="text" id="searchBar" placeholder="Search apps..." oninput="filterApps()">
+  </header>
+  <div class="app-title">The Latest Applications from Text2</div>
+  <div class="icon-container" id="mainApps"></div>
+
+  <!-- Section for app content -->
+  <section id="app-content">
+    <h2 class="app-title">Explore Our Apps</h2>
+    <div class="icon-container">
+      <!-- App icons will be dynamically added here -->
+    </div>
+  </section>
+
+  <!-- Empty section for future additions -->
+  <section id="future-content">
+    <!-- Content to be added later -->
+  </section>
+
+  <footer style="background: rgba(33, 37, 41, 0.97); border-top: 1.5px solid #444; box-shadow: 0 -2px 8px rgba(0,0,0,0.3); text-align: center; padding: 32px 10px 12px 10px; font-size: 15px; color: #e0e0e0; letter-spacing: 0.2px; margin-top: 40px;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 40px; max-width: 1200px; margin: 0 auto 12px auto;">
+      <!-- Thông tin Text2 -->
+      <div style="flex: 1 1 220px; min-width: 200px; text-align: left;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+          <img src="/logoc.jpg" alt="Text2 Logo" style="width: 38px; height: 38px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); background: #23272a;" />
+          <span style="font-weight: 700; font-size: 18px; letter-spacing: 0.5px; color: #4fc3f7;">Text2</span>
+        </div>
+        <div style="font-size: 14px; color: #b0b0b0; margin-bottom: 8px;">We made a difference with AI tools, chat, and digital services.</div>
+        <div style="font-size: 13px; color: #b0b0b0;">CEO: <b style='color:#fff;'>Hoa Nhat Anh</b></div>
+        <div style="font-size: 13px; color: #b0b0b0; margin-top: 2px;">📧 <a href="mailto:team@text2.click" style="color:#4fc3f7; text-decoration:underline;">team@text2.click</a></div>
+      </div>
+      <!-- Liên kết nhanh -->
+      <div style="flex: 1 1 160px; min-width: 140px; text-align: left;">
+        <div style="font-weight: 600; color: #4fc3f7; margin-bottom: 10px; font-size: 15px;">Quick Links</div>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li><a href="#home" style="color: #fff; text-decoration: none; transition: color 0.2s;">Home</a></li>
+          <li><a href="#blog" style="color: #fff; text-decoration: none; transition: color 0.2s;">Blog</a></li>
+          <li><a href="mailto:team@text2.click" style="color: #fff; text-decoration: none; transition: color 0.2s;">Contact</a></li>
+          <li><a href="/privacy.html" style="color: #fff; text-decoration: none; transition: color 0.2s;">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <!-- Mạng xã hội -->
+      <div style="flex: 1 1 220px; min-width: 200px; text-align: left;">
+        <div style="font-weight: 600; color: #4fc3f7; margin-bottom: 10px; font-size: 15px;">Follow us</div>
+        <div class="footer-social-row" style="display: flex; gap: 14px; align-items: center;">
+          <a href="https://www.facebook.com/text2.click" target="_blank" title="Facebook" style="color:#4fc3f7;">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+          </a>
+          <a href="https://www.youtube.com/@text2_team" target="_blank" title="YouTube" style="color:#4fc3f7;">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75,15.02 15.5,11.75 9.75,8.48 9.75,15.02"></polygon></svg>
+          </a>
+          <a href="https://www.tiktok.com/@text2_" target="_blank" title="TikTok" style="color:#4fc3f7;">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+          </a>
+          <a href="https://www.instagram.com/text2_magic" target="_blank" title="Instagram" style="color:#4fc3f7;">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          </a>
+          <a href="https://x.com/Text2click" target="_blank" title="Twitter/X" style="color:#4fc3f7;">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+          </a>
+          <a href="https://www.threads.com/@text2_magic?__pwa=1" target="_blank" title="Threads" style="color:#4fc3f7;">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 24px; border-top: 1px solid #333; padding-top: 10px; font-size: 13px; color: #b0b0b0; text-align: center;">
+      © 2024 <span style="color:#4fc3f7; font-weight:600;">Text2</span> &nbsp;|&nbsp; All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    function filterApps() {
+      const query = document.getElementById('searchBar').value.toLowerCase();
+      const apps = document.querySelectorAll('.icon');
+
+      apps.forEach(app => {
+        const appName = app.querySelector('p').textContent.toLowerCase();
+        if (appName.includes(query)) {
+          app.style.display = '';
+        } else {
+          app.style.display = 'none';
+        }
+      });
+    }
+    // Load apps from shared JSON
+    async function loadApps() {
+      const container = document.getElementById('mainApps');
+      if (!container) return;
+      try {
+        const res = await fetch('/data/apps.json', { cache: 'no-cache' });
+        const apps = await res.json();
+        container.innerHTML = apps.map(app => (
+          `<a href="${app.url}" class="icon main-app">
+            <img src="${app.icon}" alt="${app.alt || app.title}" />
+            <p>${app.title}</p>
+          </a>`
+        )).join('');
+        filterApps();
+      } catch (e) {
+        console.error('Failed to load apps.json', e);
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadApps);
+    } else {
+      loadApps();
+    }
+  </script>
+</body>
+</html>

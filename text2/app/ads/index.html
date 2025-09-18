@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Gửi yêu cầu quảng cáo chuyên nghiệp, giao diện hiện đại, tối ưu cho PC và mobile." />
+  <meta name="keywords" content="quảng cáo, đăng quảng cáo, form quảng cáo, doanh nghiệp" />
+  <meta name="author" content="ads text2 " />
+  <link rel="icon" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhoWWoNCS6YC7iPMEwWTzecNdukFQxMM3Lhm4wIjPcwn-dkAPwomeuZCM8e26kpYfjldUiLjybB12V9krukx2KIPmU7ce-I7vOooGoZHE0z2lp5oZRQPz9QPJQcsc9azDjsTJAGBCnUSbVYpoLybebETyNOi_QM0UBIyHmfQ400NnXi7o0x8pM-6WzoiRI/s320/20250629_1431_Ch%E1%BB%AF%20ADS%203D%20N%E1%BB%95i%20B%E1%BA%ADt_simple_compose_01jyx9hk2efa3bww3sntjhd4sj%20(1).png" type="image/png">
+  <title>Text2 ADS</title>
+  <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/p/AF1QipMAH2F9BWWLSU14YABENNfSIUDTinGdHOO3wC-S=s1360-w1360-h1020-rw">
+  
+  
+  <!-- Google tag (gtag.js) - GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ABCDEFG123"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6J85STMJ14');
+</script>
+
+  
+  
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --accent: #f59e42;
+      --bg: #f4f6fb;
+      --white: #fff;
+      --gray: #e5e7eb;
+      --shadow: 0 4px 24px rgba(37,99,235,0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: var(--bg);
+      margin: 0;
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: var(--white);
+      box-shadow: var(--shadow);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .logo img {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+    }
+    nav {
+      display: flex;
+      gap: 24px;
+    }
+    nav a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover {
+      color: var(--primary);
+    }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 16px 24px 16px;
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .form-container {
+      background: var(--white);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 32px 24px 24px 24px;
+      width: 100%;
+      margin-bottom: 32px;
+      animation: fadeIn 0.7s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: none; }
+    }
+    h2 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 24px;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    label {
+      font-weight: 500;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .required {
+      color: #e11d48;
+      font-size: 1.1em;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 12px 10px;
+      margin-bottom: 18px;
+      border: 1.5px solid var(--gray);
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #f9fafb;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    input:focus, textarea:focus, select:focus {
+      border: 1.5px solid var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 2px var(--primary-dark, #1e40af22);
+    }
+    button[type="submit"] {
+      width: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: var(--white);
+      font-weight: 700;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 0;
+      margin-top: 10px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #2563eb22;
+      transition: background 0.2s, transform 0.1s;
+    }
+    button[type="submit"]:hover {
+      background: linear-gradient(90deg, var(--primary-dark), var(--accent));
+      transform: translateY(-2px) scale(1.01);
+    }
+    .preview {
+      margin-top: 32px;
+      background: #f9fafb;
+      border: 1.5px dashed var(--primary);
+      border-radius: 10px;
+      padding: 18px 10px 10px 10px;
+      text-align: center;
+      box-shadow: 0 2px 8px #2563eb11;
+    }
+    .preview img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 10px;
+      box-shadow: 0 2px 8px #2563eb22;
+    }
+    .preview strong {
+      color: var(--primary-dark);
+      font-size: 1.1rem;
+    }
+    footer {
+      background: var(--white);
+      box-shadow: 0 -2px 12px #2563eb11;
+      padding: 24px 0 12px 0;
+      text-align: center;
+      margin-top: 40px;
+    }
+    .footer-content {
+      max-width: 600px;
+      margin: 0 auto;
+      color: #555;
+      font-size: 1rem;
+    }
+    .footer-social {
+      margin: 12px 0 8px 0;
+    }
+    .footer-social a {
+      color: var(--primary);
+      margin: 0 8px;
+      font-size: 1.3rem;
+      transition: color 0.2s;
+    }
+    .footer-social a:hover {
+      color: var(--accent);
+    }
+    .copyright {
+      color: #888;
+      font-size: 0.95rem;
+      margin-top: 8px;
+    }
+    @media (max-width: 600px) {
+      header, .form-container, .footer-content, main {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+      }
+      .form-container {
+        padding: 20px 8px 16px 8px;
+      }
+      h2 {
+        font-size: 1.3rem;
+      }
+      .footer-content {
+        font-size: 0.98rem;
+      }
+    }
+    @media (max-width: 400px) {
+      .logo span { display: none; }
+      .footer-content { font-size: 0.92rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="https://text2.click" class="logo">
+      <img src="https://lh3.googleusercontent.com/p/AF1QipMAH2F9BWWLSU14YABENNfSIUDTinGdHOO3wC-S=s1360-w1360-h1020-rw" alt="Logo">
+      <span>Text2 ADS </span>
+    </a>
+    <nav>
+      <a href="#form">Đăng Quảng Cáo</a>
+      <a href="#preview">Xem Mẫu</a>
+      <a href="mail.text2.click">Liên Hệ</a>
+    </nav>
+  </header>
+  <main>
+    <div class="form-container" id="form">
+      <h2>Gửi Yêu Cầu Quảng Cáo</h2>
+      <form action="https://formsubmit.co/truytimkienthuctv@gmail.com" method="POST" autocomplete="on">
+        <input type="hidden" name="_subject" value="Yêu cầu quảng cáo mới">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <label for="company">Tên doanh nghiệp: <span class="required">*</span></label>
+        <input type="text" id="company" name="Tên doanh nghiệp" required placeholder="Nhập tên doanh nghiệp...">
+        <label for="sender">Tên bạn: <span class="required">*</span></label>
+        <input type="text" id="sender" name="Tên người gửi" required placeholder="Nhập tên của bạn...">
+        <label for="email">Email liên hệ: <span class="required">*</span></label>
+        <input type="email" id="email" name="Email" required placeholder="example@email.com">
+        <label for="phone">Số điện thoại: <span class="required">*</span></label>
+        <input type="tel" id="phone" name="Số điện thoại" required placeholder="09xxxxxxxx">
+        <label for="thumbnail">Thumbnail quảng cáo (Up Drive và dán link): <span class="required">*</span></label>
+        <input type="url" id="thumbnail" name="Thumbnail Drive" placeholder="https://drive.google.com/..." required>
+        <label for="title">Tiêu đề quảng cáo: <span class="required">*</span></label>
+        <input type="text" id="title" name="Tiêu đề quảng cáo" required placeholder="Tiêu đề nổi bật...">
+        <label for="url">Liên kết trỏ về: <span class="required">*</span></label>
+        <input type="url" id="url" name="Liên kết quảng cáo" required placeholder="https://...">
+        <label for="time">Thời gian hiển thị quảng cáo: <span class="required">*</span></label>
+        <select id="time" name="Thời gian quảng cáo" required>
+          <option value="">-- Chọn thời gian --</option>
+          <option value="Sáng (6h-12h)">Sáng (6h-12h)</option>
+          <option value="Trưa (12h-14h)">Trưa (12h-14h)</option>
+          <option value="Chiều (14h-18h)">Chiều (14h-18h)</option>
+          <option value="Tối (18h-22h)">Tối (18h-22h)</option>
+          <option value="Đêm (22h-6h)">Đêm (22h-6h)</option>
+          <option value="Cả ngày (24/24)">Cả ngày (24/24)</option>
+        </select>
+        <button type="submit"><i class="fa-solid fa-paper-plane"></i> Gửi Quảng Cáo</button>
+      </form>
+    </div>
+    <div class="preview" id="preview">
+      <p><strong>🎯 Mẫu quảng cáo sẽ hiển thị như thế này:</strong></p>
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgBgkgr2plmMLQKe4ANUffmDcD6TzhE4Q2USL0RkPJivrZoLf7GJBQWGIyIJvU5otNSgkpyU2u3uii6Qy2BfEBvFNfZghFHeAGB2C2Eg7jrHKVbmK942oUsEpXaoeiOrnkqxPwo9aRDRmtg_zCQodenyl_JS_OWiERz2jc_MH01lEAEFhJ3IxFMkp5MuZ0/s16000/%E1%BA%A2nh%20ch%E1%BB%A5p%20m%C3%A0n%20h%C3%ACnh%202025-06-29%20065744.png" alt="Mẫu quảng cáo demo">
+    </div>
+  </main>
+  <footer id="contact">
+    <div class="footer-content">
+      <div><i class="fa-solid fa-envelope"></i> Email: <a href="https://mail.text2.click">mail.text2.click</a></div>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/text2.click/" title="Facebook"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/hoanhatanh123" title="Instagram"><i class="fab fa-instagram"></i></a>
+      </div>
+      <div class="copyright">&copy; text2 team 💕 </div>
+    </div>
+  </footer>
+</body>
+</html>
+
+<style>
+  /* CSS cho popup */
+  #popup-terms {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 400px;
+    background: white;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    z-index: 1000;
+  }
+  #popup-terms button {
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin: 5px;
+  }
+  #btn-accept {
+    background: #007bff;
+    color: white;
+  }
+  #btn-accept:hover {
+    background: #0056b3;
+  }
+  #btn-skip {
+    background: #ccc;
+    color: black;
+  }
+  #btn-skip:hover {
+    background: #999;
+  }
+</style>
+
+<div id="popup-terms">
+  <p>Xin lỗi, trang hiện gặp sự cố, các bạn gửi mail kèm thông tin liên hệ bằng cách truy cập tại đây nhé, chúng mình sẽ liên hệ lại ngay. cảm ơn các bạn </p>
+  <button id="btn-accept" onclick="redirectToSite()">Truy Cập Mail </button>
+  <button id="btn-skip" onclick="closePopup()">Skip</button>
+</div>
+
+<script>
+  function redirectToSite() {
+    window.location.href = "https://mail.text2.click";
+  }
+  function closePopup() {
+    document.getElementById("popup-terms").style.display = "none";
+  }
+</script>

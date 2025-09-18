@@ -1,0 +1,92 @@
+[
+  {
+    "title": "Camera",
+    "url": "https://camera.text2.click",
+    "icon": "https://camera.text2.click/favicon.ico",
+    "alt": "camera"
+  },
+  {
+    "title": "Note",
+    "url": "https://note.text2.click",
+    "icon": "https://note.text2.click/favicon.ico",
+    "alt": "note"
+  },
+  {
+    "title": "Chat AI",
+    "url": "https://chat.text2.click",
+    "icon": "https://chat.text2.click/favicon.ico",
+    "alt": "Chat Ai"
+  },
+  {
+    "title": "Grammar Checker",
+    "url": "https://grammar.text2.click/",
+    "icon": "https://grammar.text2.click/favicon.ico",
+    "alt": "text2 - Grammar Checker"
+  },
+  {
+    "title": "Img Design",
+    "url": "https://img.text2.click",
+    "icon": "https://img.text2.click/favicon.ico",
+    "alt": "img design"
+  },
+  {
+    "title": "Scan QR",
+    "url": "https://qr.text2.click/scan/",
+    "icon": "https://qr.text2.click/scan/favicon.ico",
+    "alt": "Scan"
+  },
+  {
+    "title": "Create QR Code",
+    "url": "https://qr.text2.click",
+    "icon": "https://qr.text2.click/favicon.ico",
+    "alt": "Create QR Code"
+  },
+  {
+    "title": "Add Luts",
+    "url": "https://luts.text2.click",
+    "icon": "https://luts.text2.click/favicon.ico",
+    "alt": "luts"
+  },
+  {
+    "title": "Translate",
+    "url": "https://translate.text2.click",
+    "icon": "https://translate.text2.click/favicon.ico",
+    "alt": "translate"
+  },
+  {
+    "title": "Love Match",
+    "url": "https://love.text2.click/",
+    "icon": "https://love.text2.click/favicon.ico",
+    "alt": "Love fortune telling"
+  },
+  {
+    "title": "img compression",
+    "url": "https://text2.click/app/compy/",
+    "icon": "https://text2.click/app/compy/favicon.ico",
+    "alt": "image compression"
+  },
+  {
+    "title": "Read HTML",
+    "url": "https://html.text2.click",
+    "icon": "https://html.text2.click/favicon.ico",
+    "alt": "Read HTML"
+  },
+  {
+    "title": "Love Match",
+    "url": "https://text2.click/app/love/",
+    "icon": "https://text2.click/app/love/favicon.ico",
+    "alt": "Love fortune telling"
+  },
+  {
+    "title": "Sửa lỗi chính tả Vietnamese",
+    "url": "https://text2.click/app/sua-loi-chinh-ta/",
+    "icon": "https://text2.click/app/sua-loi-chinh-ta/favicon.ico",
+    "alt": "Sửa lỗi chính tả"
+  },
+  {
+    "title": "create-img",
+    "url": "https://text2.click/app/create-img/",
+    "icon": "https://text2.click/app/create-img/favicon.ico",
+    "alt": "create-img"
+  }
+]
