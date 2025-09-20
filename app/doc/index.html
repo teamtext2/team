@@ -3,193 +3,322 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
-<title>Doc & Edit — Text2 Studio</title>
-<meta name="description" content="Ứng dụng đọc và chỉnh sửa tài liệu nhẹ, responsive, hỗ trợ markdown preview, autosave, export." />
+<title>Text Editor - Text2 Studio</title>
+<meta name="description" content="Trình soạn thảo văn bản nhẹ, responsive với markdown preview và autosave." />
 <!-- Basic styles (inline) -->
 <style>
   :root{
-    --bg:#0f1724; --panel:#0b1220; --muted:#94a3b8; --accent:#7c3aed;
-    --card:#0b1220; --glass: rgba(255,255,255,0.03);
-    --radius:14px; --gap:14px; --shadow: 0 8px 30px rgba(2,6,23,0.6);
-    --text:#e6eef8;
+    --bg:#121212; --panel:#1E1E1E; --muted:#B0B0B0; --accent:#1E90FF;
+    --card:#242424; --glass: rgba(255,255,255,0.05);
+    --radius:12px; --gap:12px; --shadow: 0 6px 24px rgba(0,0,0,0.4);
+    --text:#FFFFFF;
   }
   [data-theme="light"]{
-    --bg:#f6f8fb; --panel:#ffffff; --muted:#4b5563; --accent:#6d28d9;
+    --bg:#f6f8fb; --panel:#ffffff; --muted:#4b5563; --accent:#1E90FF;
     --card:#ffffff; --glass: rgba(0,0,0,0.03); --text:#0b1220;
   }
 
   *{box-sizing:border-box}
   html,body{height:100%; margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:linear-gradient(180deg,var(--bg), #081226 140%); color:var(--text); -webkit-font-smoothing:antialiased}
   .app{
-    max-width:1200px; margin:24px auto; padding:18px; display:grid; gap:var(--gap);
-    grid-template-columns: 1fr; width:calc(100% - 32px);
+    max-width:1400px; margin:16px auto; padding:12px; display:grid; gap:var(--gap);
+    grid-template-columns: 1fr; width:calc(100% - 24px);
   }
 
-  /* Header */
+  /* Header - Responsive */
   .top{
-    display:flex; gap:12px; align-items:center; justify-content:space-between;
+    display:flex; gap:8px; align-items:center; justify-content:space-between;
+    flex-wrap:wrap;
   }
-  .brand{display:flex; gap:12px; align-items:center}
+  .brand{display:flex; gap:8px; align-items:center; flex-shrink:0;}
   .logo{
-    width:48px; height:48px; border-radius:12px; display:grid; place-items:center;
+    width:40px; height:40px; border-radius:10px; display:grid; place-items:center;
     background:linear-gradient(135deg,var(--accent), #0ea5e9); box-shadow:var(--shadow);
-    font-weight:700; color:white; font-family:monospace;
+    font-weight:700; color:white; font-family:monospace; font-size:14px;
   }
-  h1{font-size:18px; margin:0}
-  p.lead{margin:0; color:var(--muted); font-size:13px}
+  h1{font-size:16px; margin:0; white-space:nowrap;}
+  p.lead{margin:0; color:var(--muted); font-size:12px; display:none;}
 
-  /* Toolbar */
-  .toolbar{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+  /* Toolbar - Mobile First */
+  .toolbar{
+    display:flex; gap:6px; align-items:center; flex-wrap:wrap;
+    justify-content:flex-end; width:100%;
+  }
   .btn{
-    background:var(--card); border:0; padding:8px 12px; border-radius:10px; color:var(--text);
-    display:inline-flex; gap:8px; align-items:center; cursor:pointer; box-shadow:0 6px 18px rgba(2,6,23,0.35);
-    transition:transform .12s ease, opacity .12s; user-select:none;
+    background:var(--card); border:0; padding:6px 10px; border-radius:8px; color:var(--text);
+    display:inline-flex; gap:6px; align-items:center; cursor:pointer; box-shadow:0 4px 12px rgba(2,6,23,0.3);
+    transition:transform .1s ease; user-select:none; font-size:13px;
   }
   .btn:active{transform:translateY(1px)}
-  .btn.secondary{background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--muted)}
-  .switch{display:inline-flex; gap:8px; align-items:center; padding:6px; border-radius:999px}
-  input[type="range"]{width:110px}
+  .btn.secondary{background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted)}
+  .switch{display:inline-flex; gap:6px; align-items:center; padding:4px;}
+  .switch span{font-size:11px;}
+  input[type="range"]{width:80px}
 
-  /* Layout */
+  /* Layout - Responsive Grid */
   .panel{
-    display:grid; grid-template-columns: 1fr 46%;
-    gap:16px; align-items:stretch;
+    display:grid; 
+    grid-template-columns: 1fr;
+    gap:12px; align-items:stretch;
   }
   .card{
     background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border-radius:var(--radius); padding:12px; box-shadow:var(--shadow); min-height:320px; overflow:hidden;
-    display:flex; flex-direction:column;
+    border-radius:var(--radius); padding:10px; box-shadow:var(--shadow); 
+    min-height:280px; overflow:hidden; display:flex; flex-direction:column;
   }
   .editor{
-    flex:1; display:flex; gap:12px; min-height:320px;
+    flex:1; display:flex; gap:8px; min-height:280px;
   }
-  .left{flex:1; display:flex; flex-direction:column; gap:12px}
-  .right{width:100%; min-width:240px; max-width:640px; display:flex; flex-direction:column; gap:12px}
+  .left{flex:1; display:flex; flex-direction:column; gap:8px}
+  .right{width:100%; display:flex; flex-direction:column; gap:8px}
 
   textarea#doc{
     width:100%; height:100%; resize:none; background:transparent; border:0; outline:none; color:var(--text);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; font-size:15px; line-height:1.6;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; 
+    font-size:14px; line-height:1.5; padding:8px;
   }
   .preview{
-    overflow:auto; padding:12px; border-radius:10px; background:var(--glass); color:var(--text);
+    overflow:auto; padding:10px; border-radius:8px; background:var(--glass); color:var(--text);
+    font-size:14px; line-height:1.6;
   }
 
-  /* responsive */
-  @media (max-width:980px){
-    .panel{grid-template-columns:1fr; }
-    .right{order:2}
-    .left{order:1}
-    .logo{width:44px;height:44px}
+  /* Mobile Optimizations */
+  @media (max-width:768px){
+    .app{margin:8px auto; padding:8px; width:calc(100% - 16px);}
+    .top{flex-direction:column; gap:12px; align-items:stretch;}
+    .brand{justify-content:center;}
+    .toolbar{justify-content:center; gap:8px;}
+    .btn{padding:8px 12px; min-height:40px;}
+    .switch{display:none;} /* Hide font/zoom controls on mobile */
+    textarea#doc{font-size:16px;} /* Prevent zoom on iOS */
+    .card{min-height:240px; padding:8px;}
+    .logo{width:36px; height:36px;}
+    h1{font-size:14px;}
   }
 
-  /* drop area */
+  /* Tablet */
+  @media (min-width:769px) and (max-width:1024px){
+    .panel{grid-template-columns:1fr 45%;}
+    p.lead{display:block;}
+  }
+
+  /* Desktop */
+  @media (min-width:1025px){
+    .panel{grid-template-columns:1fr 42%;}
+    .top{flex-direction:row;}
+    p.lead{display:block;}
+    .toolbar{width:auto;}
+  }
+
+  /* Drop area */
   .dropzone{
-    border:2px dashed rgba(255,255,255,0.03); padding:18px; border-radius:12px; display:flex; gap:12px; align-items:center;
-    justify-content:center; color:var(--muted); font-size:14px;
+    border:2px dashed rgba(255,255,255,0.04); padding:16px; border-radius:10px; 
+    display:flex; gap:8px; align-items:center; justify-content:center; 
+    color:var(--muted); font-size:13px; text-align:center; min-height:60px;
   }
 
-  /* small utilities */
-  .muted{color:var(--muted); font-size:13px}
-  .controls{display:flex; gap:8px; align-items:center; justify-content:flex-end; flex-wrap:wrap}
-  .meta{display:flex; gap:10px; align-items:center}
-  .search{padding:8px 10px; border-radius:10px; border:0; background:transparent; color:var(--text); outline:none; width:190px}
-  .status{font-size:12px; color:var(--muted)}
+  /* Utilities */
+  .muted{color:var(--muted); font-size:12px}
+  .controls{display:flex; gap:6px; align-items:center; justify-content:flex-end; flex-wrap:wrap}
+  .meta{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  .search{
+    padding:6px 8px; border-radius:8px; border:0; background:transparent; 
+    color:var(--text); outline:none; width:120px; font-size:12px;
+  }
+  .status{font-size:11px; color:var(--muted)}
 
-  /* markdown styles */
-  .preview h1{font-size:20px; margin:6px 0}
-  .preview h2{font-size:18px; margin:6px 0}
-  .preview p{margin:8px 0; color:var(--text)}
-  .preview pre{background:#071022; padding:12px; border-radius:8px; overflow:auto; font-family:monospace; font-size:13px}
-  .kbd{display:inline-block; padding:2px 6px; border-radius:6px; background:rgba(0,0,0,0.25); font-size:12px}
-  footer.note{font-size:12px; color:var(--muted); text-align:center; margin-top:8px}
+  /* Text formatting toolbar */
+  .format-toolbar{
+    display:flex; gap:4px; align-items:center; flex-wrap:wrap;
+    padding:6px; background:var(--glass); border-radius:8px; margin-bottom:8px;
+  }
+  .format-btn{
+    background:var(--card); border:0; padding:4px 6px; border-radius:6px; color:var(--text);
+    cursor:pointer; transition:all .1s ease; font-size:12px; min-width:28px; height:28px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .format-btn:hover{background:var(--accent); color:white;}
+  .format-btn:active{transform:translateY(1px)}
+  .format-btn.active{background:var(--accent); color:white;}
+  
+  .divider{
+    width:1px; height:20px; background:rgba(255,255,255,0.1); margin:0 4px;
+  }
+
+  /* Markdown styles */
+  .preview h1{font-size:18px; margin:8px 0}
+  .preview h2{font-size:16px; margin:6px 0}
+  .preview h3{font-size:15px; margin:6px 0}
+  .preview p{margin:6px 0; color:var(--text)}
+  .preview pre{
+    background:#071022; padding:10px; border-radius:6px; overflow:auto; 
+    font-family:monospace; font-size:12px; line-height:1.4;
+  }
+  .preview code{
+    background:rgba(255,255,255,0.1); padding:2px 4px; border-radius:4px; 
+    font-size:12px; font-family:monospace;
+  }
+  .kbd{
+    display:inline-block; padding:2px 6px; border-radius:4px; 
+    background:rgba(0,0,0,0.3); font-size:11px; font-family:monospace;
+  }
+  footer.note{font-size:11px; color:var(--muted); text-align:center; margin-top:6px; line-height:1.4;}
+
+  /* Focus states for accessibility */
+  .btn:focus, .search:focus, textarea:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Loading states */
+  .loading { opacity: 0.6; pointer-events: none; }
 </style>
 </head>
 <body data-theme="dark">
-<div class="app" role="application" aria-label="Doc & Edit app">
+<div class="app" role="application" aria-label="Text Editor">
   <div class="top">
     <div class="brand">
       <div class="logo">T2</div>
       <div>
-        <h1>Doc & Edit — Text2 Studio</h1>
-        <p class="lead">Đọc & chỉnh sửa tài liệu — nhẹ, responsive, đẹp. (Markdown preview & export)</p>
+        <h1>Text Editor</h1>
+        <p class="lead">Soạn thảo văn bản với Markdown preview</p>
       </div>
     </div>
 
     <div class="toolbar">
       <label class="btn" title="Mở file">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 7h18M6 7v10a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 7h18M6 7v10a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         <input id="fileInput" type="file" accept=".txt,.md,text/*,application/pdf" style="display:none">
         <span id="openBtnTxt">Mở</span>
       </label>
 
-      <button class="btn secondary" id="saveBtn" title="Tải file xuống">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M21 21H3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <button class="btn secondary" id="saveBtn" title="Lưu file">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M21 21H3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         Lưu
       </button>
 
-      <button class="btn" id="exportMd" title="Export .md">Export .md</button>
+      <button class="btn" id="exportMd" title="Export Markdown">MD</button>
 
       <button class="btn" id="togglePreview" title="Bật/tắt Preview">Preview</button>
 
       <div class="switch">
         <span class="muted">Font</span>
-        <input id="fontRange" type="range" min="13" max="22" value="15">
+        <input id="fontRange" type="range" min="12" max="20" value="14">
       </div>
 
       <div class="switch">
         <span class="muted">Zoom</span>
-        <input id="zoomRange" type="range" min="0.8" max="1.6" step="0.05" value="1">
+        <input id="zoomRange" type="range" min="0.8" max="1.4" step="0.1" value="1">
       </div>
 
-      <button class="btn secondary" id="themeBtn" title="Chế độ sáng/tối">🌙</button>
+      <button class="btn secondary" id="themeBtn" title="Đổi theme">🌙</button>
     </div>
   </div>
 
   <div class="panel">
     <div class="card left">
-      <div style="display:flex; justify-content:space-between; gap:12px; align-items:center">
+      <div style="display:flex; justify-content:space-between; gap:8px; align-items:center; flex-wrap:wrap;">
         <div class="muted">Editor</div>
         <div class="meta">
-          <input id="searchInput" class="search" placeholder="Tìm trong tài liệu..." />
-          <div class="status" id="status">⏺️ Ready</div>
+          <input id="searchInput" class="search" placeholder="Tìm..." />
+          <div class="status" id="status">Ready</div>
         </div>
       </div>
 
-      <div class="editor" style="min-height:320px;">
-        <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
-          <div class="dropzone" id="dropzone">Kéo thả file vào đây hoặc nhấn <span class="kbd">Mở</span></div>
-          <textarea id="doc" placeholder="Dán / viết nội dung ở đây..."></textarea>
-        </div>
-
+      <!-- Text Formatting Toolbar -->
+      <div class="format-toolbar">
+        <button class="format-btn" id="boldBtn" title="In đậm (Ctrl+B)" data-format="bold">
+          <strong>B</strong>
+        </button>
+        <button class="format-btn" id="italicBtn" title="In nghiêng (Ctrl+I)" data-format="italic">
+          <em>I</em>
+        </button>
+        <button class="format-btn" id="underlineBtn" title="Gạch chân" data-format="underline">
+          <u>U</u>
+        </button>
+        
+        <div class="divider"></div>
+        
+        <button class="format-btn" id="h1Btn" title="Tiêu đề 1" data-format="h1">H1</button>
+        <button class="format-btn" id="h2Btn" title="Tiêu đề 2" data-format="h2">H2</button>
+        <button class="format-btn" id="h3Btn" title="Tiêu đề 3" data-format="h3">H3</button>
+        
+        <div class="divider"></div>
+        
+        <button class="format-btn" id="listBtn" title="Danh sách" data-format="list">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+            <circle cx="6" cy="12" r="1" fill="currentColor"/>
+            <path d="M10 12h10M10 6h10M10 18h10" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+        <button class="format-btn" id="linkBtn" title="Liên kết" data-format="link">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+        <button class="format-btn" id="codeBtn" title="Code" data-format="code">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+            <path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+        
+        <div class="divider"></div>
+        
+        <button class="format-btn" id="quoteBtn" title="Trích dẫn" data-format="quote">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+            <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1zM15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+        <button class="format-btn" id="tableBtn" title="Bảng" data-format="table">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M3 9h18M3 15h18M12 3v18" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
       </div>
 
-      <div style="display:flex; gap:8px; align-items:center; justify-content:space-between">
-        <div class="muted">Autosave: <span id="autosave">On</span></div>
-        <div>
+      <div class="editor">
+        <div style="flex:1; display:flex; flex-direction:column; gap:6px;">
+          <div class="dropzone" id="dropzone">
+            Kéo file vào đây hoặc nhấn <span class="kbd">Mở</span>
+          </div>
+          <textarea id="doc" placeholder="Viết nội dung ở đây..." aria-label="Nội dung văn bản"></textarea>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:6px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+        <div class="muted">Auto: <span id="autosave">On</span></div>
+        <div style="display:flex; gap:6px;">
           <button class="btn secondary" id="clearBtn">Xóa</button>
-          <button class="btn" id="fullscreenBtn">⤢ Full</button>
+          <button class="btn" id="fullscreenBtn">⤢</button>
         </div>
       </div>
     </div>
 
     <div class="card right">
-      <div style="display:flex; justify-content:space-between; align-items:center">
-        <div class="muted">Preview / Tài liệu</div>
-        <div class="muted">Kích thước: <span id="sizeLabel">0 KB</span></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+        <div class="muted">Preview</div>
+        <div class="muted"><span id="sizeLabel">0 KB</span></div>
       </div>
 
-      <div class="preview" id="previewArea" style="flex:1; overflow:auto">
-        <div class="muted" id="emptyPreview">Preview sẽ hiện ở đây (Markdown hỗ trợ #, **, *, `code`).</div>
+      <div class="preview" id="previewArea" style="flex:1; overflow:auto" aria-live="polite">
+        <div class="muted" id="emptyPreview">
+          Preview hiển thị ở đây<br>
+          <small>Hỗ trợ Markdown: # ** * `code`</small>
+        </div>
       </div>
 
-      <footer class="note">Tip: Dùng <span class="kbd">Ctrl/Cmd + S</span> để lưu nhanh • Kéo file PDF vào để xem (trình duyệt hỗ trợ).</footer>
+      <footer class="note">
+        <span class="kbd">Ctrl+S</span> để lưu nhanh
+      </footer>
     </div>
   </div>
 </div>
 
 <!-- Inline JS -->
 <script>
-/* --- Tiny Doc & Edit app (no external libs) --- */
+/* --- Text Editor App --- */
 const docEl = document.getElementById('doc');
 const preview = document.getElementById('previewArea');
 const dropzone = document.getElementById('dropzone');
@@ -211,11 +340,11 @@ const emptyPreview = document.getElementById('emptyPreview');
 
 let previewOn = true;
 let autosave = true;
-const STORAGE_KEY = 'text2_doc_autosave_v1';
+const STORAGE_KEY = 'text2_editor_v2';
 
 /* Utils */
 function setStatus(text){ status.textContent = text; }
-function bytesToKB(n){ return Math.max(0, Math.round(n/10)/100).toFixed(2) + ' KB'; }
+function bytesToKB(n){ return Math.max(0, Math.round(n/10)/100).toFixed(1) + ' KB'; }
 
 /* Load from localStorage */
 (function init(){
@@ -223,9 +352,14 @@ function bytesToKB(n){ return Math.max(0, Math.round(n/10)/100).toFixed(2) + ' K
   if(saved){
     docEl.value = saved;
     renderPreview();
-    setStatus('Loaded autosave');
+    setStatus('Loaded');
   }
   updateSize();
+  
+  // Mobile optimizations
+  if(window.innerWidth <= 768){
+    document.querySelector('.panel').style.gridTemplateColumns = '1fr';
+  }
 })();
 
 /* Autosave */
@@ -236,47 +370,49 @@ docEl.addEventListener('input', e=>{
     clearTimeout(autosaveTimer);
     autosaveTimer = setTimeout(()=> {
       localStorage.setItem(STORAGE_KEY, docEl.value);
-      setStatus('Autosaved');
-    }, 600);
+      setStatus('Saved');
+    }, 500);
   }
   renderPreviewDebounced();
 });
 
-/* Render markdown (simple) */
+/* Render markdown (optimized) */
 function escapeHtml(s){ return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function simpleMarkdown(md){
-  // Very small renderer: headings, bold, italic, code block, inline code, links, lists
+  if(!md.trim()) return '';
+  
   let html = escapeHtml(md);
 
-  // code blocks ``` ```
-  html = html.replace(/```([\\s\\S]*?)```/g, (m, c)=> '<pre>' + escapeHtml(c) + '</pre>');
+  // Code blocks
+  html = html.replace(/```([\\s\\S]*?)```/g, (m, c)=> '<pre><code>' + escapeHtml(c.trim()) + '</code></pre>');
 
-  // headings
-  html = html.replace(/^###### (.*$)/gim, '<h6>$1</h6>');
+  // Headings
   html = html.replace(/^##### (.*$)/gim, '<h5>$1</h5>');
   html = html.replace(/^#### (.*$)/gim, '<h4>$1</h4>');
   html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
   html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
   html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
 
-  // bold **text**
+  // Bold & Italic
   html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-  // italic *text*
   html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-  // inline code `x`
+  
+  // Inline code
   html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-  // links [text](url)
+  
+  // Links
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
-  // lists - simple
+  
+  // Lists
   html = html.replace(/(^|\n)- (.+)/g, '$1<ul><li>$2</li></ul>');
-  // paragraphs
-  html = html.replace(/\n{2,}/g, '</p><p>');
-  // wrap
-  html = '<p>' + html + '</p>';
-  // cleanup nested <p> in pre
-  html = html.replace(/<p><pre>/g,'<pre>').replace(/<\/pre><\/p>/g,'</pre>');
-  // merge adjacent ul
   html = html.replace(/<\/ul>\s*<ul>/g,'');
+  
+  // Paragraphs
+  html = html.replace(/\n{2,}/g, '</p><p>');
+  html = '<p>' + html + '</p>';
+  html = html.replace(/<p><pre>/g,'<pre>').replace(/<\/pre><\/p>/g,'</pre>');
+  html = html.replace(/<p><h/g,'<h').replace(/<\/h([1-6])><\/p>/g,'</h$1>');
+  
   return html;
 }
 
@@ -290,9 +426,10 @@ function renderPreview(){
   if(!txt){
     emptyPreview.style.display='block';
     return;
-  } else emptyPreview.style.display='none';
+  } else {
+    emptyPreview.style.display='none';
+  }
 
-  // If looks like PDF url/object -> embed handled elsewhere, otherwise markdown
   preview.innerHTML = simpleMarkdown(txt);
 }
 
@@ -300,10 +437,10 @@ function renderPreview(){
 let renderTimer;
 function renderPreviewDebounced(){
   clearTimeout(renderTimer);
-  renderTimer = setTimeout(renderPreview, 180);
+  renderTimer = setTimeout(renderPreview, 150);
 }
 
-/* File open */
+/* File handling */
 fileInput.addEventListener('change', async (e)=>{
   const f = e.target.files[0];
   if(!f) return;
@@ -313,12 +450,22 @@ fileInput.addEventListener('change', async (e)=>{
 
 dropzone.addEventListener('click', ()=> fileInput.click());
 
-;['dragenter','dragover'].forEach(ev=>{
-  dropzone.addEventListener(ev, e=>{ e.preventDefault(); dropzone.style.borderColor='rgba(255,255,255,0.12)'; });
+['dragenter','dragover'].forEach(ev=>{
+  dropzone.addEventListener(ev, e=>{ 
+    e.preventDefault(); 
+    dropzone.style.borderColor='var(--accent)'; 
+    dropzone.style.backgroundColor='rgba(124,58,237,0.1)';
+  });
 });
-;['dragleave','drop'].forEach(ev=>{
-  dropzone.addEventListener(ev, e=>{ e.preventDefault(); dropzone.style.borderColor='transparent'; });
+
+['dragleave','drop'].forEach(ev=>{
+  dropzone.addEventListener(ev, e=>{ 
+    e.preventDefault(); 
+    dropzone.style.borderColor='rgba(255,255,255,0.04)';
+    dropzone.style.backgroundColor='transparent';
+  });
 });
+
 dropzone.addEventListener('drop', e=>{
   const f = e.dataTransfer.files && e.dataTransfer.files[0];
   if(!f) return;
@@ -326,29 +473,26 @@ dropzone.addEventListener('drop', e=>{
 });
 
 async function handleFile(file){
-  setStatus('Mở file: '+file.name);
+  setStatus('Opening...');
   sizeLabel.textContent = bytesToKB(file.size);
-  const type = file.type || '';
-  if(type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')){
-    // embed PDF
+  
+  if(file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')){
     const url = URL.createObjectURL(file);
-    preview.innerHTML = `<embed src="${url}" type="application/pdf" width="100%" height="600px">`;
-    // try read as text as well
-    try {
-      const array = await file.arrayBuffer();
-      // not reading text
-    } catch(e){}
-    docEl.value = '--- PDF: '+file.name+' ---\n(Preview hiển thị ở bên phải)';
-    renderPreview();
+    preview.innerHTML = `<embed src="${url}" type="application/pdf" width="100%" height="500px" style="border-radius:8px;">`;
+    docEl.value = `# PDF: ${file.name}\n\n(Preview hiển thị bên phải)`;
+    setStatus('PDF loaded');
     return;
   }
 
-  // read as text
-  const text = await file.text();
-  docEl.value = text;
-  renderPreview();
-  localStorage.setItem(STORAGE_KEY, docEl.value);
-  setStatus('Đã mở: ' + file.name);
+  try {
+    const text = await file.text();
+    docEl.value = text;
+    renderPreview();
+    localStorage.setItem(STORAGE_KEY, docEl.value);
+    setStatus(`Opened: ${file.name}`);
+  } catch(e) {
+    setStatus('Error opening file');
+  }
 }
 
 /* Save / Export */
@@ -362,15 +506,15 @@ function download(filename, text){
 }
 
 saveBtn.addEventListener('click', ()=>{
-  const name = prompt('Tên file (ví dụ: note.txt):', 'document.txt') || 'document.txt';
+  const name = prompt('Tên file:', 'document.txt') || 'document.txt';
   download(name, docEl.value);
-  setStatus('Saved ' + name);
+  setStatus('Downloaded');
 });
 
 exportMd.addEventListener('click', ()=>{
-  const name = prompt('Tên file Markdown (.md):', 'document.md') || 'document.md';
+  const name = prompt('Tên file .md:', 'document.md') || 'document.md';
   download(name, docEl.value);
-  setStatus('Exported Markdown');
+  setStatus('MD exported');
 });
 
 /* Toggle preview */
@@ -378,52 +522,72 @@ togglePreview.addEventListener('click', ()=>{
   previewOn = !previewOn;
   togglePreview.style.opacity = previewOn ? 1 : 0.6;
   renderPreview();
+  
+  // Mobile layout adjustment
+  if(window.innerWidth <= 768){
+    const panel = document.querySelector('.panel');
+    if(previewOn){
+      panel.style.gridTemplateColumns = '1fr';
+    }
+  }
 });
 
 /* Font & Zoom */
 fontRange.addEventListener('input', e=>{
   docEl.style.fontSize = e.target.value + 'px';
 });
+
 zoomRange.addEventListener('input', e=>{
-  document.querySelector('.app').style.transform = `scale(${e.target.value})`;
-  document.querySelector('.app').style.transformOrigin = 'top center';
+  const app = document.querySelector('.app');
+  app.style.transform = `scale(${e.target.value})`;
+  app.style.transformOrigin = 'top center';
 });
 
 /* Theme */
 themeBtn.addEventListener('click', ()=>{
   const body = document.body;
-  if(body.getAttribute('data-theme') === 'dark'){
-    body.setAttribute('data-theme','light');
-    themeBtn.textContent = '☀️';
-  } else {
-    body.setAttribute('data-theme','dark');
-    themeBtn.textContent = '🌙';
-  }
+  const isDark = body.getAttribute('data-theme') === 'dark';
+  body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  themeBtn.textContent = isDark ? '☀️' : '🌙';
 });
 
 /* Clear */
 clearBtn.addEventListener('click', ()=>{
-  if(confirm('Xóa nội dung ở editor?')){ docEl.value=''; renderPreview(); localStorage.removeItem(STORAGE_KEY); setStatus('Cleared'); sizeLabel.textContent='0 KB'; }
+  if(confirm('Xóa nội dung?')){ 
+    docEl.value=''; 
+    renderPreview(); 
+    localStorage.removeItem(STORAGE_KEY); 
+    setStatus('Cleared'); 
+    updateSize(); 
+  }
 });
 
 /* Fullscreen */
 fullscreenBtn.addEventListener('click', ()=>{
-  const el = document.documentElement;
-  if(!document.fullscreenElement) el.requestFullscreen?.();
-  else document.exitFullscreen?.();
+  if(!document.fullscreenElement) {
+    document.documentElement.requestFullscreen?.();
+  } else {
+    document.exitFullscreen?.();
+  }
 });
 
 /* Search */
 searchInput.addEventListener('input', (e)=>{
   const q = e.target.value.trim();
-  if(!q){ renderPreview(); setStatus('Search cleared'); return; }
-  // highlight in preview by wrapping
+  if(!q){ 
+    renderPreview(); 
+    setStatus('Ready'); 
+    return; 
+  }
+  
   const raw = simpleMarkdown(docEl.value);
   const safeQ = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const re = new RegExp(safeQ, 'gi');
-  const highlighted = raw.replace(re, m => `<mark style="background:var(--accent); color:white; padding:0 4px; border-radius:3px">${m}</mark>`);
+  const highlighted = raw.replace(re, m => 
+    `<mark style="background:var(--accent); color:white; padding:1px 4px; border-radius:3px">${m}</mark>`
+  );
   preview.innerHTML = highlighted;
-  setStatus('Found "'+q+'"');
+  setStatus(`Found "${q}"`);
 });
 
 /* Keyboard shortcuts */
@@ -432,20 +596,53 @@ window.addEventListener('keydown', (e)=>{
     e.preventDefault();
     saveBtn.click();
   }
+  
+  // ESC to clear search
+  if(e.key === 'Escape' && searchInput.value){
+    searchInput.value = '';
+    searchInput.dispatchEvent(new Event('input'));
+  }
 });
 
-/* Size */
+/* Size tracking */
 function updateSize(){
   const bytes = new TextEncoder().encode(docEl.value || '').length;
   sizeLabel.textContent = bytesToKB(bytes);
 }
 
+/* Responsive adjustments */
+window.addEventListener('resize', ()=>{
+  const panel = document.querySelector('.panel');
+  if(window.innerWidth <= 768){
+    panel.style.gridTemplateColumns = '1fr';
+  } else if(window.innerWidth <= 1024){
+    panel.style.gridTemplateColumns = '1fr 45%';
+  } else {
+    panel.style.gridTemplateColumns = '1fr 42%';
+  }
+});
+
 /* Initial render */
 renderPreview();
 
-/* Accessibility small tweaks */
-docEl.setAttribute('aria-label','Editor text');
-preview.setAttribute('aria-live','polite');
+/* Touch improvements for mobile */
+if('ontouchstart' in window){
+  // Improve touch targets
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.style.minHeight = '44px';
+    btn.style.minWidth = '44px';
+  });
+}
+
+/* Performance optimization */
+let isScrolling;
+preview.addEventListener('scroll', ()=>{
+  clearTimeout(isScrolling);
+  preview.style.pointerEvents = 'none';
+  isScrolling = setTimeout(()=>{
+    preview.style.pointerEvents = 'auto';
+  }, 100);
+});
 </script>
 </body>
 </html>
