@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+<title>Doc & Edit — Text2 Studio</title>
+<meta name="description" content="Ứng dụng đọc và chỉnh sửa tài liệu nhẹ, responsive, hỗ trợ markdown preview, autosave, export." />
+<!-- Basic styles (inline) -->
+<style>
+  :root{
+    --bg:#0f1724; --panel:#0b1220; --muted:#94a3b8; --accent:#7c3aed;
+    --card:#0b1220; --glass: rgba(255,255,255,0.03);
+    --radius:14px; --gap:14px; --shadow: 0 8px 30px rgba(2,6,23,0.6);
+    --text:#e6eef8;
+  }
+  [data-theme="light"]{
+    --bg:#f6f8fb; --panel:#ffffff; --muted:#4b5563; --accent:#6d28d9;
+    --card:#ffffff; --glass: rgba(0,0,0,0.03); --text:#0b1220;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%; margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:linear-gradient(180deg,var(--bg), #081226 140%); color:var(--text); -webkit-font-smoothing:antialiased}
+  .app{
+    max-width:1200px; margin:24px auto; padding:18px; display:grid; gap:var(--gap);
+    grid-template-columns: 1fr; width:calc(100% - 32px);
+  }
+
+  /* Header */
+  .top{
+    display:flex; gap:12px; align-items:center; justify-content:space-between;
+  }
+  .brand{display:flex; gap:12px; align-items:center}
+  .logo{
+    width:48px; height:48px; border-radius:12px; display:grid; place-items:center;
+    background:linear-gradient(135deg,var(--accent), #0ea5e9); box-shadow:var(--shadow);
+    font-weight:700; color:white; font-family:monospace;
+  }
+  h1{font-size:18px; margin:0}
+  p.lead{margin:0; color:var(--muted); font-size:13px}
+
+  /* Toolbar */
+  .toolbar{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+  .btn{
+    background:var(--card); border:0; padding:8px 12px; border-radius:10px; color:var(--text);
+    display:inline-flex; gap:8px; align-items:center; cursor:pointer; box-shadow:0 6px 18px rgba(2,6,23,0.35);
+    transition:transform .12s ease, opacity .12s; user-select:none;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn.secondary{background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--muted)}
+  .switch{display:inline-flex; gap:8px; align-items:center; padding:6px; border-radius:999px}
+  input[type="range"]{width:110px}
+
+  /* Layout */
+  .panel{
+    display:grid; grid-template-columns: 1fr 46%;
+    gap:16px; align-items:stretch;
+  }
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:var(--radius); padding:12px; box-shadow:var(--shadow); min-height:320px; overflow:hidden;
+    display:flex; flex-direction:column;
+  }
+  .editor{
+    flex:1; display:flex; gap:12px; min-height:320px;
+  }
+  .left{flex:1; display:flex; flex-direction:column; gap:12px}
+  .right{width:100%; min-width:240px; max-width:640px; display:flex; flex-direction:column; gap:12px}
+
+  textarea#doc{
+    width:100%; height:100%; resize:none; background:transparent; border:0; outline:none; color:var(--text);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; font-size:15px; line-height:1.6;
+  }
+  .preview{
+    overflow:auto; padding:12px; border-radius:10px; background:var(--glass); color:var(--text);
+  }
+
+  /* responsive */
+  @media (max-width:980px){
+    .panel{grid-template-columns:1fr; }
+    .right{order:2}
+    .left{order:1}
+    .logo{width:44px;height:44px}
+  }
+
+  /* drop area */
+  .dropzone{
+    border:2px dashed rgba(255,255,255,0.03); padding:18px; border-radius:12px; display:flex; gap:12px; align-items:center;
+    justify-content:center; color:var(--muted); font-size:14px;
+  }
+
+  /* small utilities */
+  .muted{color:var(--muted); font-size:13px}
+  .controls{display:flex; gap:8px; align-items:center; justify-content:flex-end; flex-wrap:wrap}
+  .meta{display:flex; gap:10px; align-items:center}
+  .search{padding:8px 10px; border-radius:10px; border:0; background:transparent; color:var(--text); outline:none; width:190px}
+  .status{font-size:12px; color:var(--muted)}
+
+  /* markdown styles */
+  .preview h1{font-size:20px; margin:6px 0}
+  .preview h2{font-size:18px; margin:6px 0}
+  .preview p{margin:8px 0; color:var(--text)}
+  .preview pre{background:#071022; padding:12px; border-radius:8px; overflow:auto; font-family:monospace; font-size:13px}
+  .kbd{display:inline-block; padding:2px 6px; border-radius:6px; background:rgba(0,0,0,0.25); font-size:12px}
+  footer.note{font-size:12px; color:var(--muted); text-align:center; margin-top:8px}
+</style>
+</head>
+<body data-theme="dark">
+<div class="app" role="application" aria-label="Doc & Edit app">
+  <div class="top">
+    <div class="brand">
+      <div class="logo">T2</div>
+      <div>
+        <h1>Doc & Edit — Text2 Studio</h1>
+        <p class="lead">Đọc & chỉnh sửa tài liệu — nhẹ, responsive, đẹp. (Markdown preview & export)</p>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <label class="btn" title="Mở file">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 7h18M6 7v10a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <input id="fileInput" type="file" accept=".txt,.md,text/*,application/pdf" style="display:none">
+        <span id="openBtnTxt">Mở</span>
+      </label>
+
+      <button class="btn secondary" id="saveBtn" title="Tải file xuống">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M21 21H3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Lưu
+      </button>
+
+      <button class="btn" id="exportMd" title="Export .md">Export .md</button>
+
+      <button class="btn" id="togglePreview" title="Bật/tắt Preview">Preview</button>
+
+      <div class="switch">
+        <span class="muted">Font</span>
+        <input id="fontRange" type="range" min="13" max="22" value="15">
+      </div>
+
+      <div class="switch">
+        <span class="muted">Zoom</span>
+        <input id="zoomRange" type="range" min="0.8" max="1.6" step="0.05" value="1">
+      </div>
+
+      <button class="btn secondary" id="themeBtn" title="Chế độ sáng/tối">🌙</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="card left">
+      <div style="display:flex; justify-content:space-between; gap:12px; align-items:center">
+        <div class="muted">Editor</div>
+        <div class="meta">
+          <input id="searchInput" class="search" placeholder="Tìm trong tài liệu..." />
+          <div class="status" id="status">⏺️ Ready</div>
+        </div>
+      </div>
+
+      <div class="editor" style="min-height:320px;">
+        <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+          <div class="dropzone" id="dropzone">Kéo thả file vào đây hoặc nhấn <span class="kbd">Mở</span></div>
+          <textarea id="doc" placeholder="Dán / viết nội dung ở đây..."></textarea>
+        </div>
+
+      </div>
+
+      <div style="display:flex; gap:8px; align-items:center; justify-content:space-between">
+        <div class="muted">Autosave: <span id="autosave">On</span></div>
+        <div>
+          <button class="btn secondary" id="clearBtn">Xóa</button>
+          <button class="btn" id="fullscreenBtn">⤢ Full</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card right">
+      <div style="display:flex; justify-content:space-between; align-items:center">
+        <div class="muted">Preview / Tài liệu</div>
+        <div class="muted">Kích thước: <span id="sizeLabel">0 KB</span></div>
+      </div>
+
+      <div class="preview" id="previewArea" style="flex:1; overflow:auto">
+        <div class="muted" id="emptyPreview">Preview sẽ hiện ở đây (Markdown hỗ trợ #, **, *, `code`).</div>
+      </div>
+
+      <footer class="note">Tip: Dùng <span class="kbd">Ctrl/Cmd + S</span> để lưu nhanh • Kéo file PDF vào để xem (trình duyệt hỗ trợ).</footer>
+    </div>
+  </div>
+</div>
+
+<!-- Inline JS -->
+<script>
+/* --- Tiny Doc & Edit app (no external libs) --- */
+const docEl = document.getElementById('doc');
+const preview = document.getElementById('previewArea');
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+const openBtnTxt = document.getElementById('openBtnTxt');
+const saveBtn = document.getElementById('saveBtn');
+const exportMd = document.getElementById('exportMd');
+const togglePreview = document.getElementById('togglePreview');
+const fontRange = document.getElementById('fontRange');
+const zoomRange = document.getElementById('zoomRange');
+const themeBtn = document.getElementById('themeBtn');
+const clearBtn = document.getElementById('clearBtn');
+const fullscreenBtn = document.getElementById('fullscreenBtn');
+const searchInput = document.getElementById('searchInput');
+const status = document.getElementById('status');
+const autosaveLabel = document.getElementById('autosave');
+const sizeLabel = document.getElementById('sizeLabel');
+const emptyPreview = document.getElementById('emptyPreview');
+
+let previewOn = true;
+let autosave = true;
+const STORAGE_KEY = 'text2_doc_autosave_v1';
+
+/* Utils */
+function setStatus(text){ status.textContent = text; }
+function bytesToKB(n){ return Math.max(0, Math.round(n/10)/100).toFixed(2) + ' KB'; }
+
+/* Load from localStorage */
+(function init(){
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if(saved){
+    docEl.value = saved;
+    renderPreview();
+    setStatus('Loaded autosave');
+  }
+  updateSize();
+})();
+
+/* Autosave */
+let autosaveTimer;
+docEl.addEventListener('input', e=>{
+  updateSize();
+  if(autosave){
+    clearTimeout(autosaveTimer);
+    autosaveTimer = setTimeout(()=> {
+      localStorage.setItem(STORAGE_KEY, docEl.value);
+      setStatus('Autosaved');
+    }, 600);
+  }
+  renderPreviewDebounced();
+});
+
+/* Render markdown (simple) */
+function escapeHtml(s){ return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function simpleMarkdown(md){
+  // Very small renderer: headings, bold, italic, code block, inline code, links, lists
+  let html = escapeHtml(md);
+
+  // code blocks ``` ```
+  html = html.replace(/```([\\s\\S]*?)```/g, (m, c)=> '<pre>' + escapeHtml(c) + '</pre>');
+
+  // headings
+  html = html.replace(/^###### (.*$)/gim, '<h6>$1</h6>');
+  html = html.replace(/^##### (.*$)/gim, '<h5>$1</h5>');
+  html = html.replace(/^#### (.*$)/gim, '<h4>$1</h4>');
+  html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+  html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+  html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+
+  // bold **text**
+  html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  // italic *text*
+  html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  // inline code `x`
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // links [text](url)
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  // lists - simple
+  html = html.replace(/(^|\n)- (.+)/g, '$1<ul><li>$2</li></ul>');
+  // paragraphs
+  html = html.replace(/\n{2,}/g, '</p><p>');
+  // wrap
+  html = '<p>' + html + '</p>';
+  // cleanup nested <p> in pre
+  html = html.replace(/<p><pre>/g,'<pre>').replace(/<\/pre><\/p>/g,'</pre>');
+  // merge adjacent ul
+  html = html.replace(/<\/ul>\s*<ul>/g,'');
+  return html;
+}
+
+function renderPreview(){
+  if(!previewOn){
+    preview.style.display='none';
+    return;
+  }
+  preview.style.display='block';
+  const txt = docEl.value.trim();
+  if(!txt){
+    emptyPreview.style.display='block';
+    return;
+  } else emptyPreview.style.display='none';
+
+  // If looks like PDF url/object -> embed handled elsewhere, otherwise markdown
+  preview.innerHTML = simpleMarkdown(txt);
+}
+
+/* Debounce */
+let renderTimer;
+function renderPreviewDebounced(){
+  clearTimeout(renderTimer);
+  renderTimer = setTimeout(renderPreview, 180);
+}
+
+/* File open */
+fileInput.addEventListener('change', async (e)=>{
+  const f = e.target.files[0];
+  if(!f) return;
+  handleFile(f);
+  fileInput.value = '';
+});
+
+dropzone.addEventListener('click', ()=> fileInput.click());
+
+;['dragenter','dragover'].forEach(ev=>{
+  dropzone.addEventListener(ev, e=>{ e.preventDefault(); dropzone.style.borderColor='rgba(255,255,255,0.12)'; });
+});
+;['dragleave','drop'].forEach(ev=>{
+  dropzone.addEventListener(ev, e=>{ e.preventDefault(); dropzone.style.borderColor='transparent'; });
+});
+dropzone.addEventListener('drop', e=>{
+  const f = e.dataTransfer.files && e.dataTransfer.files[0];
+  if(!f) return;
+  handleFile(f);
+});
+
+async function handleFile(file){
+  setStatus('Mở file: '+file.name);
+  sizeLabel.textContent = bytesToKB(file.size);
+  const type = file.type || '';
+  if(type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')){
+    // embed PDF
+    const url = URL.createObjectURL(file);
+    preview.innerHTML = `<embed src="${url}" type="application/pdf" width="100%" height="600px">`;
+    // try read as text as well
+    try {
+      const array = await file.arrayBuffer();
+      // not reading text
+    } catch(e){}
+    docEl.value = '--- PDF: '+file.name+' ---\n(Preview hiển thị ở bên phải)';
+    renderPreview();
+    return;
+  }
+
+  // read as text
+  const text = await file.text();
+  docEl.value = text;
+  renderPreview();
+  localStorage.setItem(STORAGE_KEY, docEl.value);
+  setStatus('Đã mở: ' + file.name);
+}
+
+/* Save / Export */
+function download(filename, text){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text], {type:'text/plain'}));
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+saveBtn.addEventListener('click', ()=>{
+  const name = prompt('Tên file (ví dụ: note.txt):', 'document.txt') || 'document.txt';
+  download(name, docEl.value);
+  setStatus('Saved ' + name);
+});
+
+exportMd.addEventListener('click', ()=>{
+  const name = prompt('Tên file Markdown (.md):', 'document.md') || 'document.md';
+  download(name, docEl.value);
+  setStatus('Exported Markdown');
+});
+
+/* Toggle preview */
+togglePreview.addEventListener('click', ()=>{
+  previewOn = !previewOn;
+  togglePreview.style.opacity = previewOn ? 1 : 0.6;
+  renderPreview();
+});
+
+/* Font & Zoom */
+fontRange.addEventListener('input', e=>{
+  docEl.style.fontSize = e.target.value + 'px';
+});
+zoomRange.addEventListener('input', e=>{
+  document.querySelector('.app').style.transform = `scale(${e.target.value})`;
+  document.querySelector('.app').style.transformOrigin = 'top center';
+});
+
+/* Theme */
+themeBtn.addEventListener('click', ()=>{
+  const body = document.body;
+  if(body.getAttribute('data-theme') === 'dark'){
+    body.setAttribute('data-theme','light');
+    themeBtn.textContent = '☀️';
+  } else {
+    body.setAttribute('data-theme','dark');
+    themeBtn.textContent = '🌙';
+  }
+});
+
+/* Clear */
+clearBtn.addEventListener('click', ()=>{
+  if(confirm('Xóa nội dung ở editor?')){ docEl.value=''; renderPreview(); localStorage.removeItem(STORAGE_KEY); setStatus('Cleared'); sizeLabel.textContent='0 KB'; }
+});
+
+/* Fullscreen */
+fullscreenBtn.addEventListener('click', ()=>{
+  const el = document.documentElement;
+  if(!document.fullscreenElement) el.requestFullscreen?.();
+  else document.exitFullscreen?.();
+});
+
+/* Search */
+searchInput.addEventListener('input', (e)=>{
+  const q = e.target.value.trim();
+  if(!q){ renderPreview(); setStatus('Search cleared'); return; }
+  // highlight in preview by wrapping
+  const raw = simpleMarkdown(docEl.value);
+  const safeQ = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp(safeQ, 'gi');
+  const highlighted = raw.replace(re, m => `<mark style="background:var(--accent); color:white; padding:0 4px; border-radius:3px">${m}</mark>`);
+  preview.innerHTML = highlighted;
+  setStatus('Found "'+q+'"');
+});
+
+/* Keyboard shortcuts */
+window.addEventListener('keydown', (e)=>{
+  if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's'){
+    e.preventDefault();
+    saveBtn.click();
+  }
+});
+
+/* Size */
+function updateSize(){
+  const bytes = new TextEncoder().encode(docEl.value || '').length;
+  sizeLabel.textContent = bytesToKB(bytes);
+}
+
+/* Initial render */
+renderPreview();
+
+/* Accessibility small tweaks */
+docEl.setAttribute('aria-label','Editor text');
+preview.setAttribute('aria-live','polite');
+</script>
+</body>
+</html>
