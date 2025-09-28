@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Text2 Ecosystem</title>
+  <link rel="stylesheet" href="assets/css/base.css"/>
+  <link rel="stylesheet" href="assets/css/header.css"/>
+  <link rel="stylesheet" href="assets/css/sidebar.css"/>
+  <link rel="stylesheet" href="assets/css/app-grid.css"/>
+  <link rel="stylesheet" href="assets/css/footer.css"/>
+</head>
+<body>
+  <!-- Header / Topbar -->
+  <header class="topbar">
+    <button class="menu-toggle" id="menuToggle"><i class="icon-menu"></i></button>
+    <div class="logo">Text2</div>
+    <nav class="topbar-nav">
+      <button class="nav-btn">APP</button>
+      <button class="nav-btn">TEAM</button>
+      <button class="nav-btn">Camera</button>
+      <button class="nav-btn install">Install</button>
+    </nav>
+    <div class="topbar-actions">
+      <input type="text" id="searchInput" placeholder="Search your app..."/>
+      <i class="icon-bell"></i>
+      <span class="clock" id="clock"></span>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="logo">Text2</span>
+      <button class="close-sidebar" id="closeSidebar">&times;</button>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a href="#">Text2 - Team</a></li>
+      <li><a href="#">App</a></li>
+      <li><a href="#">Camera</a></li>
+    </ul>
+    <h4>Social Media</h4>
+    <ul class="social-links">
+      <li><a href="#"><i class="icon-facebook"></i> Facebook</a></li>
+      <li><a href="#"><i class="icon-youtube"></i> YouTube</a></li>
+      <li><a href="#"><i class="icon-tiktok"></i> TikTok</a></li>
+      <li><a href="#"><i class="icon-instagram"></i> Instagram</a></li>
+      <li><a href="#"><i class="icon-twitter"></i> Twitter (X)</a></li>
+      <li><a href="#"><i class="icon-threads"></i> Threads</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main content -->
+  <main class="content">
+    <h2 class="section-title">Text2 Ecosystem</h2>
+    <section class="app-grid">
+      <!-- Example App Card -->
+      <div class="app-card">
+        <img src="img/icons/camera.svg" alt="Camera"/>
+        <span>Camera</span>
+      </div>
+      <div class="app-card">
+        <img src="img/icons/note.svg" alt="Note"/>
+        <span>Note</span>
+      </div>
+      <!-- Thêm các app-card khác tương tự -->
+    </section>
+
+    <section class="channels">
+      <h3>Our Channels</h3>
+      <div class="channel-list">
+        <a href="#">Facebook</a>
+        <a href="#">YouTube</a>
+        <a href="#">TikTok</a>
+        <!-- ... -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#">Home</a> | 
+      <a href="#">Blog</a> | 
+      <a href="#">Contact</a> | 
+      <a href="#">Privacy Policy</a>
+    </div>
+    <p>© 2025 Text2 | All rights reserved.</p>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/sidebar.js"></script>
+  <script src="assets/js/search.js"></script>
+</body>
+</html>

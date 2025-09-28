@@ -1,0 +1,10 @@
+.sidebar {
+    position: fixed; top: 0; left: -260px; width: 260px; height: 100%;
+    background: #141414; transition: left 0.3s ease; overflow-y: auto;
+    padding: 1rem;
+  }
+  .sidebar.open { left: 0; }
+  .sidebar-header { display: flex; justify-content: space-between; align-items: center; }
+  .sidebar-menu, .social-links { list-style: none; margin-top: 1rem; }
+  .sidebar-menu li, .social-links li { margin-bottom: 0.5rem; }
+  
