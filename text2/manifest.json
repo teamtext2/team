@@ -1,0 +1,86 @@
+{
+  "name": "Text2",
+  "short_name": "Text2",
+  "description": "Text2 - Hi Guys",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f0f0f",
+  "theme_color": "#23272a",
+  "categories": ["productivity", "utilities", "social"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48 64x64 96x96 128x128 256x256",
+      "type": "image/x-icon",
+      "purpose": "any"
+    },
+    {
+      "src": "/logoc.png",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logoc.png",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Chat AI",
+      "short_name": "Chat",
+      "description": "Open Chat AI",
+      "url": "chat.text2.click",
+      "icons": [
+        {
+          "src": "chat.text2.click/favicon.ico",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "note",
+      "short_name": "Doc",
+      "description": "Open note",
+      "url": "/app/note",
+      "icons": [
+        {
+          "src": "note.text2.click/favicon.ico",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Translate",
+      "short_name": "Translate",
+      "description": "Open Translate",
+      "url": "https://translate.text2.click",
+      "icons": [
+        {
+          "src": "translate.text2.click/favicon.ico",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/logoc.png",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Text2 Homepage"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
+} 
