@@ -13,15 +13,15 @@ const appData = [
     { id: 11, name: "Scan QR", description: "Scan QR codes with your camera.", icon: "https://qr.text2.click/scan/apple-touch-icon.png", url: "https://qr.text2.click/scan/" },
     { id: 12, name: "Add Luts", description: "Apply LUTs to your images.", icon: "https://luts.text2.click/apple-touch-icon.png", url: "https://luts.text2.click" },
     { id: 13, name: "File", description: "File management (in development).", icon: "https://file.text2.click/apple-touch-icon.png", url: "https://file.text2.click" },
-    { id: 14, name: "Create Img", description: "Create images (in development).", icon: "https://team.text2.click/app/create-img/apple-touch-icon.png", url: "https://team.text2.click/app/create-img/" }, 
+    { id: 14, name: "Create Img", description: "Create images (in development).", icon: "https://team.text2.click/app/create-img/apple-touch-icon.png", url: "https://team.text2.click/app/create-img/" },
+    { id: 15, name: "Weather", description: "Check the weather forecast.", icon: "https://team.text2.click/app/weather/apple-touch-icon.png", url: "https://team.text2.click/app/weather" },
 ];
 
 // Research apps data
 const researchAppData = [
-    { id: 1, name: "Weather", description: "Check the weather forecast.", icon: "https://team.text2.click/app/weather/apple-touch-icon.png", url: "https://team.text2.click/app/weather" },
-    { id: 2, name: "Create Image", description: "Create images (Team).", icon: "https://team.text2.click/app/create-img/apple-touch-icon.png", url: "https://team.text2.click/app/create-img" },
-    { id: 3, name: "Image Compression", description: "Compress image file size.", icon: "https://team.text2.click/app/compy/apple-touch-icon.png", url: "https://team.text2.click/app/compy" },
-    { id: 4, name: "TTS", description: "Convert text to speech.", icon: "https://team.text2.click/app/tts/apple-touch-icon.png", url: "https://team.text2.click/app/tts" },
+    { id: 1, name: "Create Image", description: "Create images (Team).", icon: "https://team.text2.click/app/create-img/apple-touch-icon.png", url: "https://team.text2.click/app/create-img" },
+    { id: 2, name: "Image Compression", description: "Compress image file size.", icon: "https://team.text2.click/app/compy/apple-touch-icon.png", url: "https://team.text2.click/app/compy" },
+    { id: 3, name: "TTS", description: "Convert text to speech.", icon: "https://team.text2.click/app/tts/apple-touch-icon.png", url: "https://team.text2.click/app/tts" },
 ];
 
 
