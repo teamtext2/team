@@ -320,12 +320,43 @@
 
             const searchTerm = searchInput.value.toLowerCase().trim();
 
-            const filteredApps = appData.filter(app => 
+            // If search is empty, show all apps in their original sections
+            if (searchTerm === '') {
+                renderApps(appData);
+                renderResearchApps(researchAppData);
+                // Show section headers
+                document.querySelector('h1').style.display = 'block';
+                document.querySelector('h2').style.display = 'block';
+                document.querySelector('h2').parentElement.style.display = 'flex';
+                return;
+            }
+
+            // Filter both main apps and research apps
+            const filteredMainApps = appData.filter(app => 
                 app.name.toLowerCase().includes(searchTerm) || 
                 app.description.toLowerCase().includes(searchTerm)
             );
 
-            renderApps(filteredApps);
+            const filteredResearchApps = researchAppData.filter(app => 
+                app.name.toLowerCase().includes(searchTerm) || 
+                app.description.toLowerCase().includes(searchTerm)
+            );
+
+            // Combine all filtered results
+            const allFilteredApps = [...filteredMainApps, ...filteredResearchApps];
+
+            // Hide section headers during search
+            document.querySelector('h1').style.display = 'none';
+            document.querySelector('h2').parentElement.style.display = 'none';
+
+            // Render all results in the main grid
+            renderApps(allFilteredApps);
+            
+            // Clear research apps grid during search
+            const researchAppGrid = document.getElementById('research-app-grid');
+            if (researchAppGrid) {
+                researchAppGrid.innerHTML = '';
+            }
         };
 
         // Run when DOM is loaded
