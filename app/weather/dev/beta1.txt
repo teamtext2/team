@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <title>Text2 - Weather Check</title>
+  
+  <!-- SEO Meta Tags --> 
+  <meta name="description" content="Check current weather conditions instantly. Get real-time weather data including temperature, humidity, wind speed and weather forecast for your location. Free weather check tool.">
+  <meta name="keywords" content="weather check, current weather, weather forecast, temperature, humidity, wind speed, weather conditions, local weather, weather app, weather tool">
+  <meta name="author" content="Text2">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  <meta name="revisit-after" content="7 days">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://team.text2.click/app/weather/">
+  <meta property="og:title" content="Weather Check - Current Weather Conditions & Forecast">
+  <meta property="og:description" content="Check current weather conditions instantly. Get real-time weather data including temperature, humidity, wind speed and weather forecast for your location.">
+  <meta property="og:image" content="https://team.text2.click/apple-touch-icon.png">
+  <meta property="og:site_name" content="Text2">
+  <meta property="og:locale" content="en_US">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://team.text2.click/app/weather/">
+  <meta name="twitter:title" content="Weather Check - Current Weather Conditions & Forecast">
+  <meta name="twitter:description" content="Check current weather conditions instantly. Get real-time weather data including temperature, humidity, wind speed and weather forecast for your location.">
+  <meta name="twitter:image" content="https://team.text2.click/apple-touch-icon.png">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://team.text2.click/app/weather/">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Weather Check",
+    "description": "Check current weather conditions instantly. Get real-time weather data including temperature, humidity, wind speed and weather forecast for your location.",
+    "url": "https://yoursite.com/weather/",
+    "applicationCategory": "Weather",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Text2"
+    }
+  }
+  </script>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+
+    .check-btn {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 16px 32px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+      margin-bottom: 24px;
+    }
+
+    .check-btn:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    .check-btn:active {
+      transform: translateY(0);
+    }
+
+    .check-btn:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .loading {
+      display: none;
+      margin: 20px 0;
+    }
+
+    .loading-spinner {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #e2e8f0;
+      border-top: 2px solid #3b82f6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .weather-result {
+      display: none;
+      text-align: left;
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .location {
+      font-size: 18px;
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .weather-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .weather-item {
+      background: white;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .weather-item .label {
+      font-size: 12px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .weather-item .value {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .weather-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 12px;
+      display: block;
+    }
+
+    .condition {
+      font-size: 16px;
+      color: #475569;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 24px;
+        margin: 16px;
+      }
+      
+      h1 {
+        font-size: 20px;
+      }
+      
+      .weather-info {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌤️ Weather</h1>
+    <p class="subtitle">Check your current weather</p>
+    
+    <button class="check-btn" onclick="checkWeather()" id="checkBtn">
+      Check Weather
+    </button>
+    
+    <div class="loading" id="loading">
+      <div class="loading-spinner"></div>
+      <p style="margin-top: 12px; color: #64748b; font-size: 14px;">Getting information...</p>
+    </div>
+    
+    <div class="weather-result" id="weatherResult">
+      <div class="location" id="location"></div>
+      <img id="weatherIcon" class="weather-icon" src="" alt="" style="display: none;">
+      <div class="condition" id="condition"></div>
+      <div class="weather-info">
+        <div class="weather-item">
+          <div class="label">Temperature</div>
+          <div class="value" id="temperature"></div>
+        </div>
+        <div class="weather-item">
+          <div class="label">Humidity</div>
+          <div class="value" id="humidity"></div>
+        </div>
+        <div class="weather-item">
+          <div class="label">Wind</div>
+          <div class="value" id="wind"></div>
+        </div>
+        <div class="weather-item">
+          <div class="label">Feels Like</div>
+          <div class="value" id="feelsLike"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const apiKey = "7a2aed067014465cbee14230251506";
+    
+    function showLoading(show) {
+      const loading = document.getElementById("loading");
+      const btn = document.getElementById("checkBtn");
+      const result = document.getElementById("weatherResult");
+      
+      loading.style.display = show ? "block" : "none";
+      btn.disabled = show;
+      btn.textContent = show ? "Checking..." : "Check Weather";
+      
+      if (show) {
+        result.style.display = "none";
+      }
+    }
+    
+    function showError(message) {
+      alert(message);
+      showLoading(false);
+    }
+    
+    function checkWeather() {
+      showLoading(true);
+      
+      if (!navigator.geolocation) {
+        showError("Browser does not support geolocation");
+        return;
+      }
+      
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const coords = `${position.coords.latitude},${position.coords.longitude}`;
+          getWeatherData(coords);
+        },
+        error => {
+          showError("Unable to access location. Please enable GPS and try again.");
+        }
+      );
+    }
+    
+    async function getWeatherData(location) {
+      const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(location)}&lang=en`;
+      
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.error) {
+          showError("Unable to get weather data");
+          return;
+        }
+        
+        displayWeather(data);
+      } catch (error) {
+        showError("Connection error. Please check your network and try again.");
+        console.error(error);
+      }
+    }
+    
+    function displayWeather(data) {
+      const iconUrl = "https:" + data.current.condition.icon;
+      
+      document.getElementById("location").innerHTML = `📍 ${data.location.name}, ${data.location.country}`;
+      document.getElementById("condition").textContent = data.current.condition.text;
+      document.getElementById("temperature").textContent = `${data.current.temp_c}°C`;
+      document.getElementById("humidity").textContent = `${data.current.humidity}%`;
+      document.getElementById("wind").textContent = `${data.current.wind_kph} km/h`;
+      document.getElementById("feelsLike").textContent = `${data.current.feelslike_c}°C`;
+      
+      const iconEl = document.getElementById("weatherIcon");
+      iconEl.src = iconUrl;
+      iconEl.alt = data.current.condition.text;
+      iconEl.style.display = "block";
+      
+      document.getElementById("weatherResult").style.display = "block";
+      showLoading(false);
+    }
+  </script>
+</body>
+</html>
