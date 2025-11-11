@@ -173,7 +173,7 @@
 
         <!-- Title and Filter -->
         <div class="flex justify-between items-center mb-4">
-            <h1 class="text-white text-2xl font-semibold">All Applications</h1>
+            <h1 class="text-white text-2xl font-semibold">ALL APP</h1>
             <!-- You can add filter dropdown here if needed -->
             <button class="p-2 rounded-lg text-gray-light hover:text-white hover:bg-gray-dark transition-colors duration-200" aria-label="Filter apps">
                  <i data-lucide="filter" class="w-5 h-5"></i>
@@ -181,8 +181,21 @@
         </div>
 
         <!-- App Grid Display -->
-        <div id="app-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+        <div id="app-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-12">
             <!-- Apps will be inserted here by JavaScript -->
+        </div>
+
+        <!-- Research Apps Section -->
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-white text-2xl font-semibold">RESEARCH APPS</h2>
+            <div class="flex items-center gap-2">
+                <span class="bg-yellow-600 text-white text-xs px-2 py-1 rounded-full">In Development</span>
+            </div>
+        </div>
+
+        <!-- Research App Grid Display -->
+        <div id="research-app-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            <!-- Research apps will be inserted here by JavaScript -->
         </div>
 
     </main>
@@ -211,7 +224,15 @@
             { id: 11, name: "Scan QR", description: "Scan QR codes with your camera.", icon: "https://qr.text2.click/scan/apple-touch-icon.png", url: "https://qr.text2.click/scan/" },
             { id: 12, name: "Add Luts", description: "Apply LUTs to your images.", icon: "https://luts.text2.click/apple-touch-icon.png", url: "https://luts.text2.click" },
             { id: 13, name: "File", description: "File management (in development).", icon: "https://file.text2.click/apple-touch-icon.png", url: "https://file.text2.click" },
-            { id: 14, name: "Create Img", description: "Create images (in development).", icon: "https://text2.click/app/create-img/apple-touch-icon.png", url: "https://text2.click/app/create-img/" },
+            { id: 14, name: "Create Img", description: "Create images (in development).", icon: "https://team.text2.click/app/create-img/apple-touch-icon.png", url: "https://team.text2.click/app/create-img/" }, 
+        ];
+
+        // Research apps data
+        const researchAppData = [
+            { id: 1, name: "Weather", description: "Check the weather forecast.", icon: "https://team.text2.click/app/weather/apple-touch-icon.png", url: "https://team.text2.click/app/weather" },
+            { id: 2, name: "Create Image", description: "Create images (Team).", icon: "https://team.text2.click/app/create-img/apple-touch-icon.png", url: "https://team.text2.click/app/creaate-img" },
+            { id: 3, name: "Image Compression", description: "Compress image file size.", icon: "https://team.text2.click/app/compy/apple-touch-icon.png", url: "https://team.text2.click/app/compy" },
+            { id: 4, name: "TTS", description: "Convert text to speech.", icon: "https://team.text2.click/app/tts/apple-touch-icon.png", url: "https://team.text2.click/app/tts" },
         ];
 
         // Function to handle image error
@@ -220,6 +241,41 @@
             const initial = appName.charAt(0).toUpperCase();
             img.src = `https://placehold.co/64x64/1E90FF/FFFFFF?text=${initial}`;
             img.onerror = null; // Prevent infinite loop if placeholder image also fails
+        };
+
+        // Function to render research apps to screen
+        const renderResearchApps = (apps) => {
+            const researchAppGrid = document.getElementById('research-app-grid');
+            if (!researchAppGrid) return; // Exit if grid not found
+
+            researchAppGrid.innerHTML = ''; // Clear old content
+
+            if (apps.length === 0) {
+                researchAppGrid.innerHTML = `<p class="text-gray-light col-span-full text-center">No research applications found.</p>`;
+                return;
+            }
+
+            apps.forEach(app => {
+                const appCard = `
+                    <div class="bg-gray-dark rounded-lg p-4 flex flex-col items-center text-center transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-accent/10 hover:-translate-y-1 cursor-pointer">
+                        <a href="${app.url}" target="_blank">
+                            <img 
+                                src="${app.icon}" 
+                                alt="${app.name}"
+                                class="w-16 h-16 mb-3 rounded-xl object-cover bg-gray-medium"
+                                onerror="handleImageError(this)"
+                            >
+                        </a>
+                        <h3 class="text-white font-semibold text-base mb-1 w-full truncate" title="${app.name}">
+                            ${app.name}
+                        </h3>
+                        <p class="text-gray-light text-xs w-full overflow-hidden" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                            ${app.description}
+                        </p>
+                    </div>
+                `;
+                researchAppGrid.innerHTML += appCard;
+            });
         };
 
         // Function to render app list to screen
@@ -279,6 +335,9 @@
 
             // Render all apps initially
             renderApps(appData);
+
+            // Render research apps initially
+            renderResearchApps(researchAppData);
 
             // Attach 'input' event to search bar
             const searchInput = document.getElementById('search-input');
