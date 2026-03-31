@@ -1,0 +1,4 @@
+/app/:slug/    /:slug    301
+/:slug/        /:slug    301
+/app/:slug     /:slug    301
+/:slug         /app/:slug/index.html    200
