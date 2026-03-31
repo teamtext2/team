@@ -12,7 +12,7 @@
 # --- BƯỚC 3: GOM HẾT ĐỐNG RÁC STATIC VÀO MỘT CHỖ ---
 # Thay vì để hàng trăm file ảnh, css ở Root, sếp hãy ném hết chúng vào folder /assets/
 # Lúc đó sếp chỉ tốn đúng 1 dòng này để cứu tất cả:
-/assets/* /assets/:splat 200
+/game/* /game/:splat 200
 
 # --- BƯỚC 4: TRÙM CUỐI (CHỈ CHẠY KHI KHÔNG KHỚP Ở TRÊN) ---
 # Dòng này sẽ lo toàn bộ các app như /note, /qr, /love...
