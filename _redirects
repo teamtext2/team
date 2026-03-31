@@ -1,24 +1,19 @@
 # --- BƯỚC 1: ĐUỔI KHÁCH (301) ---
-# Nếu gõ link dài, đá về link ngắn
-/app/* /:splat         301
+/app/* /:splat 301
 
-# --- BƯỚC 2: BẢO VỆ "ĐÀN CON" Ở ROOT (200) ---
-# Chỉ cần liệt kê các loại đuôi file sếp đang có ở Root. 
-# Cloudflare sẽ giữ chúng ở lại gốc, không cho vào folder /app
-/*.txt          /:splat         200
-/*.xml          /:splat         200
-/*.json         /:splat         200
-/*.html         /:splat         200
-/*.png          /:splat         200
-/*.jpg          /:splat         200
-/*.ico          /:splat         200
-/*.svg          /:splat         200
-/*.webmanifest  /:splat         200
+# --- BƯỚC 2: LIỆT KÊ NHỮNG ĐỨA CON CƯNG Ở ROOT ---
+# Sếp có bao nhiêu file quan trọng ở Root (như robots, sitemap, favicon) thì liệt kê ĐÍCH DANH ra.
+# Máy móc nó ngu lắm, phải chỉ tận tay day tận trán nó mới hiểu!
+/robots.txt    /robots.txt    200
+/sitemap.xml   /sitemap.xml   200
+/favicon.ico   /favicon.ico   200
+/index.html    /index.html    200
 
-# --- BƯỚC 3: TRANG CHỦ (BẮT BUỘC) ---
-/               /index.html     200
+# --- BƯỚC 3: GOM HẾT ĐỐNG RÁC STATIC VÀO MỘT CHỖ ---
+# Thay vì để hàng trăm file ảnh, css ở Root, sếp hãy ném hết chúng vào folder /assets/
+# Lúc đó sếp chỉ tốn đúng 1 dòng này để cứu tất cả:
+/assets/* /assets/:splat 200
 
-# --- BƯỚC 4: TRÙM CUỐI (CATCH-ALL CÓ CHỌN LỌC) ---
-# Dòng này chỉ chạy khi URL KHÔNG có mấy cái đuôi file ở trên.
-# Nó sẽ lôi ruột từ trong /app/ ra cho sếp.
-/* /app/:splat     200
+# --- BƯỚC 4: TRÙM CUỐI (CHỈ CHẠY KHI KHÔNG KHỚP Ở TRÊN) ---
+# Dòng này sẽ lo toàn bộ các app như /note, /qr, /love...
+/* /app/:splat 200
