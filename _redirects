@@ -8,7 +8,7 @@
 /sitemap.xml   /sitemap.xml   200
 /favicon.ico   /favicon.ico   200
 /index.html    /index.html    200
-/aboutme.html    /index.html    200
+/aboutme.html    /aboutme.html    200
 
 # --- BƯỚC 3: GOM HẾT ĐỐNG RÁC STATIC VÀO MỘT CHỖ ---
 # Thay vì để hàng trăm file ảnh, css ở Root, sếp hãy ném hết chúng vào folder /assets/
