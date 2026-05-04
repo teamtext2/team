@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc;
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+/* Ẩn thanh cuộn nhưng vẫn cuộn được cho Toolbar */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+#drawing-canvas {
+    touch-action: none;
+    background-color: #ffffff;
+    cursor: none;
+}
+
+/* Brush Preview Cursor */
+#brush-cursor {
+    position: fixed;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 50;
+    display: none;
+    backdrop-filter: invert(0.2);
+}
+
+/* Nút công cụ */
+.tool-btn {
+    transition: all 0.2s ease;
+}
+
+.tool-btn.active {
+    background-color: #1e293b;
+    color: #ffffff !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+/* Nút công cụ AI đặc biệt */
+.ai-tool-btn.active {
+    background: linear-gradient(135deg, #4f46e5, #9333ea);
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px -2px rgba(99, 102, 241, 0.4);
+    border: none;
+}
+
+.color-btn {
+    transition: all 0.15s ease;
+    position: relative;
+}
+
+.color-btn.active {
+    transform: scale(1.25);
+    border: 2px solid #cbd5e1;
+    box-shadow: 0 0 0 2px white inset;
+}
+
+.custom-color-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.custom-color-wrapper input[type="color"] {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.fade-enter {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Glassmorphism */
+.glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Tối ưu giao diện thanh trượt (Range Slider) cao cấp */
+input[type=range] {
+    -webkit-appearance: none;
+    background: transparent;
+    width: 100%;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background: #4f46e5;
+    cursor: pointer;
+    margin-top: -7px;
+    box-shadow: 0 0 0 2px #fff, 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s ease;
+}
+
+input[type=range]::-webkit-slider-thumb:active {
+    transform: scale(1.15);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    background: #cbd5e1;
+    border-radius: 2px;
+}
+
+/* Thanh cuộn ngang cao cấp (Premium Scrollbar) cho Toolbar */
+.custom-scrollbar {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 0 30px;
+    /* Thụt lề 2 đầu để thanh cuộn lọt thỏm ở giữa */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.35);
+    /* Slate-400 mờ sang trọng */
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.6);
+}
